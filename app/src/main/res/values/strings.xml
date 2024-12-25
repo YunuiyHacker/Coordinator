@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">Coordinator</string>
+
+    <!--  Приветствия пользователя  -->
+    <string name="good_morning">Доброе утро</string>
+    <string name="good_afternoon">Добрый день</string>
+    <string name="good_evening">Добрый вечер</string>
+    <string name="good_night">Доброй ночи</string>
+
+    <!--  Типы времени  -->
+    <string name="day">День</string>
+    <string name="week">Неделя</string>
+    <string name="month">Месяц</string>
+    <string name="year">Год</string>
+    <string name="life">Жизнь</string>
+
+    <!--  OnboardingScreen  -->
+    <string name="what_is_your_name_title">Как Вас зовут?</string>
+    <string name="what_is_your_name_description">Пожалуйста, укажите свое имя, которое мы будем использовать для отображения и персонализации ваших задач</string>
+    <string name="your_name">Ваше имя</string>
+    <string name="get_start">Начать</string>
+</resources>
