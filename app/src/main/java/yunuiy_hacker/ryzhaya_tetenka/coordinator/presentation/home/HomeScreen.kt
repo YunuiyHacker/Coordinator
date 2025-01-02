@@ -1,20 +1,27 @@
 package yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.home
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Add
 import androidx.compose.material.icons.rounded.ArrowDropDown
 import androidx.compose.material.icons.rounded.ArrowDropUp
+import androidx.compose.material3.FabPosition
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -22,7 +29,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.scale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -31,27 +37,41 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.R
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.home.model.TimeTypeEnum
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.home.composable.SearchBar
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.home.composable.SwipeLazyColumn
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.home.composable.TimeTypeSelectRow
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.home.composable.TopTimeOfDayText
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.nav_graph.Route
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.ui.theme.caros
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.util.DateFormats
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.util.toTimeTypeEvent
-import java.sql.Time
 import java.util.Calendar
-import java.util.Date
 import java.util.GregorianCalendar
 import java.util.Locale
-import java.util.stream.Collectors.toList
 
 @Composable
 fun HomeScreen(navHostController: NavHostController, viewModel: HomeViewModel = hiltViewModel()) {
     val interactionSource = remember {
         MutableInteractionSource()
     }
-
     viewModel.state.let { state ->
-        Scaffold {
+        Scaffold(floatingActionButton = {
+            IconButton(
+                modifier = Modifier
+                    .size(48.dp),
+                onClick = {
+                    navHostController.navigate("${Route.CreateTaskScreen.route}/${state.timeType.id}/${state.todayDate.time}/${state.selectedWeekStart.time}/${state.selectedWeekEnd.time}")
+                },
+                colors = IconButtonDefaults.iconButtonColors(containerColor = MaterialTheme.colorScheme.primary)
+            ) {
+                Icon(
+                    modifier = Modifier,
+                    imageVector = Icons.Rounded.Add,
+                    tint = MaterialTheme.colorScheme.onSurface,
+                    contentDescription = null
+                )
+            }
+        }, floatingActionButtonPosition = FabPosition.Center) {
             Column(modifier = Modifier.padding(it)) {
                 TopTimeOfDayText(
                     Modifier
@@ -60,13 +80,17 @@ fun HomeScreen(navHostController: NavHostController, viewModel: HomeViewModel = 
                     timeOfDay = state.timeOfDay,
                     userName = state.userName
                 )
+
                 Spacer(Modifier.height(16.dp))
                 Row(
-                    modifier = Modifier.padding(horizontal = 24.dp),
+                    modifier = Modifier
+                        .padding(horizontal = 24.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     if (state.timeType.toTimeTypeEvent() != TimeTypeEnum.LIFE) {
-                        SwipeLazyColumn(modifier = Modifier.wrapContentWidth(),
+                        SwipeLazyColumn(modifier = Modifier
+                            .wrapContentWidth()
+                            .animateContentSize(),
                             selectedIndex = when (state.timeType.toTimeTypeEvent()) {
                                 TimeTypeEnum.DAY -> state.daysList.indexOfLast {
                                     val c: GregorianCalendar = GregorianCalendar()
@@ -213,6 +237,18 @@ fun HomeScreen(navHostController: NavHostController, viewModel: HomeViewModel = 
                             })
                     }
                 }
+                Spacer(Modifier.height(16.dp))
+                SearchBar(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 24.dp),
+                    query = state.query,
+                    onQueryChange = {
+                        viewModel.onEvent(HomeEvent.SearchQueryChangeEvent(it))
+                    },
+                    onSearch = { },
+                    placeholder = stringResource(R.string.try_to_find_task)
+                )
             }
         }
     }

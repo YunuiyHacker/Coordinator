@@ -52,6 +52,10 @@ class HomeViewModel @Inject constructor(
                 sharedPrefsHelper.timeTypeEnum = event.timeType.toTimeTypeEvent()
                 state.timeType = event.timeType
             }
+            is HomeEvent.SearchQueryChangeEvent -> state.query = event.query
+            is HomeEvent.OnClickAddNewTaskEvent -> {
+
+            }
         }
     }
 

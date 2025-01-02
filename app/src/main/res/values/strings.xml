@@ -19,4 +19,18 @@
     <string name="what_is_your_name_description">Пожалуйста, укажите свое имя, которое мы будем использовать для отображения и персонализации ваших задач</string>
     <string name="your_name">Ваше имя</string>
     <string name="get_start">Начать</string>
+
+    <!--  SearchBar  -->
+    <string name="try_to_find_task">Попробуйте найти задачу...</string>
+    <string name="search">Поиск</string>
+
+    <!--  CreateTaskScreen  -->
+    <string name="create_task">Создание задачи</string>
+    <string name="heading">Заголовок</string>
+    <string name="content">Содержание</string>
+    <string name="create">Создать</string>
+    <string name="type_of_time">Тип времени</string>
+
+    <!--  TimePickerDialog  -->
+    <string name="select">Выбрать</string>
 </resources>

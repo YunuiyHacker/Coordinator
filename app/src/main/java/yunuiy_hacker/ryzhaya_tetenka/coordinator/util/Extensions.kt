@@ -5,6 +5,7 @@ import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.home.model.TimeType
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.home.model.TimeTypeEnum
 import java.util.Calendar
 import java.util.Date
+import java.util.Formatter
 import java.util.GregorianCalendar
 
 fun TimeType.toTimeTypeEvent(): TimeTypeEnum {
@@ -36,4 +37,8 @@ fun startAndEndThisWeek(calendar: GregorianCalendar): List<Date> {
     calendar.add(Calendar.DAY_OF_YEAR, +6)
     val endDate = Date(calendar.timeInMillis)
     return listOf(startDate, endDate)
+}
+
+fun timeFormatter(hour: Int, minute: Int): String {
+    return Formatter().format("%1\$02d:%2\$02d", hour, minute).toString()
 }

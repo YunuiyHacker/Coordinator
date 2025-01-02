@@ -29,5 +29,7 @@ class HomeState {
     var monthsList = mutableStateListOf<Date>()
     var yearsList = mutableStateListOf<Date>()
 
+    var query by mutableStateOf("")
+
     var timeTypeRowVisible by mutableStateOf(false)
 }
