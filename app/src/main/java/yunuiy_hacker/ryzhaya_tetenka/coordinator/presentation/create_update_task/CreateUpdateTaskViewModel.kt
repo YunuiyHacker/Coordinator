@@ -60,7 +60,7 @@ class CreateUpdateTaskViewModel @Inject constructor(private val tasksUseCase: Ta
 
     @OptIn(DelicateCoroutinesApi::class)
     private fun loadData() {
-        if (state.timeTypeId == 0) {
+        if (state.taskId == 0) {
             state.timeType = Constants.timeTypes.find { state.timeTypeId == it.id }!!
             state.date = setDateTime(Date(state.dateInMilliseconds))
         }

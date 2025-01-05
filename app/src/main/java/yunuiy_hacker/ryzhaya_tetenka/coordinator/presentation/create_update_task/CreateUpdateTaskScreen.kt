@@ -2,6 +2,7 @@ package yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.create_update_tas
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.animateContentSize
+import androidx.compose.foundation.LocalIndication
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -67,10 +68,11 @@ import yunuiy_hacker.ryzhaya_tetenka.coordinator.util.toTimeTypeEvent
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CreateTaskScreen(
+fun CreateUpdateTaskScreen(
     navHostController: NavHostController, viewModel: CreateUpdateTaskViewModel = hiltViewModel()
 ) {
     val interactionSource = remember { MutableInteractionSource() }
+    val localIndication = LocalIndication.current
     val datePickerState = rememberDatePickerState()
     val isEditMode = viewModel.state.taskId != 0
 
@@ -102,7 +104,11 @@ fun CreateTaskScreen(
                             Box(modifier = Modifier.clickable(
                                 interactionSource = interactionSource, indication = null
                             ) {
-                                navHostController.popBackStack(Route.HomeScreen.route, inclusive = false, saveState = false)
+                                navHostController.popBackStack(
+                                    Route.HomeScreen.route,
+                                    inclusive = false,
+                                    saveState = false
+                                )
                             }) {
                                 Icon(
                                     imageVector = Icons.Rounded.ArrowBack,
@@ -295,26 +301,28 @@ fun CreateTaskScreen(
                     Row(
                         modifier = Modifier
                             .background(
-                                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                color = if (state.heading.isNotEmpty() || state.content.isNotEmpty()) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surfaceVariant,
                                 shape = RoundedCornerShape(10.dp)
                             )
                             .fillMaxWidth()
-                            .padding(vertical = 8.dp)
                             .clickable(
-                                interactionSource = interactionSource, indication = null
+                                interactionSource = interactionSource,
+                                indication = if (state.heading.isEmpty() || state.content.isEmpty()) null else localIndication
                             ) {
-                                viewModel.onEvent(CreateUpdateTaskEvent.OnClickButtonEvent)
+                                if (state.heading.isNotEmpty() || state.content.isNotEmpty())
+                                    viewModel.onEvent(CreateUpdateTaskEvent.OnClickButtonEvent)
                             },
                         horizontalArrangement = Arrangement.Center,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Text(
+                            modifier = Modifier.padding(vertical = 8.dp),
                             text = if (isEditMode) stringResource(R.string.save_changes) else stringResource(
                                 R.string.create
                             ),
                             fontFamily = caros,
                             fontWeight = FontWeight.Medium,
-                            color = MaterialTheme.colorScheme.background
+                            color = MaterialTheme.colorScheme.onSurface
                         )
                     }
                 }

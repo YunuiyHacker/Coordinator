@@ -24,6 +24,9 @@
     <string name="tasks">Задачи</string>
     <string name="cancel_deletion">Отменить удаление</string>
     <string name="yes">Да</string>
+    <string name="deletion_mode">Режим удаления</string>
+    <string name="delete_all_selected">Удалить все выбранные</string>
+    <string name="really_want_to_delete_all_selected_tasks">Вы действительно хотите удалить все выбранные задачи?</string>
 
     <!--  SearchBar  -->
     <string name="try_to_find_task">Попробуйте найти задачу...</string>

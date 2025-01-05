@@ -84,6 +84,30 @@ class HomeViewModel @Inject constructor(
                 if (state.query.isEmpty()) loadData()
             }
 
+            is HomeEvent.OnDeletionModeEvent -> state.isDeletionMode = true
+            is HomeEvent.OffDeletionModeEvent -> {
+                state.isDeletionMode = false
+                state.deletionTasks.clear()
+            }
+
+            is HomeEvent.ShowQuestionDialogEvent -> state.showQuestionDialog = true
+            is HomeEvent.HideQuestionDialogEvent -> state.showQuestionDialog = false
+            is HomeEvent.SelectAllEvent -> selectAll()
+            is HomeEvent.UnselectAllEvent -> unselectAll()
+            is HomeEvent.AddSelectedTaskEvent -> {
+                state.deletionTasks.add(event.task)
+                if (state.deletionTasks.size == state.tasks.size) state.selectedAll = true
+                else state.selectedAll = false
+            }
+
+            is HomeEvent.RemoveSelectedTaskEvent -> {
+                state.deletionTasks.remove(event.task)
+                if (state.deletionTasks.size == state.tasks.size) state.selectedAll = true
+                else state.selectedAll = false
+            }
+
+            is HomeEvent.DeleteAllSelectedTasksEvent -> deleteAllSelectedTasks()
+
             is HomeEvent.OnClickSearchEvent -> searchTasks(state.query)
 
             is HomeEvent.TaskItemCheckboxToggleEvent -> taskItemToggle(event)
@@ -119,6 +143,38 @@ class HomeViewModel @Inject constructor(
                     dates = Pair(state.selectedWeekStart, state.selectedWeekEnd)
                 ).map { task -> task.toDomain() }.toMutableList()
 
+                state.contentState.isLoading.value = false
+            }
+        }
+    }
+
+    private fun selectAll() {
+        for (i in 0..<state.tasks.size) {
+            if (!state.deletionTasks.contains(state.tasks[i])) state.deletionTasks.add(state.tasks[i])
+        }
+
+        state.selectedAll = true
+    }
+
+    private fun unselectAll() {
+        state.deletionTasks.clear()
+
+        state.selectedAll = false
+    }
+
+    @OptIn(DelicateCoroutinesApi::class)
+    private fun deleteAllSelectedTasks() {
+        state.contentState.isLoading.value = true
+
+        GlobalScope.launch(Dispatchers.IO) {
+            runBlocking {
+                for (i in 0..<state.deletionTasks.size) {
+                    tasksUseCase.deleteTaskOperator.invoke(state.deletionTasks[i].toData())
+                    state.tasks.remove(state.deletionTasks[i])
+                }
+
+                state.isDeletionMode = false
+                state.showQuestionDialog = false
                 state.contentState.isLoading.value = false
             }
         }

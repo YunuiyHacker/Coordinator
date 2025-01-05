@@ -1,7 +1,12 @@
 package yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.common.composable
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.LocalIndication
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.combinedClickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -12,10 +17,10 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CheckboxDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -33,34 +38,51 @@ import yunuiy_hacker.ryzhaya_tetenka.coordinator.util.Constants
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.util.timeFormatter
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.util.toTimeTypeEvent
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun TaskItem(
     modifier: Modifier = Modifier,
     onCheckedChange: (Boolean) -> Unit,
     task: Task,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    isDeletionMode: Boolean,
+    onLongClick: () -> Unit,
+    isDeleteChecked: Boolean,
+    onDeleteCheckedChange: (Boolean) -> Unit
 ) {
+    val interactionSource = remember { MutableInteractionSource() }
+    val localIndication = LocalIndication.current
+
     Row(
         modifier = modifier
             .background(
                 color = MaterialTheme.colorScheme.surfaceVariant, shape = RoundedCornerShape(20.dp)
             )
             .clip(RoundedCornerShape(20.dp))
-            .clickable {
-                onClick()
-            }, verticalAlignment = Alignment.CenterVertically
+            .combinedClickable(interactionSource = interactionSource,
+                indication = localIndication,
+                onLongClick = {
+                    onLongClick()
+                },
+                onDoubleClick = {},
+                onClick = {
+                    if (!isDeletionMode)
+                        onClick()
+                }), verticalAlignment = Alignment.CenterVertically
     ) {
         Row(
             modifier = Modifier.padding(12.dp), verticalAlignment = Alignment.CenterVertically
         ) {
-            Checkbox(
-                checked = task.checked.value, onCheckedChange = {
-                    onCheckedChange(!task.checked.value)
-                }, colors = CheckboxDefaults.colors(
-                    uncheckedColor = MaterialTheme.colorScheme.onSurface,
-                    checkedColor = MaterialTheme.colorScheme.primary
+            AnimatedVisibility(!isDeletionMode) {
+                Checkbox(
+                    checked = task.checked.value, onCheckedChange = {
+                        onCheckedChange(!task.checked.value)
+                    }, colors = CheckboxDefaults.colors(
+                        uncheckedColor = MaterialTheme.colorScheme.onSurface,
+                        checkedColor = MaterialTheme.colorScheme.primary
+                    )
                 )
-            )
+            }
             Spacer(modifier = Modifier.width(8.dp))
             Column(Modifier.weight(1f), verticalArrangement = Arrangement.Center) {
                 if (task.title.isNotEmpty()) Text(
@@ -102,6 +124,16 @@ fun TaskItem(
                     fontSize = 18.sp
                 )
                 Spacer(modifier = Modifier.width(4.dp))
+            }
+            AnimatedVisibility(isDeletionMode) {
+                Checkbox(
+                    checked = isDeleteChecked, onCheckedChange = {
+                        onDeleteCheckedChange(!isDeleteChecked)
+                    }, colors = CheckboxDefaults.colors(
+                        uncheckedColor = MaterialTheme.colorScheme.onSurface,
+                        checkedColor = MaterialTheme.colorScheme.primary
+                    )
+                )
             }
         }
     }

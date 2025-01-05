@@ -16,6 +16,17 @@ sealed class HomeEvent {
     data class SearchQueryChangeEvent(val query: String) : HomeEvent()
     data object OnClickSearchEvent : HomeEvent()
 
+    data object OnDeletionModeEvent : HomeEvent()
+    data object OffDeletionModeEvent : HomeEvent()
+
+    data object ShowQuestionDialogEvent : HomeEvent()
+    data object HideQuestionDialogEvent : HomeEvent()
+    data object SelectAllEvent : HomeEvent()
+    data object UnselectAllEvent : HomeEvent()
+    data class AddSelectedTaskEvent(val task: Task) : HomeEvent()
+    data class RemoveSelectedTaskEvent(val task: Task) : HomeEvent()
+    data object DeleteAllSelectedTasksEvent : HomeEvent()
+
     data class TaskItemCheckboxToggleEvent(val task: Task) : HomeEvent()
 
     data object OnClickAddNewTaskEvent : HomeEvent()
