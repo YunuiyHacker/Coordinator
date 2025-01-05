@@ -1,0 +1,18 @@
+package yunuiy_hacker.ryzhaya_tetenka.coordinator.data.common.model
+
+import androidx.annotation.NonNull
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+
+@Entity(tableName = "task")
+data class Task(
+    @PrimaryKey(autoGenerate = true) @NonNull @ColumnInfo(name = "id") val id: Int = 0,
+    @ColumnInfo(name = "time_type_id") val timeTypeId: Int? = 0,
+    @ColumnInfo(name = "dateInMilliseconds") val dateInMilliseconds: Long? = 0L,
+    @ColumnInfo(name = "hour") val hour: Int? = 0,
+    @ColumnInfo(name = "minute") val minute: Int? = 0,
+    @ColumnInfo(name = "title") val title: String? = "",
+    @ColumnInfo(name = "content") val content: String? = "",
+    @ColumnInfo(name = "checked") val checked: Boolean? = false
+)

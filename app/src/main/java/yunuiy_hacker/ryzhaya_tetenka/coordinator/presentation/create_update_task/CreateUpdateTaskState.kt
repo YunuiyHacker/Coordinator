@@ -1,17 +1,21 @@
-package yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.create_task
+package yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.create_update_task
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.model.Task
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.home.model.TimeType
 import java.util.Date
 
-class CreateTaskState {
+class CreateUpdateTaskState {
     var timeTypeId by mutableStateOf(0)
     var timeType by mutableStateOf(TimeType())
     var dateInMilliseconds by mutableStateOf(0L)
     var date by mutableStateOf(Date())
     var weekDate by mutableStateOf(Pair<Date, Date>(Date(), Date()))
+
+    var taskId by mutableStateOf(0)
+    var task by mutableStateOf(Task())
 
     var heading by mutableStateOf("")
     var content by mutableStateOf("")

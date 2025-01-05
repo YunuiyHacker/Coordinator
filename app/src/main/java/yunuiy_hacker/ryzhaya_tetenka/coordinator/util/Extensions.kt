@@ -3,6 +3,8 @@ package yunuiy_hacker.ryzhaya_tetenka.coordinator.util
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.R
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.home.model.TimeType
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.home.model.TimeTypeEnum
+import java.time.ZoneId
+import java.time.ZonedDateTime
 import java.util.Calendar
 import java.util.Date
 import java.util.Formatter
@@ -30,15 +32,35 @@ fun TimeTypeEnum.toTimeType(): TimeType {
     }
 }
 
-fun startAndEndThisWeek(calendar: GregorianCalendar): List<Date> {
+fun startAndEndThisWeek(calendar: Calendar): Pair<Date, Date> {
     val firstDay = calendar.firstDayOfWeek
     calendar.set(Calendar.DAY_OF_WEEK, firstDay)
     val startDate = Date(calendar.timeInMillis)
     calendar.add(Calendar.DAY_OF_YEAR, +6)
     val endDate = Date(calendar.timeInMillis)
-    return listOf(startDate, endDate)
+    return Pair(startDate, endDate)
 }
 
 fun timeFormatter(hour: Int, minute: Int): String {
     return Formatter().format("%1\$02d:%2\$02d", hour, minute).toString()
 }
+
+fun setCalendarTime(calendar: Calendar): Calendar {
+    calendar.set(Calendar.HOUR_OF_DAY, (zoneOffset.totalSeconds / (60 * 60)))
+    calendar.set(Calendar.MINUTE, 0)
+    calendar.set(Calendar.SECOND, 0)
+    calendar.set(Calendar.MILLISECOND, 0)
+
+    return calendar
+}
+
+fun setDateTime(date: Date): Date {
+    date.hours = (zoneOffset.totalSeconds / (60 * 60))
+    date.minutes = 0
+    date.seconds = 0
+
+    return date
+}
+
+val currentZoneDateTime = ZonedDateTime.now(ZoneId.systemDefault())
+val zoneOffset = currentZoneDateTime.offset

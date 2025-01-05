@@ -73,6 +73,7 @@ fun SearchBar(
                     .clickable(
                         interactionSource = interactionSource, indication = null
                     ) {
+                        onSearch(query)
                         localFocusManager.clearFocus()
                     }) {
                     Text(
@@ -97,6 +98,7 @@ fun SearchBar(
         },
         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
         keyboardActions = KeyboardActions(onSearch = {
+            onSearch(query)
             localFocusManager.clearFocus()
         })
     )

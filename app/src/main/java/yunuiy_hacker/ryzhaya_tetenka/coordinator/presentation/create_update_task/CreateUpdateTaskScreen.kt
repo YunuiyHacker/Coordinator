@@ -1,5 +1,6 @@
-package yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.create_task
+package yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.create_update_task
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -25,7 +26,6 @@ import androidx.compose.material.icons.rounded.ArrowBack
 import androidx.compose.material3.Button
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDefaults
-import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -57,22 +57,25 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.R
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.home.model.TimeTypeEnum
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.common.composable.TimePickerDialog
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.common.composable.TimeRow
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.nav_graph.Route
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.ui.theme.caros
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.util.Constants
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.util.toTimeTypeEvent
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CreateTaskScreen(
-    navHostController: NavHostController,
-    viewModel: CreateTaskViewModel = hiltViewModel()
+    navHostController: NavHostController, viewModel: CreateUpdateTaskViewModel = hiltViewModel()
 ) {
     val interactionSource = remember { MutableInteractionSource() }
     val datePickerState = rememberDatePickerState()
+    val isEditMode = viewModel.state.taskId != 0
 
     LaunchedEffect(Unit) {
-        viewModel.onEvent(CreateTaskEvent.InitEvent)
+        viewModel.onEvent(CreateUpdateTaskEvent.LoadDataEvent)
     }
 
     viewModel.state.let { state ->
@@ -84,7 +87,7 @@ fun CreateTaskScreen(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .offset(x = -24.dp),
-                            text = stringResource(
+                            text = if (isEditMode) stringResource(R.string.edit_task) else stringResource(
                                 R.string.create_task,
                             ),
                             fontFamily = caros,
@@ -99,7 +102,7 @@ fun CreateTaskScreen(
                             Box(modifier = Modifier.clickable(
                                 interactionSource = interactionSource, indication = null
                             ) {
-                                navHostController.popBackStack()
+                                navHostController.popBackStack(Route.HomeScreen.route, inclusive = false, saveState = false)
                             }) {
                                 Icon(
                                     imageVector = Icons.Rounded.ArrowBack,
@@ -132,7 +135,7 @@ fun CreateTaskScreen(
                             .clickable(
                                 interactionSource = interactionSource, indication = null
                             ) {
-                                viewModel.onEvent(CreateTaskEvent.ShowTimeTypePickerMenuEvent)
+                                viewModel.onEvent(CreateUpdateTaskEvent.ShowTimeTypePickerMenuEvent)
                             }
                             .animateContentSize(),
                             text = stringResource(Constants.timeTypes.find { it.id == state.timeType.id }!!.resId).lowercase(),
@@ -153,7 +156,7 @@ fun CreateTaskScreen(
                                         color = Color.DarkGray,
                                         shape = RoundedCornerShape(12.dp)
                                     ), expanded = state.showTimeTypePickerMenu, onDismissRequest = {
-                                    viewModel.onEvent(CreateTaskEvent.HideTimeTypePickerMenuEvent)
+                                    viewModel.onEvent(CreateUpdateTaskEvent.HideTimeTypePickerMenuEvent)
                                 }, offset = DpOffset(x = 90.dp, y = 0.dp)
                             ) {
                                 Constants.timeTypes.forEach { timeType ->
@@ -172,7 +175,7 @@ fun CreateTaskScreen(
                                         )
                                     }, onClick = {
                                         viewModel.onEvent(
-                                            CreateTaskEvent.SelectTimeTypePickerMenuEvent(
+                                            CreateUpdateTaskEvent.SelectTimeTypePickerMenuEvent(
                                                 timeType
                                             )
                                         )
@@ -191,11 +194,14 @@ fun CreateTaskScreen(
                         weekDate = state.weekDate,
                         minute = state.selectedMinute,
                         onDateClick = {
-                            viewModel.onEvent(CreateTaskEvent.ShowDatePickerDialogEvent)
+                            if (state.timeType.toTimeTypeEvent() != TimeTypeEnum.LIFE) viewModel.onEvent(
+                                CreateUpdateTaskEvent.ShowDatePickerDialogEvent
+                            )
                         },
                         onTimeClick = {
-                            viewModel.onEvent(CreateTaskEvent.ShowTimePickerDialogEvent)
+                            viewModel.onEvent(CreateUpdateTaskEvent.ShowTimePickerDialogEvent)
                         })
+                    Spacer(modifier = Modifier.height(8.dp))
                     TextField(modifier = Modifier
                         .fillMaxWidth()
                         .padding(start = 24.dp)
@@ -203,7 +209,7 @@ fun CreateTaskScreen(
                         .animateContentSize(),
                         value = state.heading,
                         onValueChange = {
-                            viewModel.onEvent(CreateTaskEvent.HeadingChangeEvent(it))
+                            viewModel.onEvent(CreateUpdateTaskEvent.HeadingChangeEvent(it))
                         },
                         colors = TextFieldDefaults.colors(
                             unfocusedTextColor = MaterialTheme.colorScheme.onSurface,
@@ -231,7 +237,7 @@ fun CreateTaskScreen(
                         .animateContentSize(),
                         value = state.content,
                         onValueChange = {
-                            viewModel.onEvent(CreateTaskEvent.ContentChangeEvent(it))
+                            viewModel.onEvent(CreateUpdateTaskEvent.ContentChangeEvent(it))
                         },
                         colors = TextFieldDefaults.colors(
                             unfocusedTextColor = MaterialTheme.colorScheme.onSurface,
@@ -297,13 +303,15 @@ fun CreateTaskScreen(
                             .clickable(
                                 interactionSource = interactionSource, indication = null
                             ) {
-                                viewModel.onEvent(CreateTaskEvent.OnClickButtonEvent)
+                                viewModel.onEvent(CreateUpdateTaskEvent.OnClickButtonEvent)
                             },
                         horizontalArrangement = Arrangement.Center,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Text(
-                            text = stringResource(R.string.create),
+                            text = if (isEditMode) stringResource(R.string.save_changes) else stringResource(
+                                R.string.create
+                            ),
                             fontFamily = caros,
                             fontWeight = FontWeight.Medium,
                             color = MaterialTheme.colorScheme.background
@@ -316,14 +324,18 @@ fun CreateTaskScreen(
 
         LaunchedEffect(state.success) {
             if (state.success) {
-                navHostController.popBackStack()
+                if (isEditMode) navHostController.popBackStack(
+                    Route.HomeScreen.route, inclusive = false, saveState = false
+                )
+                else navHostController.popBackStack()
             }
         }
 
         if (state.showDatePickerDialog) {
             yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.common.composable.DatePickerDialog(
-                modifier = Modifier.heightIn(max = 700.dp), onDismissRequest = {
-                    viewModel.onEvent(CreateTaskEvent.HideDatePickerDialogEvent)
+                modifier = Modifier.heightIn(max = 700.dp),
+                onDismissRequest = {
+                    viewModel.onEvent(CreateUpdateTaskEvent.HideDatePickerDialogEvent)
                 },
                 confirmButton = {},
                 colors = DatePickerDefaults.colors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
@@ -336,7 +348,7 @@ fun CreateTaskScreen(
                             .fillMaxWidth()
                             .padding(horizontal = 24.dp), onClick = {
                             viewModel.onEvent(
-                                CreateTaskEvent.SelectDatePickerDialogEvent(
+                                CreateUpdateTaskEvent.SelectDatePickerDialogEvent(
                                     datePickerState.selectedDateMillis ?: 0
                                 )
                             )
@@ -355,14 +367,18 @@ fun CreateTaskScreen(
 
         if (state.showTimePickerDialog) {
             TimePickerDialog(onDismissRequest = {
-                viewModel.onEvent(CreateTaskEvent.HideTimePickerDialogEvent)
+                viewModel.onEvent(CreateUpdateTaskEvent.HideTimePickerDialogEvent)
             }, onSelectButtonClick = { hour, minute ->
                 viewModel.onEvent(
-                    CreateTaskEvent.SelectTimePickerDialogEvent(
+                    CreateUpdateTaskEvent.SelectTimePickerDialogEvent(
                         hour = hour, minute = minute
                     )
                 )
             })
         }
+    }
+
+    BackHandler {
+        navHostController.popBackStack(Route.HomeScreen.route, inclusive = false, saveState = false)
     }
 }

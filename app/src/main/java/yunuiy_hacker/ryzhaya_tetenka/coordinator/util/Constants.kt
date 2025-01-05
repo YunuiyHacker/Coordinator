@@ -11,4 +11,6 @@ object Constants {
         TimeType(id = 3, resId = R.string.year),
         TimeType(id = 4, resId = R.string.life)
     )
+    const val TASKS_DATABASE_NAME = "tasks_db"
+
 }

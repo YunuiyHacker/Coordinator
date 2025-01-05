@@ -13,10 +13,12 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.create_task.CreateTaskScreen
-import yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.create_task.CreateTaskViewModel
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.create_update_task.CreateTaskScreen
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.create_update_task.CreateUpdateTaskViewModel
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.home.HomeScreen
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.onboarding.OnboardingScreen
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.task.TaskScreen
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.task.TaskViewModel
 import java.util.Date
 
 @Composable
@@ -33,7 +35,7 @@ fun NavGraph(
             OnboardingScreen(navHostController)
         }
         composable(
-            route = "${Route.CreateTaskScreen.route}/{time_type_id}/{date_in_long}/{week_date_first_part_in_milliseconds}/{week_date_second_part_in_milliseconds}",
+            route = "${Route.CreateUpdateTaskScreen.route}/{time_type_id}/{date_in_long}/{week_date_first_part_in_milliseconds}/{week_date_second_part_in_milliseconds}",
             enterTransition = {
                 fadeIn(
                     animationSpec = tween(
@@ -75,7 +77,7 @@ fun NavGraph(
             val weekDateSecondPartInMilliseconds =
                 it.arguments?.getString("week_date_second_part_in_milliseconds")!!.toLong()
 
-            val viewModel: CreateTaskViewModel = hiltViewModel()
+            val viewModel: CreateUpdateTaskViewModel = hiltViewModel()
             viewModel.state.timeTypeId = timeTypeId
             viewModel.state.dateInMilliseconds = dateInMilliseconds
             viewModel.state.weekDate =
@@ -84,6 +86,56 @@ fun NavGraph(
             CreateTaskScreen(
                 navHostController = navHostController, viewModel = viewModel
             )
+        }
+        composable(
+            route = "${Route.CreateUpdateTaskScreen.route}/{task_id}",
+//            enterTransition = {
+//                fadeIn(
+//                    animationSpec = tween(
+//                        300, easing = LinearEasing
+//                    )
+//                ) + slideIntoContainer(
+//                    animationSpec = tween(300, easing = EaseIn),
+//                    towards = AnimatedContentTransitionScope.SlideDirection.Up
+//                )
+//            },
+//            exitTransition = {
+//                fadeOut(
+//                    animationSpec = tween(
+//                        300, easing = LinearEasing
+//                    )
+//                ) + slideOutOfContainer(
+//                    animationSpec = tween(300, easing = EaseIn),
+//                    towards = AnimatedContentTransitionScope.SlideDirection.Down
+//                )
+//            },
+            arguments = listOf(navArgument("task_id") {
+                NavType.StringType
+                nullable = false
+            })
+        ) {
+            val taskId = it.arguments?.getString("task_id")!!.toInt()
+
+            val viewModel: CreateUpdateTaskViewModel = hiltViewModel()
+            viewModel.state.taskId = taskId
+
+            CreateTaskScreen(
+                navHostController = navHostController, viewModel = viewModel
+            )
+        }
+        composable(
+            route = "${Route.TaskScreen.route}/{task_id}",
+            arguments = listOf(navArgument("task_id") {
+                NavType.StringType
+                nullable = false
+            })
+        ) {
+            val taskId = it.arguments?.getString("task_id")!!.toInt()
+
+            val viewModel: TaskViewModel = hiltViewModel()
+            viewModel.state.taskId = taskId
+
+            TaskScreen(navHostController, viewModel = viewModel)
         }
     }
 }

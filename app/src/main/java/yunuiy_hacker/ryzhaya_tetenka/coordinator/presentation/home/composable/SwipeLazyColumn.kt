@@ -2,12 +2,10 @@ package yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.home.composable
 
 import android.annotation.SuppressLint
 import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.DragInteraction
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
@@ -20,7 +18,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -28,7 +25,6 @@ import androidx.compose.ui.draw.scale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.delay
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.ui.theme.caros
@@ -38,38 +34,39 @@ fun SwipeLazyColumn(
     modifier: Modifier = Modifier,
     selectedIndex: Int,
     onSelectedIndexChange: (Int) -> Unit,
-    items: List<String>,
+    items: MutableList<String>,
     textAlign: TextAlign = TextAlign.End,
     alignment: Alignment = Alignment.CenterStart,
     isScrollingToSelectedItemEnabled: Boolean = false,
     height: Dp,
     onScrollingStopped: () -> Unit
 ) {
-    var isAutoScrolling by remember { mutableStateOf(false) }
-    val listState = rememberLazyListState(selectedIndex)
-    SwipeLazyColumn(modifier = modifier,
-        selectedIndex = selectedIndex,
-        onSelectedIndexChange = onSelectedIndexChange,
-        isAutoScrolling = isAutoScrolling,
-        height = height,
-        isScrollingToSelectedItemEnabled = isScrollingToSelectedItemEnabled,
-        listState = listState,
-        onScrollingStopped = {
-            isAutoScrolling = false
-            onScrollingStopped()
-        }) {
-        // we add some empty rows at the beginning and end of list to make it feel that it is a center focused list
-        val count = items.size - 1
-        items(count) {
-            SliderItem(value = it,
-                selectedIndex = selectedIndex,
-                items = items,
-                alignment = alignment,
-                textAlign = textAlign,
-                height = height,
-                onItemClick = { index ->
+    if (selectedIndex > -1) {
+        var isAutoScrolling by remember { mutableStateOf(false) }
+        val listState = rememberLazyListState(selectedIndex)
+        SwipeLazyColumn(modifier = modifier,
+            selectedIndex = selectedIndex,
+            onSelectedIndexChange = onSelectedIndexChange,
+            isAutoScrolling = isAutoScrolling,
+            height = height,
+            isScrollingToSelectedItemEnabled = isScrollingToSelectedItemEnabled,
+            listState = listState,
+            onScrollingStopped = {
+                isAutoScrolling = false
+                onScrollingStopped()
+            }) {
 
-                })
+            val count = items.size - 1
+            items(count) {
+                SliderItem(
+                    value = it,
+                    selectedIndex = selectedIndex,
+                    items = items,
+                    alignment = alignment,
+                    textAlign = textAlign,
+                    height = height
+                )
+            }
         }
     }
 }
@@ -93,7 +90,7 @@ private fun SwipeLazyColumn(
     LaunchedEffect(key1 = Unit) {
         delay(250)
         isInitialWaitOver =
-            true // because not two animateScrollToItem should be called at once and this delay protect that from happening.
+            true
     }
 
     if (isScrollingToSelectedItemEnabled) {
@@ -109,7 +106,6 @@ private fun SwipeLazyColumn(
         }
     }
 
-    // Update selected item index
     LaunchedEffect(key1 = listState.firstVisibleItemScrollOffset) {
         if (!isAutoScrolling && isManualScrolling && isInitialWaitOver) {
             val index =
@@ -118,7 +114,6 @@ private fun SwipeLazyColumn(
         }
     }
 
-    // For smooth scrolling to center item
     var isAnimateScrollToItemTriggered by remember { mutableStateOf(false) }
     LaunchedEffect(key1 = listState.isScrollInProgress) {
         if (!isAnimateScrollToItemTriggered) {
@@ -146,8 +141,7 @@ private fun SwipeLazyColumn(
 private fun SliderItem(
     value: Int,
     selectedIndex: Int,
-    items: List<String>,
-    onItemClick: (Int) -> Unit,
+    items: MutableList<String>,
     alignment: Alignment,
     height: Dp,
     textAlign: TextAlign,
@@ -156,24 +150,18 @@ private fun SliderItem(
         MutableInteractionSource()
     }
 
-    // this gap variable helps in maintaining list as center focused list
     val gap = (5 - 1) / 2
     val isSelected = value == selectedIndex + gap
     val scale by animateFloatAsState(targetValue = if (isSelected) 0f else 1f)
     if (value >= gap && value < items.size + gap) {
         Box(
             modifier = Modifier
-                .height(height)
-                .padding(
-                    start = if (alignment == Alignment.CenterStart) 1.dp else 0.dp,
-                    end = if (alignment == Alignment.CenterEnd) 1.dp else 0.dp
-                )
+                .height(height / 1f)
         ) {
-            Box(modifier = Modifier
-                .wrapContentWidth()
-                .clickable(interactionSource = interactionSource, indication = null) {
-                    onItemClick(value)
-                }) {
+            Box(
+                modifier = Modifier
+                    .wrapContentWidth()
+            ) {
                 Text(
                     text = items[value],
                     modifier = Modifier

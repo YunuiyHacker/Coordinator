@@ -20,17 +20,38 @@
     <string name="your_name">Ваше имя</string>
     <string name="get_start">Начать</string>
 
+    <!--  HomeScreen  -->
+    <string name="tasks">Задачи</string>
+    <string name="cancel_deletion">Отменить удаление</string>
+    <string name="yes">Да</string>
+
     <!--  SearchBar  -->
     <string name="try_to_find_task">Попробуйте найти задачу...</string>
     <string name="search">Поиск</string>
 
     <!--  CreateTaskScreen  -->
     <string name="create_task">Создание задачи</string>
+    <string name="edit_task">Редактирование задачи</string>
     <string name="heading">Заголовок</string>
     <string name="content">Содержание</string>
     <string name="create">Создать</string>
     <string name="type_of_time">Тип времени</string>
+    <string name="save_changes">Сохранить изменения</string>
 
     <!--  TimePickerDialog  -->
     <string name="select">Выбрать</string>
+
+    <!--  TaskScreen  -->
+    <string name="task">Задача</string>
+    <string name="edit">Редактировать</string>
+    <string name="delete">Удалить</string>
+    <string name="deletion">Удаление</string>
+    <string name="really_want_to_delete">Вы действительно хотите удалить эту задачу?</string>
+
+    <!--  SwipeToDeleteBackground  -->
+    <string name="deleted">Удалено</string>
+
+    <!--  QuestionDialog  -->
+    <string name="no">Нет</string>
+
 </resources>
