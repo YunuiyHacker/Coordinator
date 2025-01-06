@@ -10,6 +10,9 @@ data class Task(
     val date: Date = Date(),
     val hour: Int = 0,
     val minute: Int = 0,
+    val withEndTime: Boolean = false,
+    val endHour: Int = 0,
+    val endMinute: Int = 0,
     val title: String = "",
     val content: String = "",
     var checked: MutableState<Boolean> = mutableStateOf(false)

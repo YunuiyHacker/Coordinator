@@ -163,9 +163,10 @@ fun TaskScreen(navHostController: NavHostController, viewModel: TaskViewModel = 
                     .padding(bottom = 64.dp)
                     .verticalScroll(rememberScrollState())
             ) {
-                TimeRow(modifier = Modifier
-                    .padding(horizontal = 24.dp)
-                    .fillMaxWidth(),
+                TimeRow(
+                    modifier = Modifier
+                        .padding(horizontal = 24.dp)
+                        .fillMaxWidth(),
                     timeType = Constants.timeTypes.find { timeType ->
                         state.task.timeTypeId == timeType.id
                     }!!,
@@ -178,7 +179,12 @@ fun TaskScreen(navHostController: NavHostController, viewModel: TaskViewModel = 
                     },
                     onTimeClick = {
 
-                    })
+                    },
+                    onEndTimeClick = {},
+                    withEndTime = state.task.withEndTime,
+                    endHour = state.task.endHour,
+                    endMinute = state.task.endMinute
+                )
 
                 if (state.task.title.isNotEmpty()) {
                     TextField(

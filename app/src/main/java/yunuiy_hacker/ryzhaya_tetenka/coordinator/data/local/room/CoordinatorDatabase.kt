@@ -4,7 +4,7 @@ import androidx.room.Database
 import androidx.room.RoomDatabase
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.data.common.model.Task
 
-@Database(entities = [Task::class], version = 1)
+@Database(entities = [Task::class], version = 3)
 abstract class CoordinatorDatabase : RoomDatabase() {
     abstract val taskDao: TaskDao
 }

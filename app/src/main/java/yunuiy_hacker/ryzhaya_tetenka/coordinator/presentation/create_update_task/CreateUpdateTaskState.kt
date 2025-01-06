@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.model.Task
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.home.model.TimeType
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.common.state.ContentState
 import java.util.Date
 
 class CreateUpdateTaskState {
@@ -27,7 +28,17 @@ class CreateUpdateTaskState {
     var selectedHour by mutableStateOf(0)
     var selectedMinute by mutableStateOf(0)
 
+    var showTaskMenu by mutableStateOf(false)
+    var endTimeChecked by mutableStateOf(false)
+    var showEndTimePickerDialog by mutableStateOf(false)
+    var selectedEndHour by mutableStateOf(0)
+    var selectedEndMinute by mutableStateOf(0)
+
     var showTimeTypePickerMenu by mutableStateOf(false)
+
+    var showMessageDialog by mutableStateOf(false)
+
+    val contentState by mutableStateOf(ContentState())
 
     var success by mutableStateOf(false)
 }

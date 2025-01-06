@@ -1,5 +1,6 @@
 package yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.common.composable
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -41,8 +42,12 @@ fun TimeRow(
     weekDate: Pair<Date, Date>,
     hour: Int,
     minute: Int,
+    withEndTime: Boolean,
+    endHour: Int,
+    endMinute: Int,
     onDateClick: () -> Unit,
-    onTimeClick: () -> Unit
+    onTimeClick: () -> Unit,
+    onEndTimeClick: () -> Unit
 ) {
     val interactionSource = remember { MutableInteractionSource() }
 
@@ -130,6 +135,47 @@ fun TimeRow(
                         fontWeight = FontWeight.Normal,
                         fontSize = 12.sp
                     )
+                }
+            }
+            AnimatedVisibility(withEndTime) {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text(
+                        text = "-",
+                        fontFamily = caros,
+                        color = MaterialTheme.colorScheme.onSurface
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Row(modifier = Modifier
+                        .border(
+                            width = 0.5.dp,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            shape = RoundedCornerShape(10.dp)
+                        )
+                        .clickable(interactionSource = interactionSource, indication = null) {
+                            onEndTimeClick()
+                        }
+                        .animateContentSize()) {
+                        Row(
+                            modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Icon(
+                                modifier = Modifier.size(20.dp),
+                                imageVector = Icons.Rounded.AccessTime,
+                                tint = MaterialTheme.colorScheme.onSurface,
+                                contentDescription = null
+                            )
+                            Spacer(modifier = Modifier.width(8.dp))
+                            Text(
+                                text = timeFormatter(endHour, endMinute),
+                                color = MaterialTheme.colorScheme.onSurface,
+                                fontFamily = caros,
+                                fontWeight = FontWeight.Normal,
+                                fontSize = 12.sp
+                            )
+                        }
+                    }
                 }
             }
         }

@@ -2,6 +2,7 @@
 <resources>
 
     <style name="Theme.Coordinator" parent="android:Theme.Material.Light.NoActionBar">
-        <item name="android:background">@color/white</item>
+        <item name="android:colorBackground">@color/white</item>
     </style>
+
 </resources>

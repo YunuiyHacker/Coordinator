@@ -12,6 +12,9 @@ data class Task(
     @ColumnInfo(name = "dateInMilliseconds") val dateInMilliseconds: Long? = 0L,
     @ColumnInfo(name = "hour") val hour: Int? = 0,
     @ColumnInfo(name = "minute") val minute: Int? = 0,
+    @ColumnInfo(name = "withEndTime") val withEndTime: Boolean? = false,
+    @ColumnInfo(name = "endHour") val endHour: Int? = 0,
+    @ColumnInfo(name = "endMinute") val endMinute: Int? = 0,
     @ColumnInfo(name = "title") val title: String? = "",
     @ColumnInfo(name = "content") val content: String? = "",
     @ColumnInfo(name = "checked") val checked: Boolean? = false

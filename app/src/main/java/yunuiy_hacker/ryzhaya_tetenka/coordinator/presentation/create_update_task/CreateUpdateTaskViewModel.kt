@@ -1,7 +1,12 @@
 package yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.create_update_task
 
+import android.app.Application
+import android.content.Context
+import android.content.res.Resources
+import android.credentials.CreateCredentialRequest
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.DelicateCoroutinesApi
@@ -9,6 +14,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.CoordinatorApplication
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.R
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.mappers.toData
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.mappers.toDomain
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.model.Task
@@ -23,8 +30,10 @@ import java.util.GregorianCalendar
 import javax.inject.Inject
 
 @HiltViewModel
-class CreateUpdateTaskViewModel @Inject constructor(private val tasksUseCase: TasksUseCase) :
-    ViewModel() {
+class CreateUpdateTaskViewModel @Inject constructor(
+    private val tasksUseCase: TasksUseCase,
+    private val application: Application
+) : ViewModel() {
     val state by mutableStateOf(CreateUpdateTaskState())
 
     fun onEvent(event: CreateUpdateTaskEvent) {
@@ -46,6 +55,22 @@ class CreateUpdateTaskViewModel @Inject constructor(private val tasksUseCase: Ta
             is CreateUpdateTaskEvent.ShowTimePickerDialogEvent -> state.showTimePickerDialog = true
             is CreateUpdateTaskEvent.SelectTimePickerDialogEvent -> changeTime(event)
             is CreateUpdateTaskEvent.HideTimePickerDialogEvent -> state.showTimePickerDialog = false
+
+            is CreateUpdateTaskEvent.ShowEndTimePickerDialogEvent -> state.showEndTimePickerDialog =
+                true
+
+            is CreateUpdateTaskEvent.SelectEndTimePickerDialogEvent -> changeEndTime(event)
+            is CreateUpdateTaskEvent.HideEndTimePickerDialogEvent -> state.showEndTimePickerDialog =
+                false
+
+            is CreateUpdateTaskEvent.EndTimeCheckToggleEvent -> state.endTimeChecked =
+                !state.endTimeChecked
+
+            is CreateUpdateTaskEvent.ShowTaskMenuEvent -> state.showTaskMenu = true
+            is CreateUpdateTaskEvent.HideTaskMenuEvent -> state.showTaskMenu = false
+
+            is CreateUpdateTaskEvent.ShowMessageDialogEvent -> state.showMessageDialog = true
+            is CreateUpdateTaskEvent.HideMessageDialogEvent -> state.showMessageDialog = false
 
             is CreateUpdateTaskEvent.ShowTimeTypePickerMenuEvent -> state.showTimeTypePickerMenu =
                 true
@@ -79,6 +104,9 @@ class CreateUpdateTaskViewModel @Inject constructor(private val tasksUseCase: Ta
                     state.date = state.task.date
                     state.selectedHour = state.task.hour
                     state.selectedMinute = state.task.minute
+                    state.endTimeChecked = state.task.withEndTime
+                    state.selectedEndHour = state.task.endHour
+                    state.selectedEndMinute = state.task.endMinute
 
                     val c: Calendar = GregorianCalendar()
                     c.timeInMillis = state.date.time
@@ -107,6 +135,13 @@ class CreateUpdateTaskViewModel @Inject constructor(private val tasksUseCase: Ta
         state.showTimePickerDialog = false
     }
 
+    private fun changeEndTime(event: CreateUpdateTaskEvent.SelectEndTimePickerDialogEvent) {
+        state.selectedEndHour = event.hour
+        state.selectedEndMinute = event.minute
+
+        state.showEndTimePickerDialog = false
+    }
+
     private fun changeTimeType(event: CreateUpdateTaskEvent.SelectTimeTypePickerMenuEvent) {
         state.timeType = event.timeType
 
@@ -121,18 +156,43 @@ class CreateUpdateTaskViewModel @Inject constructor(private val tasksUseCase: Ta
             date = if (state.selectedDateInMilliseconds > 0) Date(state.selectedDateInMilliseconds) else state.date,
             hour = state.selectedHour,
             minute = state.selectedMinute,
+            withEndTime = state.endTimeChecked,
+            endHour = state.selectedEndHour,
+            endMinute = state.selectedEndMinute,
             title = state.heading,
             content = state.content
         ).toData()
 
-        GlobalScope.launch(Dispatchers.IO) {
-            if (state.taskId == 0) {
-                tasksUseCase.insertTaskOperator.invoke(task)
+        if (state.endTimeChecked) {
+            if ((state.selectedEndHour > state.selectedHour || (state.selectedEndHour == state.selectedHour && state.selectedEndMinute > state.selectedMinute))) {
+
+                GlobalScope.launch(Dispatchers.IO) {
+                    if (state.taskId == 0) {
+                        tasksUseCase.insertTaskOperator.invoke(task)
+                    } else {
+                        tasksUseCase.updateTaskOperator.invoke(task)
+                    }
+
+                    state.success = true
+                }
             } else {
-                tasksUseCase.updateTaskOperator.invoke(task)
+                state.contentState.exception.value =
+                    Exception(
+                        application.getString(R.string.end_time_can_not_be_before_start_time)
+                    )
+                state.showMessageDialog = true
             }
         }
+        else {
+            GlobalScope.launch(Dispatchers.IO) {
+                if (state.taskId == 0) {
+                    tasksUseCase.insertTaskOperator.invoke(task)
+                } else {
+                    tasksUseCase.updateTaskOperator.invoke(task)
+                }
 
-        state.success = true
+                state.success = true
+            }
+        }
     }
 }

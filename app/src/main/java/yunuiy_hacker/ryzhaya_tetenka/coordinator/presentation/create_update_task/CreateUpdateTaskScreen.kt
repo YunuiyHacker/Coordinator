@@ -18,13 +18,18 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ArrowBack
+import androidx.compose.material.icons.rounded.Delete
+import androidx.compose.material.icons.rounded.Edit
+import androidx.compose.material.icons.rounded.MoreVert
 import androidx.compose.material3.Button
+import androidx.compose.material3.Checkbox
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDefaults
 import androidx.compose.material3.DropdownMenu
@@ -59,9 +64,12 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.R
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.home.model.TimeTypeEnum
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.common.composable.MenuItem
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.common.composable.MessageDialog
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.common.composable.TimePickerDialog
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.common.composable.TimeRow
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.nav_graph.Route
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.task.TaskEvent
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.ui.theme.caros
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.util.Constants
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.util.toTimeTypeEvent
@@ -87,8 +95,7 @@ fun CreateUpdateTaskScreen(
                     title = {
                         Text(
                             modifier = Modifier
-                                .fillMaxWidth()
-                                .offset(x = -24.dp),
+                                .fillMaxWidth(),
                             text = if (isEditMode) stringResource(R.string.edit_task) else stringResource(
                                 R.string.create_task,
                             ),
@@ -115,6 +122,60 @@ fun CreateUpdateTaskScreen(
                                     tint = MaterialTheme.colorScheme.onSurface,
                                     contentDescription = null
                                 )
+                            }
+                        }
+                    }, actions = {
+                        Row {
+                            Box(modifier = Modifier
+                                .size(24.dp)
+                                .clickable(
+                                    interactionSource = interactionSource, indication = null
+                                ) {
+                                    viewModel.onEvent(CreateUpdateTaskEvent.ShowTaskMenuEvent)
+                                }) {
+                                Icon(
+                                    imageVector = Icons.Rounded.MoreVert,
+                                    contentDescription = null,
+                                    tint = MaterialTheme.colorScheme.onSurface
+                                )
+                            }
+                            Spacer(modifier = Modifier.width(24.dp))
+                        }
+
+                        MaterialTheme(
+                            colorScheme = MaterialTheme.colorScheme.copy(surface = MaterialTheme.colorScheme.surfaceVariant),
+                            shapes = MaterialTheme.shapes.copy(extraSmall = ShapeDefaults.Medium)
+                        ) {
+                            DropdownMenu(
+                                modifier = Modifier
+                                    .background(MaterialTheme.colorScheme.surfaceVariant)
+                                    .clip(RoundedCornerShape(12.dp))
+                                    .border(
+                                        width = 0.3.dp,
+                                        color = Color.DarkGray,
+                                        shape = RoundedCornerShape(12.dp)
+                                    ), expanded = state.showTaskMenu, onDismissRequest = {
+                                    viewModel.onEvent(CreateUpdateTaskEvent.HideTaskMenuEvent)
+                                }, offset = DpOffset(x = -12.dp, y = 0.dp)
+                            ) {
+                                DropdownMenuItem(text = {
+                                    Row(verticalAlignment = Alignment.CenterVertically) {
+                                        Checkbox(
+                                            checked = state.endTimeChecked,
+                                            onCheckedChange = {
+                                                viewModel.onEvent(CreateUpdateTaskEvent.EndTimeCheckToggleEvent)
+                                            })
+                                        Text(
+                                            text = stringResource(R.string.end_time),
+                                            fontFamily = caros,
+                                            fontWeight = FontWeight.Normal,
+                                            color = MaterialTheme.colorScheme.onSurface
+                                        )
+                                    }
+                                }, onClick = {
+                                    viewModel.onEvent(CreateUpdateTaskEvent.HideTaskMenuEvent)
+                                    viewModel.onEvent(CreateUpdateTaskEvent.EndTimeCheckToggleEvent)
+                                })
                             }
                         }
                     })
@@ -191,9 +252,10 @@ fun CreateUpdateTaskScreen(
                         }
                     }
                     Spacer(modifier = Modifier.height(16.dp))
-                    TimeRow(modifier = Modifier
-                        .padding(horizontal = 24.dp)
-                        .fillMaxWidth(),
+                    TimeRow(
+                        modifier = Modifier
+                            .padding(horizontal = 24.dp)
+                            .fillMaxWidth(),
                         timeType = state.timeType,
                         date = state.date,
                         hour = state.selectedHour,
@@ -206,7 +268,13 @@ fun CreateUpdateTaskScreen(
                         },
                         onTimeClick = {
                             viewModel.onEvent(CreateUpdateTaskEvent.ShowTimePickerDialogEvent)
-                        })
+                        },
+                        onEndTimeClick = {
+                            viewModel.onEvent(CreateUpdateTaskEvent.ShowEndTimePickerDialogEvent)
+                        }, withEndTime = state.endTimeChecked,
+                        endHour = state.selectedEndHour,
+                        endMinute = state.selectedEndMinute
+                    )
                     Spacer(modifier = Modifier.height(8.dp))
                     TextField(modifier = Modifier
                         .fillMaxWidth()
@@ -373,16 +441,36 @@ fun CreateUpdateTaskScreen(
             }
         }
 
-        if (state.showTimePickerDialog) {
-            TimePickerDialog(onDismissRequest = {
-                viewModel.onEvent(CreateUpdateTaskEvent.HideTimePickerDialogEvent)
-            }, onSelectButtonClick = { hour, minute ->
-                viewModel.onEvent(
-                    CreateUpdateTaskEvent.SelectTimePickerDialogEvent(
-                        hour = hour, minute = minute
-                    )
-                )
-            })
+        if (state.showTimePickerDialog || state.showEndTimePickerDialog) {
+            TimePickerDialog(
+                onDismissRequest = {
+                    viewModel.onEvent(CreateUpdateTaskEvent.HideTimePickerDialogEvent)
+                },
+                onSelectButtonClick = { hour, minute ->
+                    if (state.showTimePickerDialog)
+                        viewModel.onEvent(
+                            CreateUpdateTaskEvent.SelectTimePickerDialogEvent(
+                                hour = hour, minute = minute
+                            )
+                        )
+                    else if (state.showEndTimePickerDialog)
+                        viewModel.onEvent(
+                            CreateUpdateTaskEvent.SelectEndTimePickerDialogEvent(
+                                hour = hour, minute = minute
+                            )
+                        )
+                },
+                hour = if (state.showTimePickerDialog) state.selectedHour else state.selectedEndHour,
+                minute = if (state.showTimePickerDialog) state.selectedMinute else state.selectedEndMinute
+            )
+        }
+
+        if (state.showMessageDialog) {
+            MessageDialog(
+                message = state.contentState.exception.value?.message ?: "",
+                onDismissRequest = {
+                    viewModel.onEvent(CreateUpdateTaskEvent.HideMessageDialogEvent)
+                })
         }
     }
 

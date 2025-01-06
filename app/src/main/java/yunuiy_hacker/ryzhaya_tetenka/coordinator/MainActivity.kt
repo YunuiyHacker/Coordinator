@@ -1,5 +1,7 @@
 package yunuiy_hacker.ryzhaya_tetenka.coordinator
 
+import android.content.ClipboardManager
+import android.content.Context
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -21,6 +23,10 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+
+        val clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+        clipboard.primaryClip
+
         setContent {
             val navHostController = rememberNavController()
             val userNameExists: Boolean = !sharedPrefsHelper.name.isNullOrEmpty()

@@ -117,7 +117,15 @@ fun TaskItem(
                     ?.toTimeTypeEvent() == TimeTypeEnum.DAY) {
                 Spacer(modifier = Modifier.width(24.dp))
                 Text(
-                    text = timeFormatter(task.hour, task.minute),
+                    text = if (!task.withEndTime) timeFormatter(
+                        task.hour,
+                        task.minute
+                    ) else "${timeFormatter(task.hour, task.minute)} - ${
+                        timeFormatter(
+                            task.endHour,
+                            task.endMinute
+                        )
+                    }",
                     color = if (task.checked.value) Color.Gray else MaterialTheme.colorScheme.onSurface,
                     fontFamily = roboto,
                     fontWeight = FontWeight.Bold,

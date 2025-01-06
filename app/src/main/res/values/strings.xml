@@ -32,7 +32,7 @@
     <string name="try_to_find_task">Попробуйте найти задачу...</string>
     <string name="search">Поиск</string>
 
-    <!--  CreateTaskScreen  -->
+    <!--  CreateUpdateTaskScreen  -->
     <string name="create_task">Создание задачи</string>
     <string name="edit_task">Редактирование задачи</string>
     <string name="heading">Заголовок</string>
@@ -40,6 +40,8 @@
     <string name="create">Создать</string>
     <string name="type_of_time">Тип времени</string>
     <string name="save_changes">Сохранить изменения</string>
+    <string name="end_time">Время окончания</string>
+    <string name="end_time_can_not_be_before_start_time">Время окончания не может быть раньше или таким же, как время начала</string>
 
     <!--  TimePickerDialog  -->
     <string name="select">Выбрать</string>

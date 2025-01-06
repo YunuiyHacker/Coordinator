@@ -11,6 +11,9 @@ fun Task.toDomain(): yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.mod
         date = Date(dateInMilliseconds!!),
         hour = hour ?: 0,
         minute = minute ?: 0,
+        withEndTime = withEndTime ?: false,
+        endHour = endHour ?: 0,
+        endMinute = endMinute ?: 0,
         title = title ?: "",
         content = content ?: "",
         checked = mutableStateOf(checked ?: false)
@@ -24,6 +27,9 @@ fun yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.model.Task.toData():
         dateInMilliseconds = date.time,
         hour = hour,
         minute = minute,
+        withEndTime = withEndTime,
+        endHour = endHour,
+        endMinute = endMinute,
         title = title,
         content = content,
         checked = checked.value
