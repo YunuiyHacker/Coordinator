@@ -143,7 +143,9 @@ fun TimeRow(
                     Text(
                         text = "-",
                         fontFamily = caros,
-                        color = MaterialTheme.colorScheme.onSurface
+                        color = MaterialTheme.colorScheme.primary,
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.Bold
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     Row(modifier = Modifier

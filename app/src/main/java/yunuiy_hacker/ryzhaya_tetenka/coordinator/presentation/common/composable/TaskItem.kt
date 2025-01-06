@@ -25,6 +25,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
@@ -109,7 +110,8 @@ fun TaskItem(
                         color = if (task.checked.value) Color.Gray else MaterialTheme.colorScheme.onSurfaceVariant,
                         maxLines = 3,
                         overflow = TextOverflow.Ellipsis,
-                        textDecoration = if (task.checked.value) TextDecoration.LineThrough else TextDecoration.None
+                        textDecoration = if (task.checked.value) TextDecoration.LineThrough else TextDecoration.None,
+                        lineHeight = 16.sp
                     )
                 }
             }

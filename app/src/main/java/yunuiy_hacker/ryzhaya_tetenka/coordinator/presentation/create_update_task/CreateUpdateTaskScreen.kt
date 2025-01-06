@@ -142,40 +142,42 @@ fun CreateUpdateTaskScreen(
                             Spacer(modifier = Modifier.width(24.dp))
                         }
 
-                        MaterialTheme(
-                            colorScheme = MaterialTheme.colorScheme.copy(surface = MaterialTheme.colorScheme.surfaceVariant),
-                            shapes = MaterialTheme.shapes.copy(extraSmall = ShapeDefaults.Medium)
-                        ) {
-                            DropdownMenu(
-                                modifier = Modifier
-                                    .background(MaterialTheme.colorScheme.surfaceVariant)
-                                    .clip(RoundedCornerShape(12.dp))
-                                    .border(
-                                        width = 0.3.dp,
-                                        color = Color.DarkGray,
-                                        shape = RoundedCornerShape(12.dp)
-                                    ), expanded = state.showTaskMenu, onDismissRequest = {
-                                    viewModel.onEvent(CreateUpdateTaskEvent.HideTaskMenuEvent)
-                                }, offset = DpOffset(x = -12.dp, y = 0.dp)
+                        if (state.timeType.toTimeTypeEvent() == TimeTypeEnum.DAY) {
+                            MaterialTheme(
+                                colorScheme = MaterialTheme.colorScheme.copy(surface = MaterialTheme.colorScheme.surfaceVariant),
+                                shapes = MaterialTheme.shapes.copy(extraSmall = ShapeDefaults.Medium)
                             ) {
-                                DropdownMenuItem(text = {
-                                    Row(verticalAlignment = Alignment.CenterVertically) {
-                                        Checkbox(
-                                            checked = state.endTimeChecked,
-                                            onCheckedChange = {
-                                                viewModel.onEvent(CreateUpdateTaskEvent.EndTimeCheckToggleEvent)
-                                            })
-                                        Text(
-                                            text = stringResource(R.string.end_time),
-                                            fontFamily = caros,
-                                            fontWeight = FontWeight.Normal,
-                                            color = MaterialTheme.colorScheme.onSurface
-                                        )
-                                    }
-                                }, onClick = {
-                                    viewModel.onEvent(CreateUpdateTaskEvent.HideTaskMenuEvent)
-                                    viewModel.onEvent(CreateUpdateTaskEvent.EndTimeCheckToggleEvent)
-                                })
+                                DropdownMenu(
+                                    modifier = Modifier
+                                        .background(MaterialTheme.colorScheme.surfaceVariant)
+                                        .clip(RoundedCornerShape(12.dp))
+                                        .border(
+                                            width = 0.3.dp,
+                                            color = Color.DarkGray,
+                                            shape = RoundedCornerShape(12.dp)
+                                        ), expanded = state.showTaskMenu, onDismissRequest = {
+                                        viewModel.onEvent(CreateUpdateTaskEvent.HideTaskMenuEvent)
+                                    }, offset = DpOffset(x = -12.dp, y = 0.dp)
+                                ) {
+                                    DropdownMenuItem(text = {
+                                        Row(verticalAlignment = Alignment.CenterVertically) {
+                                            Checkbox(
+                                                checked = state.endTimeChecked,
+                                                onCheckedChange = {
+                                                    viewModel.onEvent(CreateUpdateTaskEvent.EndTimeCheckToggleEvent)
+                                                })
+                                            Text(
+                                                text = stringResource(R.string.end_time),
+                                                fontFamily = caros,
+                                                fontWeight = FontWeight.Normal,
+                                                color = MaterialTheme.colorScheme.onSurface
+                                            )
+                                        }
+                                    }, onClick = {
+                                        viewModel.onEvent(CreateUpdateTaskEvent.HideTaskMenuEvent)
+                                        viewModel.onEvent(CreateUpdateTaskEvent.EndTimeCheckToggleEvent)
+                                    })
+                                }
                             }
                         }
                     })

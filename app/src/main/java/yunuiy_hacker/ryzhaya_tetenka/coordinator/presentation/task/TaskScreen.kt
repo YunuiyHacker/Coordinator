@@ -1,5 +1,6 @@
 package yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.task
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -202,7 +203,10 @@ fun TaskScreen(navHostController: NavHostController, viewModel: TaskViewModel = 
                             unfocusedIndicatorColor = MaterialTheme.colorScheme.background,
                             focusedIndicatorColor = MaterialTheme.colorScheme.background
                         ), textStyle = TextStyle(
-                            fontFamily = caros, fontWeight = FontWeight.Bold, fontSize = 20.sp
+                            fontFamily = caros,
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 20.sp,
+                            lineHeight = 28.sp
                         ), placeholder = {
                             Text(
                                 text = stringResource(R.string.heading),
@@ -210,7 +214,8 @@ fun TaskScreen(navHostController: NavHostController, viewModel: TaskViewModel = 
                                 fontWeight = FontWeight.Medium,
                                 fontSize = 20.sp
                             )
-                        }, readOnly = true
+                        },
+                        readOnly = true
                     )
                 }
                 if (state.task.content.isNotEmpty()) {
@@ -234,7 +239,8 @@ fun TaskScreen(navHostController: NavHostController, viewModel: TaskViewModel = 
                             fontFamily = caros,
                             fontWeight = FontWeight.Normal,
                             fontSize = 14.sp,
-                            textAlign = TextAlign.Justify
+                            textAlign = TextAlign.Justify,
+                            lineHeight = 20.sp
                         ), placeholder = {
                             Text(
                                 text = stringResource(R.string.content),

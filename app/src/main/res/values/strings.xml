@@ -36,7 +36,7 @@
     <string name="create_task">Создание задачи</string>
     <string name="edit_task">Редактирование задачи</string>
     <string name="heading">Заголовок</string>
-    <string name="content">Содержание</string>
+    <string name="content">Описание</string>
     <string name="create">Создать</string>
     <string name="type_of_time">Тип времени</string>
     <string name="save_changes">Сохранить изменения</string>
