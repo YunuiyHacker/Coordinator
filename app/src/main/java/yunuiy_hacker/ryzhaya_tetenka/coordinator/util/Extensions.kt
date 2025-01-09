@@ -4,11 +4,11 @@ import yunuiy_hacker.ryzhaya_tetenka.coordinator.R
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.home.model.TimeType
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.home.model.TimeTypeEnum
 import java.time.ZoneId
+import java.time.ZoneOffset
 import java.time.ZonedDateTime
 import java.util.Calendar
 import java.util.Date
 import java.util.Formatter
-import java.util.GregorianCalendar
 
 fun TimeType.toTimeTypeEvent(): TimeTypeEnum {
     return when (this.id) {
@@ -62,5 +62,5 @@ fun setDateTime(date: Date): Date {
     return date
 }
 
-val currentZoneDateTime = ZonedDateTime.now(ZoneId.systemDefault())
-val zoneOffset = currentZoneDateTime.offset
+val currentZoneDateTime: ZonedDateTime = ZonedDateTime.now(ZoneId.systemDefault())
+val zoneOffset: ZoneOffset = currentZoneDateTime.offset

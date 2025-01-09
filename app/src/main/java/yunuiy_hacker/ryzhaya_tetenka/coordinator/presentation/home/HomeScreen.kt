@@ -1,13 +1,17 @@
 package yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.home
 
 import androidx.activity.compose.BackHandler
+import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
-import androidx.compose.animation.expandIn
+import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
-import androidx.compose.animation.shrinkOut
+import androidx.compose.animation.togetherWith
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -22,6 +26,7 @@ import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -31,9 +36,13 @@ import androidx.compose.material.icons.rounded.ArrowDropUp
 import androidx.compose.material.icons.rounded.CheckBox
 import androidx.compose.material.icons.rounded.CheckBoxOutlineBlank
 import androidx.compose.material.icons.rounded.Close
+import androidx.compose.material.icons.rounded.Delete
+import androidx.compose.material.icons.rounded.Edit
 import androidx.compose.material3.Button
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDefaults
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FabPosition
 import androidx.compose.material3.Icon
@@ -41,6 +50,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.ShapeDefaults
 import androidx.compose.material3.Snackbar
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
@@ -54,16 +64,26 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.R
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.home.model.TimeTypeEnum
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.common.composable.AddCategoryButton
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.common.composable.AddEditCategoryDialog
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.common.composable.CategoryCard
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.common.composable.DatePickerDialog
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.common.composable.LoadingIndicator
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.common.composable.MenuItem
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.common.composable.QuestionDialog
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.common.composable.TaskItem
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.home.composable.SearchBar
@@ -81,6 +101,7 @@ import java.util.Locale
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(navHostController: NavHostController, viewModel: HomeViewModel = hiltViewModel()) {
+    val context = LocalContext.current
     val interactionSource = remember {
         MutableInteractionSource()
     }
@@ -115,10 +136,13 @@ fun HomeScreen(navHostController: NavHostController, viewModel: HomeViewModel = 
             AnimatedVisibility(state.isDeletionMode) {
                 Button(
                     onClick = {
-                        viewModel.onEvent(HomeEvent.ShowQuestionDialogEvent)
-                    },
-                    shape = RoundedCornerShape(10.dp),
-                    enabled = state.deletionTasks.isNotEmpty()
+                        viewModel.onEvent(
+                            HomeEvent.ShowQuestionDialogEvent(
+                                context.getString(R.string.deletion),
+                                context.getString(R.string.really_want_to_delete_all_selected_tasks)
+                            )
+                        )
+                    }, shape = RoundedCornerShape(10.dp), enabled = state.deletionTasks.isNotEmpty()
                 ) {
                     Text(
                         text = stringResource(R.string.delete_all_selected),
@@ -176,8 +200,7 @@ fun HomeScreen(navHostController: NavHostController, viewModel: HomeViewModel = 
                                 SwipeLazyColumn(modifier = Modifier
                                     .padding(start = 1.dp)
                                     .clickable(
-                                        interactionSource = interactionSource,
-                                        indication = null
+                                        interactionSource = interactionSource, indication = null
                                     ) {
                                         viewModel.onEvent(HomeEvent.ShowDatePickerDialogEvent)
                                     }
@@ -201,34 +224,27 @@ fun HomeScreen(navHostController: NavHostController, viewModel: HomeViewModel = 
                                         TimeTypeEnum.WEEK -> state.weeksList.indexOfFirst {
                                             val c_first: GregorianCalendar = GregorianCalendar()
                                             c_first.time = it.first
-                                            val c_second: GregorianCalendar =
-                                                GregorianCalendar()
+                                            val c_second: GregorianCalendar = GregorianCalendar()
                                             c_second.time = it.second
                                             val c_first_year: Int = c_first.get(Calendar.YEAR)
                                             val c_first_month: Int = c_first.get(Calendar.MONTH)
                                             val c_first_day: Int =
                                                 c_first.get(Calendar.DAY_OF_MONTH)
                                             val c_second_year: Int = c_second.get(Calendar.YEAR)
-                                            val c_second_month: Int =
-                                                c_second.get(Calendar.MONTH)
+                                            val c_second_month: Int = c_second.get(Calendar.MONTH)
                                             val c_second_day: Int =
                                                 c_second.get(Calendar.DAY_OF_MONTH)
 
-                                            val tc_first: GregorianCalendar =
-                                                GregorianCalendar()
+                                            val tc_first: GregorianCalendar = GregorianCalendar()
                                             tc_first.time = state.selectedWeekStart
-                                            val tc_second: GregorianCalendar =
-                                                GregorianCalendar()
+                                            val tc_second: GregorianCalendar = GregorianCalendar()
                                             tc_second.time = state.selectedWeekEnd
                                             val tc_first_year: Int = tc_first.get(Calendar.YEAR)
-                                            val tc_first_month: Int =
-                                                tc_first.get(Calendar.MONTH)
+                                            val tc_first_month: Int = tc_first.get(Calendar.MONTH)
                                             val tc_first_day: Int =
                                                 tc_first.get(Calendar.DAY_OF_MONTH)
-                                            val tc_second_year: Int =
-                                                tc_second.get(Calendar.YEAR)
-                                            val tc_second_month: Int =
-                                                tc_second.get(Calendar.MONTH)
+                                            val tc_second_year: Int = tc_second.get(Calendar.YEAR)
+                                            val tc_second_month: Int = tc_second.get(Calendar.MONTH)
                                             val tc_second_day: Int =
                                                 tc_second.get(Calendar.DAY_OF_MONTH)
 
@@ -298,10 +314,8 @@ fun HomeScreen(navHostController: NavHostController, viewModel: HomeViewModel = 
                                                 state.daysList[it]
 
                                             TimeTypeEnum.WEEK -> {
-                                                state.selectedWeekStart =
-                                                    state.weeksList[it].first
-                                                state.selectedWeekEnd =
-                                                    state.weeksList[it].second
+                                                state.selectedWeekStart = state.weeksList[it].first
+                                                state.selectedWeekEnd = state.weeksList[it].second
                                             }
 
                                             TimeTypeEnum.MONTH -> state.selectedMonth =
@@ -420,8 +434,7 @@ fun HomeScreen(navHostController: NavHostController, viewModel: HomeViewModel = 
                     actions = {
                         Icon(
                             modifier = Modifier.clickable(
-                                interactionSource = interactionSource,
-                                indication = null
+                                interactionSource = interactionSource, indication = null
                             ) {
                                 if (state.selectedAll) viewModel.onEvent(HomeEvent.UnselectAllEvent)
                                 else viewModel.onEvent(HomeEvent.SelectAllEvent)
@@ -445,19 +458,110 @@ fun HomeScreen(navHostController: NavHostController, viewModel: HomeViewModel = 
             ) {
                 Spacer(modifier = Modifier.height(12.dp))
                 AnimatedVisibility(!state.isDeletionMode, exit = fadeOut(), enter = fadeIn()) {
-                    SearchBar(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 24.dp),
-                        query = state.query,
-                        onQueryChange = {
-                            viewModel.onEvent(HomeEvent.SearchQueryChangeEvent(it))
-                        },
-                        onSearch = {
-                            viewModel.onEvent(HomeEvent.OnClickSearchEvent)
-                        },
-                        placeholder = stringResource(R.string.try_to_find_task)
-                    )
+                    Column {
+                        SearchBar(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 24.dp),
+                            query = state.query,
+                            onQueryChange = {
+                                viewModel.onEvent(HomeEvent.SearchQueryChangeEvent(it))
+                            },
+                            onSearch = {
+                                viewModel.onEvent(HomeEvent.OnClickSearchEvent)
+                            },
+                            placeholder = stringResource(R.string.try_to_find_task)
+                        )
+                        Spacer(modifier = Modifier.height(16.dp))
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .horizontalScroll(rememberScrollState())
+                                .animateContentSize()
+                        ) {
+                            Spacer(modifier = Modifier.width(24.dp))
+                            AddCategoryButton(onClick = {
+                                viewModel.onEvent(HomeEvent.ShowAddCategoryDialogEvent)
+                            })
+                            Spacer(modifier = Modifier.width(12.dp))
+                            CategoryCard(modifier = Modifier.clip(CircleShape),
+                                category = state.defaultAllCategoriesValue,
+                                selected = state.selectedCategory == state.defaultAllCategoriesValue,
+                                onSelectChange = {
+                                    viewModel.onEvent(HomeEvent.SelectCategoryEvent(state.defaultAllCategoriesValue))
+                                },
+                                onLongClick = {
+
+                                })
+                            Spacer(modifier = Modifier.width(12.dp))
+                            state.categories.forEach { category ->
+                                CategoryCard(modifier = Modifier.clip(CircleShape),
+                                    category = category,
+                                    selected = state.selectedCategory == category,
+                                    onSelectChange = {
+                                        viewModel.onEvent(HomeEvent.SelectCategoryEvent(category))
+                                    },
+                                    onLongClick = {
+                                        viewModel.onEvent(HomeEvent.ShowCategoryMenuEvent)
+                                        viewModel.onEvent(
+                                            HomeEvent.SetCategoryEvent(
+                                                category
+                                            )
+                                        )
+                                    })
+                                if (state.categories.last() == category) Spacer(
+                                    modifier = Modifier.width(
+                                        24.dp
+                                    )
+                                )
+                                else Spacer(modifier = Modifier.width(12.dp))
+                            }
+                            MaterialTheme(
+                                colorScheme = MaterialTheme.colorScheme.copy(surface = MaterialTheme.colorScheme.surfaceVariant),
+                                shapes = MaterialTheme.shapes.copy(extraSmall = ShapeDefaults.Medium)
+                            ) {
+                                DropdownMenu(
+                                    modifier = Modifier
+                                        .background(MaterialTheme.colorScheme.surfaceVariant)
+                                        .clip(RoundedCornerShape(12.dp))
+                                        .border(
+                                            width = 0.3.dp,
+                                            color = Color.DarkGray,
+                                            shape = RoundedCornerShape(12.dp)
+                                        ), expanded = state.showCategoryMenu, onDismissRequest = {
+                                        viewModel.onEvent(HomeEvent.HideCategoryMenuEvent)
+                                    }, offset = DpOffset(x = 90.dp, y = 0.dp)
+                                ) {
+                                    DropdownMenuItem(text = {
+                                        MenuItem(
+                                            icon = Icons.Rounded.Edit, title = R.string.edit
+                                        )
+                                    }, onClick = {
+                                        viewModel.onEvent(HomeEvent.HideCategoryMenuEvent)
+                                        viewModel.onEvent(HomeEvent.EditCategoryEvent)
+                                    })
+                                    DropdownMenuItem(text = {
+                                        MenuItem(
+                                            icon = Icons.Rounded.Delete,
+                                            title = R.string.delete,
+                                            iconColor = MaterialTheme.colorScheme.primary,
+                                            titleColor = MaterialTheme.colorScheme.primary
+                                        )
+                                    }, onClick = {
+                                        viewModel.onEvent(HomeEvent.HideCategoryMenuEvent)
+                                        viewModel.onEvent(
+                                            HomeEvent.ShowQuestionDialogEvent(
+                                                title = context.getString(
+                                                    R.string.deletion
+                                                ),
+                                                text = context.getString(R.string.really_want_to_delete_category)
+                                            )
+                                        )
+                                    })
+                                }
+                            }
+                        }
+                    }
                 }
                 Spacer(modifier = Modifier.height(16.dp))
                 Text(
@@ -469,47 +573,69 @@ fun HomeScreen(navHostController: NavHostController, viewModel: HomeViewModel = 
                     color = MaterialTheme.colorScheme.onSurface
                 )
                 Spacer(modifier = Modifier.height(16.dp))
-                AnimatedVisibility(!state.contentState.isLoading.value) {
-                    Column(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .animateContentSize()
-                    ) {
-                        state.tasks.forEach { task ->
-                            TaskItem(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(horizontal = 24.dp),
-                                task = task,
-                                onCheckedChange = {
-                                    viewModel.onEvent(HomeEvent.TaskItemCheckboxToggleEvent(task))
-                                },
-                                onClick = {
-                                    navHostController.navigate("${Route.TaskScreen.route}/${task.id}")
-                                },
-                                onLongClick = {
-                                    viewModel.onEvent(HomeEvent.OnDeletionModeEvent)
-                                    if (state.deletionTasks.contains(task)) viewModel.onEvent(
-                                        HomeEvent.RemoveSelectedTaskEvent(task)
-                                    )
-                                    else viewModel.onEvent(HomeEvent.AddSelectedTaskEvent(task))
-                                },
-                                isDeletionMode = state.isDeletionMode,
-                                onDeleteCheckedChange = {
-                                    if (state.deletionTasks.contains(task)) viewModel.onEvent(
-                                        HomeEvent.RemoveSelectedTaskEvent(task)
-                                    )
-                                    else viewModel.onEvent(HomeEvent.AddSelectedTaskEvent(task))
-                                },
-                                isDeleteChecked = state.deletionTasks.contains(task)
-                            )
-                            if (task.id != state.tasks.last().id) {
-                                Spacer(modifier = Modifier.height(16.dp))
+                if (!state.contentState.isLoading.value)
+                    AnimatedVisibility(!state.contentState.isLoading.value) {
+                        Column(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .animateContentSize()
+                        ) {
+                            state.tasks.forEach { task ->
+                                TaskItem(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(horizontal = 24.dp),
+                                    task = task,
+                                    onCheckedChange = {
+                                        viewModel.onEvent(
+                                            HomeEvent.TaskItemCheckboxToggleEvent(
+                                                task
+                                            )
+                                        )
+                                    },
+                                    onClick = {
+                                        navHostController.navigate("${Route.TaskScreen.route}/${task.id}")
+                                    },
+                                    onLongClick = {
+                                        viewModel.onEvent(HomeEvent.OnDeletionModeEvent)
+                                        if (state.deletionTasks.contains(task)) viewModel.onEvent(
+                                            HomeEvent.RemoveSelectedTaskEvent(task)
+                                        )
+                                        else viewModel.onEvent(
+                                            HomeEvent.AddSelectedTaskEvent(
+                                                task
+                                            )
+                                        )
+                                    },
+                                    isDeletionMode = state.isDeletionMode,
+                                    onDeleteCheckedChange = {
+                                        if (state.deletionTasks.contains(task)) viewModel.onEvent(
+                                            HomeEvent.RemoveSelectedTaskEvent(task)
+                                        )
+                                        else viewModel.onEvent(
+                                            HomeEvent.AddSelectedTaskEvent(
+                                                task
+                                            )
+                                        )
+                                    },
+                                    isDeleteChecked = state.deletionTasks.contains(task)
+                                )
+                                if (task.id != state.tasks.last().id) {
+                                    Spacer(modifier = Modifier.height(16.dp))
+                                }
                             }
+                            Spacer(modifier = Modifier.height(84.dp))
                         }
-                        Spacer(modifier = Modifier.height(84.dp))
+                    }
+                else {
+                    AnimatedVisibility(
+                        modifier = Modifier.align(Alignment.CenterHorizontally),
+                        visible = state.contentState.isLoading.value
+                    ) {
+                        LoadingIndicator(modifier = Modifier.align(Alignment.CenterHorizontally))
                     }
                 }
+
             }
         }
 
@@ -548,14 +674,35 @@ fun HomeScreen(navHostController: NavHostController, viewModel: HomeViewModel = 
         }
 
         if (state.showQuestionDialog) {
-            QuestionDialog(title = R.string.deletion,
-                text = R.string.really_want_to_delete_all_selected_tasks,
+            QuestionDialog(title = state.questionTitle,
+                text = state.questionText,
                 onDismissRequest = {
                     viewModel.onEvent(HomeEvent.HideQuestionDialogEvent)
                 },
                 onConfirmRequest = {
-                    viewModel.onEvent(HomeEvent.DeleteAllSelectedTasksEvent)
+                    if (state.isDeletionMode) viewModel.onEvent(HomeEvent.DeleteAllSelectedTasksEvent)
+                    else viewModel.onEvent(HomeEvent.DeleteCategoryEvent)
                 })
+        }
+
+        if (state.showAddEditCategoryDialog) {
+            AddEditCategoryDialog(
+                onDismissRequest = {
+                    viewModel.onEvent(HomeEvent.HideAddCategoryDialogEvent)
+                },
+                onAddClick = {
+                    if (state.isEditMode) viewModel.onEvent(
+                        HomeEvent.SaveEditedCategoryEvent(
+                            state.editionDeletionCategory.copy(
+                                title = it
+                            )
+                        )
+                    )
+                    else viewModel.onEvent(HomeEvent.CreateCategoryEvent(it))
+                },
+                category = if (state.isEditMode) state.editionDeletionCategory else null,
+                isEditMode = state.isEditMode
+            )
         }
 
         BackHandler {

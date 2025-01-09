@@ -11,14 +11,18 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.mappers.toData
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.mappers.toDomain
-import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.TasksUseCase
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.categories.CategoriesUseCase
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.tasks.TasksUseCase
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.util.startAndEndThisWeek
 import java.util.Calendar
 import java.util.GregorianCalendar
 import javax.inject.Inject
 
 @HiltViewModel
-class TaskViewModel @Inject constructor(private val tasksUseCase: TasksUseCase) : ViewModel() {
+class TaskViewModel @Inject constructor(
+    private val tasksUseCase: TasksUseCase,
+    private val categoriesUseCase: CategoriesUseCase
+) : ViewModel() {
     val state by mutableStateOf(TaskState())
 
     fun onEvent(event: TaskEvent) {

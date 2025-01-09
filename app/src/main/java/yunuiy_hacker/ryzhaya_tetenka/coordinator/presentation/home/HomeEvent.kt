@@ -1,5 +1,6 @@
 package yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.home
 
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.model.Category
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.model.Task
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.home.model.TimeType
 
@@ -19,7 +20,7 @@ sealed class HomeEvent {
     data object OnDeletionModeEvent : HomeEvent()
     data object OffDeletionModeEvent : HomeEvent()
 
-    data object ShowQuestionDialogEvent : HomeEvent()
+    data class ShowQuestionDialogEvent(val title: String, val text: String) : HomeEvent()
     data object HideQuestionDialogEvent : HomeEvent()
     data object SelectAllEvent : HomeEvent()
     data object UnselectAllEvent : HomeEvent()
@@ -28,6 +29,19 @@ sealed class HomeEvent {
     data object DeleteAllSelectedTasksEvent : HomeEvent()
 
     data class TaskItemCheckboxToggleEvent(val task: Task) : HomeEvent()
+
+    data class SelectCategoryEvent(val category: Category) : HomeEvent()
+
+    data object ShowAddCategoryDialogEvent : HomeEvent()
+    data class CreateCategoryEvent(val title: String) : HomeEvent()
+    data object HideAddCategoryDialogEvent : HomeEvent()
+
+    data object ShowCategoryMenuEvent : HomeEvent()
+    data class SetCategoryEvent(val category: Category) : HomeEvent()
+    data object EditCategoryEvent : HomeEvent()
+    data object DeleteCategoryEvent : HomeEvent()
+    data object HideCategoryMenuEvent : HomeEvent()
+    data class SaveEditedCategoryEvent(val category: Category) : HomeEvent()
 
     data object OnClickAddNewTaskEvent : HomeEvent()
 }

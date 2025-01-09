@@ -8,18 +8,24 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import yunuiy_hacker.ryzhaya_tetenka.coordinator.CoordinatorApplication
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.data.local.room.CategoryDao
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.data.local.room.CoordinatorDatabase
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.data.local.room.TaskDao
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.data.local.shared_prefs.SharedPrefsHelper
-import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.DeleteTaskOperator
-import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.GetTaskByIdOperator
-import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.GetTasksByLikeQueryOperator
-import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.GetTasksByTimeTypeIdAndDateOperator
-import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.GetTasksOperator
-import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.InsertTaskOperator
-import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.TasksUseCase
-import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.UpdateTaskOperator
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.categories.CategoriesUseCase
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.categories.DeleteCategoryOperator
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.categories.GetCategoriesOperator
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.categories.GetCategoryByIdOperator
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.categories.InsertCategoryOperator
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.categories.UpdateCategoryOperator
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.tasks.DeleteTaskOperator
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.tasks.GetTaskByIdOperator
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.tasks.GetTasksByLikeQueryOperator
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.tasks.GetTasksByTimeTypeIdDateAndCategoryIdOperator
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.tasks.GetTasksOperator
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.tasks.InsertTaskOperator
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.tasks.TasksUseCase
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.tasks.UpdateTaskOperator
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.home.use_case.DefineTimeOfDayUseCase
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.util.Constants.TASKS_DATABASE_NAME
 import javax.inject.Singleton
@@ -59,10 +65,27 @@ object AppModule {
             deleteTaskOperator = DeleteTaskOperator(taskDao),
             getTaskByIdOperator = GetTaskByIdOperator(taskDao),
             getTasksByLikeQueryOperator = GetTasksByLikeQueryOperator(taskDao),
-            getTasksByTimeTypeIdAndDateOperator = GetTasksByTimeTypeIdAndDateOperator(taskDao),
+            getTasksByTimeTypeIdDateAndCategoryIdOperator = GetTasksByTimeTypeIdDateAndCategoryIdOperator(taskDao),
             getTasksOperator = GetTasksOperator(taskDao),
             insertTaskOperator = InsertTaskOperator(taskDao),
             updateTaskOperator = UpdateTaskOperator(taskDao)
+        )
+    }
+
+    @Provides
+    @Singleton
+    fun provideCategoryDao(coordinatorDatabase: CoordinatorDatabase): CategoryDao =
+        coordinatorDatabase.categoryDao
+
+    @Provides
+    @Singleton
+    fun provideCategoriesUseCase(categoryDao: CategoryDao): CategoriesUseCase {
+        return CategoriesUseCase(
+            deleteCategoryOperator = DeleteCategoryOperator(categoryDao),
+            getCategoriesOperator = GetCategoriesOperator(categoryDao),
+            getCategoryByIdOperator = GetCategoryByIdOperator(categoryDao),
+            insertCategoryOperator = InsertCategoryOperator(categoryDao),
+            updateCategoryOperator = UpdateCategoryOperator(categoryDao)
         )
     }
 }

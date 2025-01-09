@@ -25,7 +25,6 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import yunuiy_hacker.ryzhaya_tetenka.coordinator.R
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.home.model.TimeType
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.ui.theme.caros
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.util.Constants

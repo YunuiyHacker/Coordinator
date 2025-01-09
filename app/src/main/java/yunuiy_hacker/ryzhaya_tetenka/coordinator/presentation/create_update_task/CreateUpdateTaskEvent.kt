@@ -1,5 +1,6 @@
 package yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.create_update_task
 
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.model.Category
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.home.model.TimeType
 
 sealed class CreateUpdateTaskEvent {
@@ -25,6 +26,10 @@ sealed class CreateUpdateTaskEvent {
     data object ShowTimeTypePickerMenuEvent : CreateUpdateTaskEvent()
     data class SelectTimeTypePickerMenuEvent(val timeType: TimeType) : CreateUpdateTaskEvent()
     data object HideTimeTypePickerMenuEvent : CreateUpdateTaskEvent()
+
+    data object ShowCategorySelectorMenuEvent : CreateUpdateTaskEvent()
+    data class SelectCategoryMenuEvent(val category: Category) : CreateUpdateTaskEvent()
+    data object HideCategorySelectorMenuEvent : CreateUpdateTaskEvent()
 
     data object ShowTaskMenuEvent : CreateUpdateTaskEvent()
     data object HideTaskMenuEvent : CreateUpdateTaskEvent()

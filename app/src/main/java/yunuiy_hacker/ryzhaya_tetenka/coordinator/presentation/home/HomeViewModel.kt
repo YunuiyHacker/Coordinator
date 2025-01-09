@@ -1,5 +1,6 @@
 package yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.home
 
+import android.app.Application
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -9,10 +10,13 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.R
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.data.local.shared_prefs.SharedPrefsHelper
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.mappers.toData
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.mappers.toDomain
-import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.TasksUseCase
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.model.Category
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.categories.CategoriesUseCase
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.tasks.TasksUseCase
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.home.model.TimeTypeEnum
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.home.use_case.DefineTimeOfDayUseCase
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.util.setCalendarTime
@@ -30,7 +34,9 @@ import javax.inject.Inject
 class HomeViewModel @Inject constructor(
     private val sharedPrefsHelper: SharedPrefsHelper,
     private val defineTimeOfDayUseCase: DefineTimeOfDayUseCase,
-    private val tasksUseCase: TasksUseCase
+    private val tasksUseCase: TasksUseCase,
+    private val categoriesUseCase: CategoriesUseCase,
+    private val application: Application
 ) : ViewModel() {
     val state by mutableStateOf(HomeState())
 
@@ -48,6 +54,11 @@ class HomeViewModel @Inject constructor(
         state.selectedWeekEnd = startAndEndThisWeek.second
         state.selectedMonth = setDateTime(Date())
         state.selectedYear = setDateTime(Date())
+
+        state.defaultAllCategoriesValue =
+            Category(id = 0, title = application.getString(R.string.all_categories))
+        state.selectedCategory = state.defaultAllCategoriesValue
+
         initData()
     }
 
@@ -70,18 +81,20 @@ class HomeViewModel @Inject constructor(
                 state.showLazySwipeColumn = true
             }
 
-            is HomeEvent.SelectedDateChangeEvent -> loadData()
-            is HomeEvent.TimeTypeChangeEvent -> {
-                sharedPrefsHelper.timeTypeEnum = event.timeType.toTimeTypeEvent()
-                state.timeType = event.timeType
-
+            is HomeEvent.SelectedDateChangeEvent -> {
                 loadData()
+            }
+
+            is HomeEvent.TimeTypeChangeEvent -> {
+                state.timeType = event.timeType
+                loadData()
+                sharedPrefsHelper.timeTypeEnum = event.timeType.toTimeTypeEvent()
             }
 
             is HomeEvent.SearchQueryChangeEvent -> {
                 state.query = event.query
-
-                if (state.query.isEmpty()) loadData()
+                if (state.query.isEmpty())
+                    loadData()
             }
 
             is HomeEvent.OnDeletionModeEvent -> state.isDeletionMode = true
@@ -90,7 +103,12 @@ class HomeViewModel @Inject constructor(
                 state.deletionTasks.clear()
             }
 
-            is HomeEvent.ShowQuestionDialogEvent -> state.showQuestionDialog = true
+            is HomeEvent.ShowQuestionDialogEvent -> {
+                state.questionTitle = event.title
+                state.questionText = event.text
+                state.showQuestionDialog = true
+            }
+
             is HomeEvent.HideQuestionDialogEvent -> state.showQuestionDialog = false
             is HomeEvent.SelectAllEvent -> selectAll()
             is HomeEvent.UnselectAllEvent -> unselectAll()
@@ -112,6 +130,26 @@ class HomeViewModel @Inject constructor(
 
             is HomeEvent.TaskItemCheckboxToggleEvent -> taskItemToggle(event)
 
+            is HomeEvent.SelectCategoryEvent -> selectCategory(event)
+
+            is HomeEvent.ShowAddCategoryDialogEvent -> state.showAddEditCategoryDialog = true
+            is HomeEvent.HideAddCategoryDialogEvent -> state.showAddEditCategoryDialog = false
+            is HomeEvent.CreateCategoryEvent -> createCategory(event.title)
+
+            is HomeEvent.ShowCategoryMenuEvent -> state.showCategoryMenu = true
+            is HomeEvent.SetCategoryEvent -> {
+                state.editionDeletionCategory = event.category
+            }
+
+            is HomeEvent.EditCategoryEvent -> {
+                state.isEditMode = true
+                state.showAddEditCategoryDialog = true
+            }
+
+            is HomeEvent.DeleteCategoryEvent -> deleteCategory()
+            is HomeEvent.HideCategoryMenuEvent -> state.showCategoryMenu = false
+            is HomeEvent.SaveEditedCategoryEvent -> saveEditedCategory(event.category)
+
             is HomeEvent.OnClickAddNewTaskEvent -> {
 
             }
@@ -128,22 +166,97 @@ class HomeViewModel @Inject constructor(
     @OptIn(DelicateCoroutinesApi::class)
     private fun loadData() {
         state.contentState.isLoading.value = true
+        GlobalScope.launch(Dispatchers.IO) {
+            runBlocking {
+                loadTasks()
+                loadCategories()
+
+                state.contentState.isLoading.value = false
+            }
+        }
+    }
+
+    private suspend fun loadTasks() {
+        state.tasks = tasksUseCase.getTasksByTimeTypeIdDateAndCategoryIdOperator.invoke(
+            timeTypeId = state.timeType.id,
+            dateInMilliseconds = when (state.timeType.toTimeTypeEvent()) {
+                TimeTypeEnum.DAY -> state.selectedDate.time
+                TimeTypeEnum.WEEK -> 0
+                TimeTypeEnum.MONTH -> state.selectedMonth.time
+                TimeTypeEnum.YEAR -> state.selectedYear.time
+                TimeTypeEnum.LIFE -> 0
+            },
+            dates = Pair(state.selectedWeekStart, state.selectedWeekEnd),
+            categoryId = state.selectedCategory.id
+        ).map { task -> task.toDomain() }.toMutableList()
+    }
+
+    private suspend fun loadCategories() {
+        state.categories = categoriesUseCase.getCategoriesOperator.invoke()
+            .map { category -> category.toDomain() }.toMutableList()
+    }
+
+    @OptIn(DelicateCoroutinesApi::class)
+    private fun saveEditedCategory(category: Category) {
+        state.contentState.isLoading.value = true
+        state.showAddEditCategoryDialog = false
 
         GlobalScope.launch(Dispatchers.IO) {
             runBlocking {
-                state.tasks = tasksUseCase.getTasksByTimeTypeIdAndDateOperator.invoke(
-                    timeTypeId = state.timeType.id,
-                    dateInMilliseconds = when (state.timeType.toTimeTypeEvent()) {
-                        TimeTypeEnum.DAY -> state.selectedDate.time
-                        TimeTypeEnum.WEEK -> 0
-                        TimeTypeEnum.MONTH -> state.selectedMonth.time
-                        TimeTypeEnum.YEAR -> state.selectedYear.time
-                        TimeTypeEnum.LIFE -> 0
-                    },
-                    dates = Pair(state.selectedWeekStart, state.selectedWeekEnd)
-                ).map { task -> task.toDomain() }.toMutableList()
+                categoriesUseCase.updateCategoryOperator.invoke(category.toData())
+                state.categories.find { categoryItem -> categoryItem.id == category.id }?.title =
+                    category.title
+
+                state.isEditMode = false
 
                 state.contentState.isLoading.value = false
+            }
+        }
+    }
+
+    @OptIn(DelicateCoroutinesApi::class)
+    private fun deleteCategory() {
+        state.contentState.isLoading.value = true
+        state.showQuestionDialog = false
+
+        GlobalScope.launch(Dispatchers.IO) {
+            runBlocking {
+                categoriesUseCase.deleteCategoryOperator.invoke(state.editionDeletionCategory.toData())
+                state.categories.remove(state.editionDeletionCategory)
+
+                if (state.editionDeletionCategory == state.selectedCategory) {
+                    state.selectedCategory = state.defaultAllCategoriesValue
+                    loadData()
+                }
+
+                state.contentState.isLoading.value = false
+            }
+        }
+    }
+
+    @OptIn(DelicateCoroutinesApi::class)
+    private fun createCategory(title: String) {
+        state.contentState.isLoading.value = true
+        state.showAddEditCategoryDialog = false
+
+        GlobalScope.launch(Dispatchers.IO) {
+            runBlocking {
+                categoriesUseCase.insertCategoryOperator.invoke(Category(title = title).toData())
+                loadCategories()
+
+                state.contentState.isLoading.value = false
+            }
+        }
+    }
+
+    @OptIn(DelicateCoroutinesApi::class)
+    private fun selectCategory(event: HomeEvent.SelectCategoryEvent) {
+        state.contentState.isLoading.value = true
+
+        GlobalScope.launch(Dispatchers.IO) {
+            state.selectedCategory = event.category
+            runBlocking {
+                loadData()
             }
         }
     }
@@ -180,7 +293,10 @@ class HomeViewModel @Inject constructor(
         }
     }
 
+    @OptIn(DelicateCoroutinesApi::class)
     private fun changeDate(event: HomeEvent.SelectDatePickerDialogEvent) {
+        state.contentState.isLoading.value = true
+
         state.selectedDateInMilliseconds =
             event.dateInMilliseconds + (zoneOffset.totalSeconds * 1000)
 
@@ -195,15 +311,19 @@ class HomeViewModel @Inject constructor(
         state.selectedWeekEnd = startAndEndThisWeek.second
 
         initData()
-        loadData()
+        GlobalScope.launch(Dispatchers.IO) {
+            runBlocking {
+                loadData()
+            }
+        }
         state.showDatePickerDialog = false
     }
 
     @OptIn(DelicateCoroutinesApi::class)
     private fun searchTasks(query: String) {
-        if (query.isNotEmpty()) {
-            state.contentState.isLoading.value = true
+        state.contentState.isLoading.value = true
 
+        if (query.isNotEmpty()) {
             GlobalScope.launch(Dispatchers.IO) {
                 runBlocking {
                     state.tasks = tasksUseCase.getTasksByLikeQueryOperator.invoke(query)
@@ -231,6 +351,8 @@ class HomeViewModel @Inject constructor(
 
     @OptIn(DelicateCoroutinesApi::class)
     private fun fillDaysToDateList() {
+        state.contentState.isLoading.value = true
+
         GlobalScope.launch(Dispatchers.IO) {
             runBlocking {
                 state.daysList.clear()
@@ -244,6 +366,8 @@ class HomeViewModel @Inject constructor(
                     c.add(Calendar.DAY_OF_MONTH, +1)
                     state.daysList.add(Date(c.timeInMillis))
                 }
+
+                state.contentState.isLoading.value = false
             }
         }
     }

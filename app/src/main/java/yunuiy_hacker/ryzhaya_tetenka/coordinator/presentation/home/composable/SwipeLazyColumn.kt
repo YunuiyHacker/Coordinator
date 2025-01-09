@@ -146,10 +146,6 @@ private fun SliderItem(
     height: Dp,
     textAlign: TextAlign,
 ) {
-    val interactionSource = remember {
-        MutableInteractionSource()
-    }
-
     val gap = (5 - 1) / 2
     val isSelected = value == selectedIndex + gap
     val scale by animateFloatAsState(targetValue = if (isSelected) 0f else 1f)

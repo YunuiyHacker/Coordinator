@@ -61,7 +61,6 @@ fun DatePickerDialog(
         ) {
             Column(verticalArrangement = Arrangement.SpaceBetween) {
                 content()
-                // Buttons
                 Box(
                     modifier = Modifier
                         .align(Alignment.End)
@@ -118,17 +117,14 @@ internal fun AlertDialogFlowRow(
         var currentMainAxisSize = 0
         var currentCrossAxisSize = 0
 
-        // Return whether the placeable can be added to the current sequence.
         fun canAddToCurrentSequence(placeable: Placeable) =
             currentSequence.isEmpty() || currentMainAxisSize + mainAxisSpacing.roundToPx() +
                     placeable.width <= constraints.maxWidth
 
-        // Store current sequence information and start a new sequence.
         fun startNewSequence() {
             if (sequences.isNotEmpty()) {
                 crossAxisSpace += crossAxisSpacing.roundToPx()
             }
-            // Ensures that confirming actions appear above dismissive actions.
             @Suppress("ListIterator")
             sequences.add(0, currentSequence.toList())
             crossAxisSizes += currentCrossAxisSize
@@ -143,13 +139,10 @@ internal fun AlertDialogFlowRow(
         }
 
         measurables.fastForEach { measurable ->
-            // Ask the child for its preferred size.
             val placeable = measurable.measure(constraints)
 
-            // Start a new sequence if there is not enough space.
             if (!canAddToCurrentSequence(placeable)) startNewSequence()
 
-            // Add the child to the current sequence.
             if (currentSequence.isNotEmpty()) {
                 currentMainAxisSize += mainAxisSpacing.roundToPx()
             }

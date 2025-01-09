@@ -1,10 +1,10 @@
-package yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case
+package yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.tasks
 
 data class TasksUseCase(
     val deleteTaskOperator: DeleteTaskOperator,
     val getTaskByIdOperator: GetTaskByIdOperator,
     val getTasksByLikeQueryOperator: GetTasksByLikeQueryOperator,
-    val getTasksByTimeTypeIdAndDateOperator: GetTasksByTimeTypeIdAndDateOperator,
+    val getTasksByTimeTypeIdDateAndCategoryIdOperator: GetTasksByTimeTypeIdDateAndCategoryIdOperator,
     val getTasksOperator: GetTasksOperator,
     val insertTaskOperator: InsertTaskOperator,
     val updateTaskOperator: UpdateTaskOperator

@@ -3,6 +3,7 @@ package yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.create_update_tas
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.model.Category
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.model.Task
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.home.model.TimeType
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.common.state.ContentState
@@ -37,6 +38,10 @@ class CreateUpdateTaskState {
     var showTimeTypePickerMenu by mutableStateOf(false)
 
     var showMessageDialog by mutableStateOf(false)
+
+    var selectedCategory by mutableStateOf(Category())
+    var categories: MutableList<Category> = mutableListOf()
+    var showCategorySelectorMenu by mutableStateOf(false)
 
     val contentState by mutableStateOf(ContentState())
 

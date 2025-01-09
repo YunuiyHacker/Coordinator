@@ -27,6 +27,8 @@
     <string name="deletion_mode">Режим удаления</string>
     <string name="delete_all_selected">Удалить все выбранные</string>
     <string name="really_want_to_delete_all_selected_tasks">Вы действительно хотите удалить все выбранные задачи?</string>
+    <string name="all_categories">Все категории</string>
+    <string name="really_want_to_delete_category">Вы действительно хотите удалить эту категорию?</string>
 
     <!--  SearchBar  -->
     <string name="try_to_find_task">Попробуйте найти задачу...</string>
@@ -42,6 +44,9 @@
     <string name="save_changes">Сохранить изменения</string>
     <string name="end_time">Время окончания</string>
     <string name="end_time_can_not_be_before_start_time">Время окончания не может быть раньше или таким же, как время начала</string>
+    <string name="category">Категория</string>
+    <string name="without_category">Без категории</string>
+    <string name="add_subtask">Добавить подзадачу</string>
 
     <!--  TimePickerDialog  -->
     <string name="select">Выбрать</string>
@@ -58,5 +63,12 @@
 
     <!--  QuestionDialog  -->
     <string name="no">Нет</string>
+
+    <!--  AddEditCategoryDialog  -->
+    <string name="category_adding">Добавление категории</string>
+    <string name="category_editing">Редактирование категории</string>
+    <string name="cancel">Отмена</string>
+    <string name="add">Добавить</string>
+    <string name="save">Сохранить</string>
 
 </resources>

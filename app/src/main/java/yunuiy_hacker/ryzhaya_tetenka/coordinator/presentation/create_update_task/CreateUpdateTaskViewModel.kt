@@ -1,12 +1,8 @@
 package yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.create_update_task
 
 import android.app.Application
-import android.content.Context
-import android.content.res.Resources
-import android.credentials.CreateCredentialRequest
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.DelicateCoroutinesApi
@@ -14,12 +10,13 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
-import yunuiy_hacker.ryzhaya_tetenka.coordinator.CoordinatorApplication
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.R
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.mappers.toData
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.mappers.toDomain
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.model.Category
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.model.Task
-import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.TasksUseCase
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.categories.CategoriesUseCase
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.tasks.TasksUseCase
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.util.Constants
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.util.setCalendarTime
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.util.setDateTime
@@ -32,6 +29,7 @@ import javax.inject.Inject
 @HiltViewModel
 class CreateUpdateTaskViewModel @Inject constructor(
     private val tasksUseCase: TasksUseCase,
+    private val categoriesUseCase: CategoriesUseCase,
     private val application: Application
 ) : ViewModel() {
     val state by mutableStateOf(CreateUpdateTaskState())
@@ -79,18 +77,46 @@ class CreateUpdateTaskViewModel @Inject constructor(
             is CreateUpdateTaskEvent.HideTimeTypePickerMenuEvent -> state.showTimeTypePickerMenu =
                 false
 
+            is CreateUpdateTaskEvent.ShowCategorySelectorMenuEvent -> state.showCategorySelectorMenu =
+                true
+
+            is CreateUpdateTaskEvent.SelectCategoryMenuEvent -> changeCategory(event)
+
+            is CreateUpdateTaskEvent.HideCategorySelectorMenuEvent -> state.showCategorySelectorMenu =
+                false
+
             is CreateUpdateTaskEvent.OnClickButtonEvent -> createOrUpdateTask()
+        }
+    }
+
+    init {
+        GlobalScope.launch(Dispatchers.IO) {
+            runBlocking {
+
+                state.contentState.isLoading.value = true
+                state.categories.add(Category(0, application.getString(R.string.without_category)))
+                state.categories.addAll(
+                    categoriesUseCase.getCategoriesOperator.invoke().map { category ->
+                        category.toDomain()
+                    }.toMutableList()
+                )
+
+                state.contentState.isLoading.value = false
+            }
         }
     }
 
     @OptIn(DelicateCoroutinesApi::class)
     private fun loadData() {
+        state.contentState.isLoading.value = true
+
         if (state.taskId == 0) {
             state.timeType = Constants.timeTypes.find { state.timeTypeId == it.id }!!
             state.date = setDateTime(Date(state.dateInMilliseconds))
+            state.selectedCategory = Category(0, application.getString(R.string.without_category))
         }
 
-        GlobalScope.launch {
+        GlobalScope.launch(Dispatchers.IO) {
             runBlocking {
                 if (state.taskId != 0) {
                     state.task = tasksUseCase.getTaskByIdOperator.invoke(state.taskId).toDomain()
@@ -100,6 +126,8 @@ class CreateUpdateTaskViewModel @Inject constructor(
                     state.timeTypeId = state.task.timeTypeId
                     state.timeType =
                         Constants.timeTypes.find { timeType -> timeType.id == state.timeTypeId }!!
+                    state.selectedCategory =
+                        state.categories.find { category -> category.id == state.task.categoryId }!!
                     state.dateInMilliseconds = state.task.date.time
                     state.date = state.task.date
                     state.selectedHour = state.task.hour
@@ -112,8 +140,17 @@ class CreateUpdateTaskViewModel @Inject constructor(
                     c.timeInMillis = state.date.time
                     state.weekDate = startAndEndThisWeek(c)
                 }
+
+                state.contentState.isLoading.value = false
             }
         }
+    }
+
+    private fun changeCategory(event: CreateUpdateTaskEvent.SelectCategoryMenuEvent) {
+        state.selectedCategory =
+            event.category
+
+        state.showCategorySelectorMenu = false
     }
 
     private fun changeDate(event: CreateUpdateTaskEvent.SelectDatePickerDialogEvent) {
@@ -150,8 +187,11 @@ class CreateUpdateTaskViewModel @Inject constructor(
 
     @OptIn(DelicateCoroutinesApi::class)
     private fun createOrUpdateTask() {
+        state.contentState.isLoading.value = true
+
         val task = Task(
             id = state.taskId,
+            categoryId = state.selectedCategory.id,
             timeTypeId = state.timeType.id,
             date = if (state.selectedDateInMilliseconds > 0) Date(state.selectedDateInMilliseconds) else state.date,
             hour = state.selectedHour,
@@ -172,18 +212,16 @@ class CreateUpdateTaskViewModel @Inject constructor(
                     } else {
                         tasksUseCase.updateTaskOperator.invoke(task)
                     }
-
+                    state.contentState.isLoading.value = false
                     state.success = true
                 }
             } else {
-                state.contentState.exception.value =
-                    Exception(
-                        application.getString(R.string.end_time_can_not_be_before_start_time)
-                    )
+                state.contentState.exception.value = Exception(
+                    application.getString(R.string.end_time_can_not_be_before_start_time)
+                )
                 state.showMessageDialog = true
             }
-        }
-        else {
+        } else {
             GlobalScope.launch(Dispatchers.IO) {
                 if (state.taskId == 0) {
                     tasksUseCase.insertTaskOperator.invoke(task)
@@ -191,6 +229,7 @@ class CreateUpdateTaskViewModel @Inject constructor(
                     tasksUseCase.updateTaskOperator.invoke(task)
                 }
 
+                state.contentState.isLoading.value = false
                 state.success = true
             }
         }

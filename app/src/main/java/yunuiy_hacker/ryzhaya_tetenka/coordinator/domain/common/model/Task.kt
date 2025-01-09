@@ -7,6 +7,7 @@ import java.util.Date
 data class Task(
     val id: Int = 0,
     val timeTypeId: Int = 0,
+    val categoryId: Int = 0,
     val date: Date = Date(),
     val hour: Int = 0,
     val minute: Int = 0,

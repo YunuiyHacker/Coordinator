@@ -255,8 +255,8 @@ fun TaskScreen(navHostController: NavHostController, viewModel: TaskViewModel = 
         }
 
         if (state.showQuestionDialog) {
-            QuestionDialog(title = R.string.deletion,
-                text = R.string.really_want_to_delete,
+            QuestionDialog(title = stringResource(R.string.deletion),
+                text = stringResource(R.string.really_want_to_delete),
                 onDismissRequest = {
                     viewModel.onEvent(TaskEvent.HideQuestionDialogEvent)
                 },
