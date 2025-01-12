@@ -55,10 +55,11 @@ fun Subtask.toDomain(): yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.
         id = id,
         taskId = taskId ?: 0,
         title = title ?: "",
-        checked = mutableStateOf(checked ?: false)
+        checked = mutableStateOf(checked ?: false),
+        index = index ?: 0
     )
 }
 
 fun yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.model.Subtask.toData(): Subtask {
-    return Subtask(id = id, taskId = taskId, title = title, checked = checked.value)
+    return Subtask(id = id, taskId = taskId, title = title, checked = checked.value, index = 0)
 }

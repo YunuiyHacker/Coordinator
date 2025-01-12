@@ -12,7 +12,7 @@ import yunuiy_hacker.ryzhaya_tetenka.coordinator.data.common.model.Task
 interface TaskDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun upsert(task: Task)
+    suspend fun upsert(task: Task): Long
 
     @Delete
     suspend fun delete(task: Task)

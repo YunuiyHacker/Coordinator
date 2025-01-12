@@ -1,6 +1,5 @@
 package yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.task
 
-import androidx.activity.compose.BackHandler
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -24,7 +23,6 @@ import androidx.compose.material.icons.rounded.ArrowBack
 import androidx.compose.material.icons.rounded.Delete
 import androidx.compose.material.icons.rounded.Edit
 import androidx.compose.material.icons.rounded.MoreVert
-import androidx.compose.material3.Divider
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -53,8 +51,10 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.R
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.common.composable.LoadingIndicator
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.common.composable.MenuItem
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.common.composable.QuestionDialog
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.common.composable.SubtaskRow
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.common.composable.TimeRow
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.nav_graph.Route
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.ui.theme.caros
@@ -194,7 +194,6 @@ fun TaskScreen(navHostController: NavHostController, viewModel: TaskViewModel = 
                             .padding(start = 24.dp)
                             .offset(x = -16.dp)
                             .animateContentSize(), value = state.task.title, onValueChange = {
-//                        viewModel.onEvent(CreateTaskEvent.HeadingChangeEvent(it))
                         }, colors = TextFieldDefaults.colors(
                             unfocusedTextColor = MaterialTheme.colorScheme.onSurface,
                             focusedTextColor = MaterialTheme.colorScheme.onSurface,
@@ -227,7 +226,6 @@ fun TaskScreen(navHostController: NavHostController, viewModel: TaskViewModel = 
                                 x = -16.dp, y = if (state.task.title.isNotEmpty()) -16.dp else 0.dp
                             )
                             .animateContentSize(), value = state.task.content, onValueChange = {
-//                        viewModel.onEvent(CreateTaskEvent.ContentChangeEvent(it))
                         }, colors = TextFieldDefaults.colors(
                             unfocusedTextColor = MaterialTheme.colorScheme.onSurface,
                             focusedTextColor = MaterialTheme.colorScheme.onSurface,
@@ -250,6 +248,36 @@ fun TaskScreen(navHostController: NavHostController, viewModel: TaskViewModel = 
                             )
                         }, readOnly = true
                     )
+                }
+
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 24.dp)
+                        .animateContentSize()
+                ) {
+                    if (!state.contentState.isLoading.value) {
+                        state.subtasks.forEach { subtask ->
+                            SubtaskRow(title = subtask.title,
+                                checked = subtask.checked.value,
+                                onCheckedChange = {
+                                    viewModel.onEvent(
+                                        TaskEvent.SubtaskItemCheckboxToggleEvent(
+                                            subtask
+                                        )
+                                    )
+                                },
+                                onTitleChange = {
+                                },
+                                onDeleteClick = {
+
+                                }, isEditingEnabled = false
+                            )
+                        }
+                    }
+                    else {
+                        LoadingIndicator()
+                    }
                 }
             }
         }

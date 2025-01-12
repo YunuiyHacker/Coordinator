@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
@@ -11,16 +12,20 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.R
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.data.local.shared_prefs.SharedPrefsHelper
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.mappers.toData
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.mappers.toDomain
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.model.Category
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.model.Subtask
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.model.Task
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.categories.CategoriesUseCase
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.subtasks.SubtasksUseCase
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.tasks.TasksUseCase
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.util.Constants
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.util.setCalendarTime
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.util.setDateTime
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.util.startAndEndThisWeek
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.util.toTimeTypeEvent
 import java.util.Calendar
 import java.util.Date
 import java.util.GregorianCalendar
@@ -30,6 +35,8 @@ import javax.inject.Inject
 class CreateUpdateTaskViewModel @Inject constructor(
     private val tasksUseCase: TasksUseCase,
     private val categoriesUseCase: CategoriesUseCase,
+    private val subtasksUseCase: SubtasksUseCase,
+    private val sharedPrefsHelper: SharedPrefsHelper,
     private val application: Application
 ) : ViewModel() {
     val state by mutableStateOf(CreateUpdateTaskState())
@@ -85,6 +92,11 @@ class CreateUpdateTaskViewModel @Inject constructor(
             is CreateUpdateTaskEvent.HideCategorySelectorMenuEvent -> state.showCategorySelectorMenu =
                 false
 
+            is CreateUpdateTaskEvent.AddSubtaskEvent -> addSubtask()
+            is CreateUpdateTaskEvent.DeleteSubtaskEvent -> deleteSubtask(event.subtask)
+
+            is CreateUpdateTaskEvent.OnBackPressEvent -> saveTaskData()
+
             is CreateUpdateTaskEvent.OnClickButtonEvent -> createOrUpdateTask()
         }
     }
@@ -113,7 +125,10 @@ class CreateUpdateTaskViewModel @Inject constructor(
         if (state.taskId == 0) {
             state.timeType = Constants.timeTypes.find { state.timeTypeId == it.id }!!
             state.date = setDateTime(Date(state.dateInMilliseconds))
-            state.selectedCategory = Category(0, application.getString(R.string.without_category))
+            state.selectedCategory =
+                state.categories.find { category -> category.id == state.categoryId }!!
+            state.heading = sharedPrefsHelper.unsavedTitle ?: ""
+            state.content = sharedPrefsHelper.unsavedContent ?: ""
         }
 
         GlobalScope.launch(Dispatchers.IO) {
@@ -146,9 +161,38 @@ class CreateUpdateTaskViewModel @Inject constructor(
         }
     }
 
+    private fun saveTaskData() {
+        sharedPrefsHelper.unsavedTitle = state.heading
+        sharedPrefsHelper.unsavedContent = state.content
+    }
+
+    private fun addSubtask() {
+        state.contentState.isLoading.value = true
+
+        state.subtasks.add(
+            Subtask(
+                title = "", checked = mutableStateOf(false)
+            )
+        )
+
+        state.contentState.isLoading.value = false
+    }
+
+    @OptIn(DelicateCoroutinesApi::class)
+    private fun deleteSubtask(subtask: Subtask) {
+        state.contentState.isLoading.value = true
+
+        GlobalScope.launch(Dispatchers.IO) {
+            runBlocking {
+                state.subtasks.remove(subtask)
+
+                state.contentState.isLoading.value = false
+            }
+        }
+    }
+
     private fun changeCategory(event: CreateUpdateTaskEvent.SelectCategoryMenuEvent) {
-        state.selectedCategory =
-            event.category
+        state.selectedCategory = event.category
 
         state.showCategorySelectorMenu = false
     }
@@ -187,8 +231,6 @@ class CreateUpdateTaskViewModel @Inject constructor(
 
     @OptIn(DelicateCoroutinesApi::class)
     private fun createOrUpdateTask() {
-        state.contentState.isLoading.value = true
-
         val task = Task(
             id = state.taskId,
             categoryId = state.selectedCategory.id,
@@ -208,13 +250,14 @@ class CreateUpdateTaskViewModel @Inject constructor(
 
                 GlobalScope.launch(Dispatchers.IO) {
                     if (state.taskId == 0) {
-                        tasksUseCase.insertTaskOperator.invoke(task)
+                        val taskId: Long = tasksUseCase.insertTaskOperator.invoke(task)
+                        createOrUpdateSubtasks(taskId)
                     } else {
                         tasksUseCase.updateTaskOperator.invoke(task)
                     }
-                    state.contentState.isLoading.value = false
                     state.success = true
                 }
+                clearUnsavedData()
             } else {
                 state.contentState.exception.value = Exception(
                     application.getString(R.string.end_time_can_not_be_before_start_time)
@@ -224,14 +267,26 @@ class CreateUpdateTaskViewModel @Inject constructor(
         } else {
             GlobalScope.launch(Dispatchers.IO) {
                 if (state.taskId == 0) {
-                    tasksUseCase.insertTaskOperator.invoke(task)
+                    val taskId = tasksUseCase.insertTaskOperator.invoke(task)
+                    createOrUpdateSubtasks(taskId)
                 } else {
                     tasksUseCase.updateTaskOperator.invoke(task)
                 }
-
-                state.contentState.isLoading.value = false
                 state.success = true
             }
+            clearUnsavedData()
         }
+    }
+
+    private suspend fun createOrUpdateSubtasks(taskId: Long) {
+        state.subtasks.removeIf { subtask -> subtask.title.isEmpty() }
+        state.subtasks.replaceAll { subtask -> subtask.copy(taskId = taskId.toInt()) }
+
+        subtasksUseCase.insertSubtasksOperator.invoke(state.subtasks.map { subtask -> subtask.toData() })
+    }
+
+    private fun clearUnsavedData() {
+        sharedPrefsHelper.unsavedTitle = ""
+        sharedPrefsHelper.unsavedContent = ""
     }
 }

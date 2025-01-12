@@ -6,6 +6,7 @@ import androidx.compose.runtime.mutableStateOf
 data class Subtask(
     val id: Int = 0,
     val taskId: Int = 0,
-    val title: String = "",
-    var checked: MutableState<Boolean> = mutableStateOf(false)
+    var title: String = "",
+    var checked: MutableState<Boolean> = mutableStateOf(false),
+    val index: Int = 0
 )

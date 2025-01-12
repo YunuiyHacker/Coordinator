@@ -32,7 +32,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val sharedPrefsHelper: SharedPrefsHelper,
+    val sharedPrefsHelper: SharedPrefsHelper,
     private val defineTimeOfDayUseCase: DefineTimeOfDayUseCase,
     private val tasksUseCase: TasksUseCase,
     private val categoriesUseCase: CategoriesUseCase,
@@ -57,7 +57,6 @@ class HomeViewModel @Inject constructor(
 
         state.defaultAllCategoriesValue =
             Category(id = 0, title = application.getString(R.string.all_categories))
-        state.selectedCategory = state.defaultAllCategoriesValue
 
         initData()
     }
@@ -194,6 +193,10 @@ class HomeViewModel @Inject constructor(
     private suspend fun loadCategories() {
         state.categories = categoriesUseCase.getCategoriesOperator.invoke()
             .map { category -> category.toDomain() }.toMutableList()
+
+        state.selectedCategory =
+            state.categories.find { category -> category.id == sharedPrefsHelper.categoryId }
+                ?: state.defaultAllCategoriesValue
     }
 
     @OptIn(DelicateCoroutinesApi::class)
@@ -255,6 +258,7 @@ class HomeViewModel @Inject constructor(
 
         GlobalScope.launch(Dispatchers.IO) {
             state.selectedCategory = event.category
+            sharedPrefsHelper.categoryId = event.category.id
             runBlocking {
                 loadData()
             }
@@ -321,9 +325,9 @@ class HomeViewModel @Inject constructor(
 
     @OptIn(DelicateCoroutinesApi::class)
     private fun searchTasks(query: String) {
-        state.contentState.isLoading.value = true
-
         if (query.isNotEmpty()) {
+            state.contentState.isLoading.value = true
+
             GlobalScope.launch(Dispatchers.IO) {
                 runBlocking {
                     state.tasks = tasksUseCase.getTasksByLikeQueryOperator.invoke(query)

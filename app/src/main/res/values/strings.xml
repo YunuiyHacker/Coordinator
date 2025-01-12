@@ -29,9 +29,10 @@
     <string name="really_want_to_delete_all_selected_tasks">Вы действительно хотите удалить все выбранные задачи?</string>
     <string name="all_categories">Все категории</string>
     <string name="really_want_to_delete_category">Вы действительно хотите удалить эту категорию?</string>
+    <string name="empty_date">Всем нам когда-то нужен отдых… На эту дату нет задач</string>
 
     <!--  SearchBar  -->
-    <string name="try_to_find_task">Попробуйте найти задачу...</string>
+    <string name="try_to_find_task">Попробуйте найти задачу…</string>
     <string name="search">Поиск</string>
 
     <!--  CreateUpdateTaskScreen  -->
@@ -70,5 +71,15 @@
     <string name="cancel">Отмена</string>
     <string name="add">Добавить</string>
     <string name="save">Сохранить</string>
+
+    <!--    SubtaskRow    -->
+    <string name="subtask_title">Название подзадачи</string>
+
+    <!--  SettingsScreen  -->
+    <string name="settings">Настройки</string>
+    <string name="personal_data">Личные данные</string>
+    <string name="import_export_data">Импорт/экспорт данных</string>
+    <string name="import_data">Импорт данных</string>
+    <string name="export_data">Экспорт данных</string>
 
 </resources>

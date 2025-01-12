@@ -64,6 +64,7 @@ import androidx.navigation.NavHostController
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.R
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.home.model.TimeTypeEnum
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.common.composable.MessageDialog
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.common.composable.SubtaskRow
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.common.composable.TimePickerDialog
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.common.composable.TimeRow
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.nav_graph.Route
@@ -107,6 +108,7 @@ fun CreateUpdateTaskScreen(
                             Box(modifier = Modifier.clickable(
                                 interactionSource = interactionSource, indication = null
                             ) {
+                                viewModel.onEvent(CreateUpdateTaskEvent.OnBackPressEvent)
                                 navHostController.popBackStack(
                                     Route.HomeScreen.route, inclusive = false, saveState = false
                                 )
@@ -156,7 +158,8 @@ fun CreateUpdateTaskScreen(
                                 ) {
                                     DropdownMenuItem(text = {
                                         Row(verticalAlignment = Alignment.CenterVertically) {
-                                            Checkbox(checked = state.endTimeChecked,
+                                            Checkbox(
+                                                checked = state.endTimeChecked,
                                                 onCheckedChange = {
                                                     viewModel.onEvent(CreateUpdateTaskEvent.EndTimeCheckToggleEvent)
                                                 })
@@ -275,10 +278,9 @@ fun CreateUpdateTaskScreen(
                                     viewModel.onEvent(CreateUpdateTaskEvent.ShowCategorySelectorMenuEvent)
                                 }
                                 .animateContentSize(),
-                                text = if (state.task.categoryId != 0) state.categories.find { category ->
-                                    category.id == state.task.categoryId
-                                }?.title
-                                    ?: state.selectedCategory.title else state.selectedCategory.title,
+                                text = state.categories.find { category ->
+                                    category.id == state.selectedCategory.id
+                                }?.title!!,
                                 color = MaterialTheme.colorScheme.primary,
                                 fontFamily = caros,
                                 fontWeight = FontWeight.Medium
@@ -382,7 +384,8 @@ fun CreateUpdateTaskScreen(
                                     text = stringResource(R.string.heading),
                                     fontFamily = caros,
                                     fontWeight = FontWeight.Medium,
-                                    fontSize = 20.sp
+                                    fontSize = 20.sp,
+                                    color = Color.DarkGray
                                 )
                             })
                         TextField(modifier = Modifier
@@ -406,35 +409,74 @@ fun CreateUpdateTaskScreen(
                                 fontFamily = caros,
                                 fontWeight = FontWeight.Normal,
                                 fontSize = 14.sp,
-                                textAlign = TextAlign.Justify
+                                textAlign = TextAlign.Start,
                             ),
                             placeholder = {
                                 Text(
                                     text = stringResource(R.string.content),
                                     fontFamily = caros,
                                     fontWeight = FontWeight.Normal,
-                                    fontSize = 14.sp
+                                    fontSize = 14.sp,
+                                    color = Color.DarkGray
                                 )
                             })
+                        Column(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 24.dp)
+                                .animateContentSize()
+                        ) {
+                            if (!state.contentState.isLoading.value) {
+                                state.subtasks.forEach { subtask ->
+                                    SubtaskRow(title = subtask.title,
+                                        checked = subtask.checked.value,
+                                        onCheckedChange = {
+                                            subtask.checked.value = !subtask.checked.value
+                                        },
+                                        onTitleChange = {
+                                            subtask.title = it
+                                        },
+                                        onDeleteClick = {
+                                            viewModel.onEvent(
+                                                CreateUpdateTaskEvent.DeleteSubtaskEvent(
+                                                    subtask
+                                                )
+                                            )
+                                        })
+                                }
+                            }
+                        }
                         Spacer(modifier = Modifier.height(16.dp))
                         Row(
                             modifier = Modifier
+                                .offset(x = 0.dp, y = -16.dp)
                                 .fillMaxWidth()
-                                .padding(horizontal = 24.dp),
-                            verticalAlignment = Alignment.CenterVertically
+                                .padding(horizontal = 24.dp)
+                                .clip(RoundedCornerShape(12.dp))
+                                .clickable {
+                                    viewModel.onEvent(CreateUpdateTaskEvent.AddSubtaskEvent)
+                                }, verticalAlignment = Alignment.CenterVertically
                         ) {
-                            Icon(
-                                imageVector = Icons.Rounded.Add,
-                                contentDescription = null,
-                                tint = MaterialTheme.colorScheme.onSurface
-                            )
-                            Spacer(modifier = Modifier.width(16.dp))
-                            Text(
-                                text = stringResource(R.string.add_subtask),
-                                fontFamily = caros,
-                                color = MaterialTheme.colorScheme.onSurface
-                            )
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(vertical = 6.dp),
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Rounded.Add,
+                                    contentDescription = null,
+                                    tint = MaterialTheme.colorScheme.onSurface
+                                )
+                                Spacer(modifier = Modifier.width(16.dp))
+                                Text(
+                                    text = stringResource(R.string.add_subtask),
+                                    fontFamily = caros,
+                                    color = MaterialTheme.colorScheme.onSurface
+                                )
+                            }
                         }
+                        Spacer(modifier = Modifier.height(16.dp))
                     }
 
                 }
@@ -547,10 +589,9 @@ fun CreateUpdateTaskScreen(
         }
 
         if (state.showTimePickerDialog || state.showEndTimePickerDialog) {
-            TimePickerDialog(
-                onDismissRequest = {
-                    viewModel.onEvent(CreateUpdateTaskEvent.HideTimePickerDialogEvent)
-                },
+            TimePickerDialog(onDismissRequest = {
+                viewModel.onEvent(CreateUpdateTaskEvent.HideTimePickerDialogEvent)
+            },
                 onSelectButtonClick = { hour, minute ->
                     if (state.showTimePickerDialog) viewModel.onEvent(
                         CreateUpdateTaskEvent.SelectTimePickerDialogEvent(
@@ -569,7 +610,8 @@ fun CreateUpdateTaskScreen(
         }
 
         if (state.showMessageDialog) {
-            MessageDialog(message = state.contentState.exception.value?.message ?: "",
+            MessageDialog(
+                message = state.contentState.exception.value?.message ?: "",
                 onDismissRequest = {
                     viewModel.onEvent(CreateUpdateTaskEvent.HideMessageDialogEvent)
                 })
@@ -577,6 +619,7 @@ fun CreateUpdateTaskScreen(
     }
 
     BackHandler {
+        viewModel.onEvent(CreateUpdateTaskEvent.OnBackPressEvent)
         navHostController.popBackStack(
             Route.HomeScreen.route, inclusive = false, saveState = false
         )

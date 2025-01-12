@@ -3,8 +3,10 @@ package yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.task
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.model.Subtask
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.model.Task
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.home.model.TimeType
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.common.state.ContentState
 import java.util.Date
 
 class TaskState {
@@ -16,9 +18,12 @@ class TaskState {
 
     var taskId by mutableStateOf(0)
     var task by mutableStateOf(Task())
+    var subtasks: MutableList<Subtask> = mutableListOf()
 
     var showTaskMenu by mutableStateOf(false)
     var showQuestionDialog by mutableStateOf(false)
 
     var success by mutableStateOf(false)
+
+    var contentState by mutableStateOf(ContentState())
 }

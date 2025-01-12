@@ -9,5 +9,6 @@ data class Subtask(
     @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "id") val id: Int = 0,
     @ColumnInfo(name = "task_id") val taskId: Int? = 0,
     @ColumnInfo(name = "title") val title: String? = "",
-    @ColumnInfo(name = "checked") val checked: Boolean? = false
+    @ColumnInfo(name = "checked") val checked: Boolean? = false,
+    @ColumnInfo(name = "index") val index: Int? = 0
 )

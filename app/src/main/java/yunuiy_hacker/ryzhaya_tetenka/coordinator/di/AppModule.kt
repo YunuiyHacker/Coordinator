@@ -10,6 +10,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.data.local.room.CategoryDao
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.data.local.room.CoordinatorDatabase
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.data.local.room.SubtaskDao
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.data.local.room.TaskDao
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.data.local.shared_prefs.SharedPrefsHelper
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.categories.CategoriesUseCase
@@ -18,6 +19,13 @@ import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.categori
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.categories.GetCategoryByIdOperator
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.categories.InsertCategoryOperator
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.categories.UpdateCategoryOperator
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.subtasks.DeleteSubtaskOperator
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.subtasks.GetSubtasksByTaskId
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.subtasks.GetSubtasksOperator
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.subtasks.InsertSubtaskOperator
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.subtasks.InsertSubtasksOperator
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.subtasks.SubtasksUseCase
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.subtasks.UpdateSubtaskOperator
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.tasks.DeleteTaskOperator
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.tasks.GetTaskByIdOperator
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.tasks.GetTasksByLikeQueryOperator
@@ -65,7 +73,9 @@ object AppModule {
             deleteTaskOperator = DeleteTaskOperator(taskDao),
             getTaskByIdOperator = GetTaskByIdOperator(taskDao),
             getTasksByLikeQueryOperator = GetTasksByLikeQueryOperator(taskDao),
-            getTasksByTimeTypeIdDateAndCategoryIdOperator = GetTasksByTimeTypeIdDateAndCategoryIdOperator(taskDao),
+            getTasksByTimeTypeIdDateAndCategoryIdOperator = GetTasksByTimeTypeIdDateAndCategoryIdOperator(
+                taskDao
+            ),
             getTasksOperator = GetTasksOperator(taskDao),
             insertTaskOperator = InsertTaskOperator(taskDao),
             updateTaskOperator = UpdateTaskOperator(taskDao)
@@ -86,6 +96,24 @@ object AppModule {
             getCategoryByIdOperator = GetCategoryByIdOperator(categoryDao),
             insertCategoryOperator = InsertCategoryOperator(categoryDao),
             updateCategoryOperator = UpdateCategoryOperator(categoryDao)
+        )
+    }
+
+    @Provides
+    @Singleton
+    fun provideSubtaskDao(coordinatorDatabase: CoordinatorDatabase): SubtaskDao =
+        coordinatorDatabase.subtaskDao
+
+    @Provides
+    @Singleton
+    fun provideSubtasksUseCase(subtaskDao: SubtaskDao): SubtasksUseCase {
+        return SubtasksUseCase(
+            deleteSubtaskOperator = DeleteSubtaskOperator(subtaskDao),
+            getSubtasksByTaskId = GetSubtasksByTaskId(subtaskDao),
+            getSubtasksOperator = GetSubtasksOperator(subtaskDao),
+            insertSubtaskOperator = InsertSubtaskOperator(subtaskDao),
+            insertSubtasksOperator = InsertSubtasksOperator(subtaskDao),
+            updateSubtaskOperator = UpdateSubtaskOperator(subtaskDao)
         )
     }
 }
