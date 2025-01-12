@@ -15,7 +15,9 @@ import yunuiy_hacker.ryzhaya_tetenka.coordinator.data.local.shared_prefs.SharedP
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.mappers.toData
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.mappers.toDomain
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.model.Category
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.model.Subtask
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.categories.CategoriesUseCase
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.subtasks.SubtasksUseCase
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.tasks.TasksUseCase
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.home.model.TimeTypeEnum
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.home.use_case.DefineTimeOfDayUseCase
@@ -35,6 +37,7 @@ class HomeViewModel @Inject constructor(
     val sharedPrefsHelper: SharedPrefsHelper,
     private val defineTimeOfDayUseCase: DefineTimeOfDayUseCase,
     private val tasksUseCase: TasksUseCase,
+    private val subtasksUseCase: SubtasksUseCase,
     private val categoriesUseCase: CategoriesUseCase,
     private val application: Application
 ) : ViewModel() {
@@ -92,8 +95,7 @@ class HomeViewModel @Inject constructor(
 
             is HomeEvent.SearchQueryChangeEvent -> {
                 state.query = event.query
-                if (state.query.isEmpty())
-                    loadData()
+                if (state.query.isEmpty()) loadData()
             }
 
             is HomeEvent.OnDeletionModeEvent -> state.isDeletionMode = true
@@ -148,6 +150,7 @@ class HomeViewModel @Inject constructor(
             is HomeEvent.DeleteCategoryEvent -> deleteCategory()
             is HomeEvent.HideCategoryMenuEvent -> state.showCategoryMenu = false
             is HomeEvent.SaveEditedCategoryEvent -> saveEditedCategory(event.category)
+            is HomeEvent.SubtaskItemCheckboxToggleEvent -> subtaskItemToggle(event.subtask)
 
             is HomeEvent.OnClickAddNewTaskEvent -> {
 
@@ -188,11 +191,18 @@ class HomeViewModel @Inject constructor(
             dates = Pair(state.selectedWeekStart, state.selectedWeekEnd),
             categoryId = state.selectedCategory.id
         ).map { task -> task.toDomain() }.toMutableList()
+
+        state.tasks.forEachIndexed { index, task ->
+            state.tasks[index].subtasks =
+                subtasksUseCase.getSubtasksByTaskId(task.id).map { subtask -> subtask.toDomain() }
+                    .toMutableList()
+        }
     }
 
     private suspend fun loadCategories() {
-        state.categories = categoriesUseCase.getCategoriesOperator.invoke()
-            .map { category -> category.toDomain() }.toMutableList()
+        state.categories =
+            categoriesUseCase.getCategoriesOperator.invoke().map { category -> category.toDomain() }
+                .toMutableList()
 
         state.selectedCategory =
             state.categories.find { category -> category.id == sharedPrefsHelper.categoryId }
@@ -351,6 +361,19 @@ class HomeViewModel @Inject constructor(
             )
         }
         event.task.checked.value = !event.task.checked.value
+    }
+
+    @OptIn(DelicateCoroutinesApi::class)
+    private fun subtaskItemToggle(subtask: Subtask) {
+        GlobalScope.launch(Dispatchers.IO) {
+            subtasksUseCase.updateSubtaskOperator.invoke(
+                subtask.copy(
+                    checked = mutableStateOf(
+                        subtask.checked.value
+                    )
+                ).toData()
+            )
+        }
     }
 
     @OptIn(DelicateCoroutinesApi::class)

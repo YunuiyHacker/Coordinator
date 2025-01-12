@@ -16,5 +16,6 @@ data class Task(
     val endMinute: Int = 0,
     val title: String = "",
     val content: String = "",
-    var checked: MutableState<Boolean> = mutableStateOf(false)
+    var checked: MutableState<Boolean> = mutableStateOf(false),
+    var subtasks: List<Subtask> = listOf()
 )

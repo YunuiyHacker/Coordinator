@@ -176,7 +176,34 @@ fun NavGraph(
 
             TaskScreen(navHostController, viewModel = viewModel)
         }
-        composable(route = Route.SettingsScreen.route) {
+        composable(route = Route.SettingsScreen.route, enterTransition = {
+            fadeIn(
+                animationSpec = tween(
+                    300,
+                    easing = LinearEasing
+                )
+            ) + slideIntoContainer(
+                towards = AnimatedContentTransitionScope.SlideDirection.Start,
+                animationSpec = tween(
+                    300,
+                    easing = LinearEasing
+                )
+            )
+        },
+            exitTransition = {
+                fadeOut(
+                    animationSpec = tween(
+                        300,
+                        easing = LinearEasing
+                    )
+                ) + slideOutOfContainer(
+                    towards = AnimatedContentTransitionScope.SlideDirection.End,
+                    animationSpec = tween(
+                        300,
+                        easing = LinearEasing
+                    )
+                )
+            }) {
             SettingsScreen(navHostController = navHostController, viewModel = hiltViewModel())
         }
     }

@@ -15,7 +15,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -30,20 +29,14 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material.icons.outlined.Settings
-import androidx.compose.material.icons.outlined.SettingsSuggest
 import androidx.compose.material.icons.rounded.Add
 import androidx.compose.material.icons.rounded.ArrowDropDown
 import androidx.compose.material.icons.rounded.ArrowDropUp
-import androidx.compose.material.icons.rounded.CalendarMonth
 import androidx.compose.material.icons.rounded.CheckBox
 import androidx.compose.material.icons.rounded.CheckBoxOutlineBlank
 import androidx.compose.material.icons.rounded.Close
 import androidx.compose.material.icons.rounded.Delete
 import androidx.compose.material.icons.rounded.Edit
-import androidx.compose.material.icons.rounded.Settings
-import androidx.compose.material.icons.sharp.Settings
 import androidx.compose.material3.Button
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDefaults
@@ -74,7 +67,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -448,21 +440,22 @@ fun HomeScreen(navHostController: NavHostController, viewModel: HomeViewModel = 
                 Spacer(Modifier.height(4.dp))
             }
             AnimatedVisibility(state.isDeletionMode, exit = fadeOut(), enter = fadeIn()) {
-                TopAppBar(navigationIcon = {
-                    Row {
-                        Spacer(modifier = Modifier.width(24.dp))
-                        Icon(
-                            modifier = Modifier.clickable(
-                                interactionSource = interactionSource, indication = null
-                            ) {
-                                viewModel.onEvent(HomeEvent.OffDeletionModeEvent)
-                            },
-                            imageVector = Icons.Rounded.Close,
-                            contentDescription = null,
-                            tint = MaterialTheme.colorScheme.onSurface
-                        )
-                    }
-                },
+                TopAppBar(
+                    navigationIcon = {
+                        Row {
+                            Spacer(modifier = Modifier.width(24.dp))
+                            Icon(
+                                modifier = Modifier.clickable(
+                                    interactionSource = interactionSource, indication = null
+                                ) {
+                                    viewModel.onEvent(HomeEvent.OffDeletionModeEvent)
+                                },
+                                imageVector = Icons.Rounded.Close,
+                                contentDescription = null,
+                                tint = MaterialTheme.colorScheme.onSurface
+                            )
+                        }
+                    },
                     title = {
                         Text(
                             modifier = Modifier.fillMaxWidth(),
@@ -662,7 +655,14 @@ fun HomeScreen(navHostController: NavHostController, viewModel: HomeViewModel = 
                                             )
                                         )
                                     },
-                                    isDeleteChecked = state.deletionTasks.contains(task)
+                                    isDeleteChecked = state.deletionTasks.contains(task),
+                                    onCheckedSubtask = {
+                                        viewModel.onEvent(
+                                            HomeEvent.SubtaskItemCheckboxToggleEvent(
+                                                it
+                                            )
+                                        )
+                                    }
                                 )
                                 if (task.id != state.tasks.last().id) {
                                     Spacer(modifier = Modifier.height(16.dp))
@@ -701,7 +701,8 @@ fun HomeScreen(navHostController: NavHostController, viewModel: HomeViewModel = 
         }
 
         if (state.showDatePickerDialog) {
-            DatePickerDialog(modifier = Modifier.heightIn(max = 700.dp),
+            DatePickerDialog(
+                modifier = Modifier.heightIn(max = 700.dp),
                 onDismissRequest = {
                     viewModel.onEvent(HomeEvent.HideDatePickerDialogEvent)
                 },
@@ -746,9 +747,10 @@ fun HomeScreen(navHostController: NavHostController, viewModel: HomeViewModel = 
         }
 
         if (state.showAddEditCategoryDialog) {
-            AddEditCategoryDialog(onDismissRequest = {
-                viewModel.onEvent(HomeEvent.HideAddCategoryDialogEvent)
-            },
+            AddEditCategoryDialog(
+                onDismissRequest = {
+                    viewModel.onEvent(HomeEvent.HideAddCategoryDialogEvent)
+                },
                 onAddClick = {
                     if (state.isEditMode) viewModel.onEvent(
                         HomeEvent.SaveEditedCategoryEvent(

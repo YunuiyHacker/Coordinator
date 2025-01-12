@@ -1,6 +1,7 @@
 package yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.home
 
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.model.Category
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.model.Subtask
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.model.Task
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.home.model.TimeType
 
@@ -42,6 +43,7 @@ sealed class HomeEvent {
     data object DeleteCategoryEvent : HomeEvent()
     data object HideCategoryMenuEvent : HomeEvent()
     data class SaveEditedCategoryEvent(val category: Category) : HomeEvent()
+    data class SubtaskItemCheckboxToggleEvent(val subtask: Subtask) : HomeEvent()
 
     data object OnClickAddNewTaskEvent : HomeEvent()
 }
