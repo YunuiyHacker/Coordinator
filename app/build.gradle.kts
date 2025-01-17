@@ -76,6 +76,9 @@ dependencies {
     implementation("androidx.room:room-runtime:2.6.1")
     implementation(libs.androidx.room.common)
 
+    //gson
+    implementation("com.google.code.gson:gson:2.8.5")
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)

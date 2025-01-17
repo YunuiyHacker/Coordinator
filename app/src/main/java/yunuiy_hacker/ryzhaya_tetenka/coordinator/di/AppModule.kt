@@ -17,6 +17,7 @@ import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.categori
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.categories.DeleteCategoryOperator
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.categories.GetCategoriesOperator
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.categories.GetCategoryByIdOperator
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.categories.InsertCategoriesOperator
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.categories.InsertCategoryOperator
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.categories.UpdateCategoryOperator
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.subtasks.DeleteSubtaskOperator
@@ -32,9 +33,12 @@ import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.tasks.Ge
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.tasks.GetTasksByTimeTypeIdDateAndCategoryIdOperator
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.tasks.GetTasksOperator
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.tasks.InsertTaskOperator
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.tasks.InsertTasksOperator
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.tasks.TasksUseCase
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.tasks.UpdateTaskOperator
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.home.use_case.DefineTimeOfDayUseCase
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.settings.use_case.ExportDataUseCase
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.settings.use_case.ImportDataUseCase
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.util.Constants.TASKS_DATABASE_NAME
 import javax.inject.Singleton
 
@@ -78,6 +82,7 @@ object AppModule {
             ),
             getTasksOperator = GetTasksOperator(taskDao),
             insertTaskOperator = InsertTaskOperator(taskDao),
+            insertTasksOperator = InsertTasksOperator(taskDao),
             updateTaskOperator = UpdateTaskOperator(taskDao)
         )
     }
@@ -95,6 +100,7 @@ object AppModule {
             getCategoriesOperator = GetCategoriesOperator(categoryDao),
             getCategoryByIdOperator = GetCategoryByIdOperator(categoryDao),
             insertCategoryOperator = InsertCategoryOperator(categoryDao),
+            insertCategoriesOperator = InsertCategoriesOperator(categoryDao),
             updateCategoryOperator = UpdateCategoryOperator(categoryDao)
         )
     }
@@ -116,4 +122,19 @@ object AppModule {
             updateSubtaskOperator = UpdateSubtaskOperator(subtaskDao)
         )
     }
+
+    @Singleton
+    @Provides
+    fun provideExportDataUseCase(
+        tasksDao: TaskDao, categoryDao: CategoryDao, subtaskDao: SubtaskDao
+    ): ExportDataUseCase = ExportDataUseCase(tasksDao, categoryDao, subtaskDao)
+
+    @Singleton
+    @Provides
+    fun provideImportDataUseCase(
+        tasksDao: TaskDao,
+        categoryDao: CategoryDao,
+        subtaskDao: SubtaskDao,
+        application: Application
+    ): ImportDataUseCase = ImportDataUseCase(tasksDao, categoryDao, subtaskDao, application)
 }

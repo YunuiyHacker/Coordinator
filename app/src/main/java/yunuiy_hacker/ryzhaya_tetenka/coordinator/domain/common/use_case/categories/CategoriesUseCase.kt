@@ -5,5 +5,6 @@ data class CategoriesUseCase(
     val getCategoriesOperator: GetCategoriesOperator,
     val getCategoryByIdOperator: GetCategoryByIdOperator,
     val insertCategoryOperator: InsertCategoryOperator,
+    val insertCategoriesOperator: InsertCategoriesOperator,
     val updateCategoryOperator: UpdateCategoryOperator
 )

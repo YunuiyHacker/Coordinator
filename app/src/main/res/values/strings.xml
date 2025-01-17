@@ -81,5 +81,8 @@
     <string name="import_export_data">Импорт/экспорт данных</string>
     <string name="import_data">Импорт данных</string>
     <string name="export_data">Экспорт данных</string>
-
+    <string name="success_export">Экспорт данных успешно произведен. Файл экспорта сохранен в загрузках</string>
+    <string name="really_want_to_import_data">Вы действительно хотите импортировать данные? Импортированные данные добавятся к существующим</string>
+    <string name="import_exception">Ошибка при импорте файла. Возможно файл поврежден или его не существует</string>
+    <string name="success_import">Импорт данных успешно произведен</string>
 </resources>

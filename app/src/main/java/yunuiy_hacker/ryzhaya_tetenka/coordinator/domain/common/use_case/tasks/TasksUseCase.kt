@@ -7,5 +7,6 @@ data class TasksUseCase(
     val getTasksByTimeTypeIdDateAndCategoryIdOperator: GetTasksByTimeTypeIdDateAndCategoryIdOperator,
     val getTasksOperator: GetTasksOperator,
     val insertTaskOperator: InsertTaskOperator,
+    val insertTasksOperator: InsertTasksOperator,
     val updateTaskOperator: UpdateTaskOperator
 )

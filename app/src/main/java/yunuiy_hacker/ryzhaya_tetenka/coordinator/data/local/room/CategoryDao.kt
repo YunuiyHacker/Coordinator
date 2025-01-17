@@ -12,7 +12,10 @@ import yunuiy_hacker.ryzhaya_tetenka.coordinator.data.common.model.Category
 interface CategoryDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun upsert(category: Category)
+    suspend fun upsert(category: Category): Long
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun allUpsert(categories: List<Category>): List<Long>
 
     @Delete
     suspend fun delete(category: Category)

@@ -6,6 +6,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.data.common.model.Subtask
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.data.common.model.Task
 
 @Dao
@@ -13,6 +14,9 @@ interface TaskDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun upsert(task: Task): Long
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun allUpsert(tasks: List<Task>): List<Long>
 
     @Delete
     suspend fun delete(task: Task)

@@ -1,8 +1,16 @@
 package yunuiy_hacker.ryzhaya_tetenka.coordinator.util
 
+import android.app.Application
+import android.net.Uri
+import android.util.Log
+import androidx.core.content.ContentProviderCompat.requireContext
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.R
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.home.model.TimeType
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.home.model.TimeTypeEnum
+import java.io.File
+import java.io.FileOutputStream
+import java.io.IOException
+import java.io.InputStream
 import java.time.ZoneId
 import java.time.ZoneOffset
 import java.time.ZonedDateTime
@@ -64,3 +72,11 @@ fun setDateTime(date: Date): Date {
 
 val currentZoneDateTime: ZonedDateTime = ZonedDateTime.now(ZoneId.systemDefault())
 val zoneOffset: ZoneOffset = currentZoneDateTime.offset
+
+fun getFileDataFromUri(application: Application, uri: Uri): String {
+    val inputStream: InputStream = application.contentResolver.openInputStream(uri)!!
+    val data = inputStream.bufferedReader().use { it.readText() }
+
+    inputStream.close()
+    return data
+}
