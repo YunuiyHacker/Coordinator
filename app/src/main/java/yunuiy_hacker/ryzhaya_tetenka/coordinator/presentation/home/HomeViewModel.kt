@@ -194,7 +194,7 @@ class HomeViewModel @Inject constructor(
 
         state.tasks.forEachIndexed { index, task ->
             state.tasks[index].subtasks =
-                subtasksUseCase.getSubtasksByTaskId(task.id).map { subtask -> subtask.toDomain() }
+                subtasksUseCase.getSubtasksByTaskIdOperator(task.id).map { subtask -> subtask.toDomain() }
                     .toMutableList()
         }
     }

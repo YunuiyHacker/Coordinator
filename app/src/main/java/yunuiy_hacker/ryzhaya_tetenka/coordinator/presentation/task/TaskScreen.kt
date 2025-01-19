@@ -1,5 +1,8 @@
 package yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.task
 
+import android.content.ActivityNotFoundException
+import android.content.Intent
+import android.widget.Toast
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -11,6 +14,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -19,6 +23,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Place
 import androidx.compose.material.icons.rounded.ArrowBack
 import androidx.compose.material.icons.rounded.Delete
 import androidx.compose.material.icons.rounded.Edit
@@ -38,9 +43,11 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -48,6 +55,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.content.ContextCompat.startActivity
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.R
@@ -59,11 +67,14 @@ import yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.common.composable.
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.nav_graph.Route
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.ui.theme.caros
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.util.Constants
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.util.getMapUri
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TaskScreen(navHostController: NavHostController, viewModel: TaskViewModel = hiltViewModel()) {
     val interactionSource = remember { MutableInteractionSource() }
+    val context = LocalContext.current
 
     LaunchedEffect(Unit) {
         viewModel.onEvent(TaskEvent.LoadDataEvent)
@@ -151,11 +162,69 @@ fun TaskScreen(navHostController: NavHostController, viewModel: TaskViewModel = 
                                 )
                             }, onClick = {
                                 viewModel.onEvent(TaskEvent.HideTaskMenuEvent)
-                                viewModel.onEvent(TaskEvent.ShowQuestionDialogEvent)
+                                viewModel.onEvent(
+                                    TaskEvent.ShowQuestionDialogEvent(
+                                        context.getString(
+                                            R.string.deletion
+                                        ), context.getString(R.string.really_want_to_delete_task)
+                                    )
+                                )
                             })
                         }
                     }
                 })
+        }, bottomBar = {
+            if (!state.contentState.isLoading.value) {
+                if (state.place.id != 0) {
+                    Column {
+                        Row(
+                            modifier = Modifier
+                                .padding(horizontal = 24.dp)
+                                .fillMaxWidth()
+                                .clip(RoundedCornerShape(10.dp))
+                                .clickable {
+                                    viewModel.onEvent(TaskEvent.OnOpenPlaceInMapModeEvent)
+                                    viewModel.onEvent(
+                                        TaskEvent.ShowQuestionDialogEvent(
+                                            context.getString(
+                                                R.string.open_in_maps
+                                            ), context.getString(R.string.really_want_in_maps)
+                                        )
+                                    )
+                                }, verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(horizontal = 16.dp),
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Icon(
+                                    modifier = Modifier.size(20.dp),
+                                    imageVector = Icons.Default.Place,
+                                    contentDescription = null,
+                                    tint = MaterialTheme.colorScheme.primary
+                                )
+                                Spacer(modifier = Modifier.width(16.dp))
+                                Column(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(vertical = 12.dp)
+                                ) {
+                                    Text(
+                                        text = "${state.place.title} | ${state.place.la}, ${state.place.lt}",
+                                        fontFamily = caros,
+                                        fontWeight = FontWeight.Normal,
+                                        fontSize = 14.sp,
+                                        color = MaterialTheme.colorScheme.onSurface
+                                    )
+                                }
+                            }
+                        }
+                        Spacer(modifier = Modifier.height(24.dp))
+                    }
+                }
+            }
         }) {
             Column(
                 modifier = Modifier
@@ -193,20 +262,24 @@ fun TaskScreen(navHostController: NavHostController, viewModel: TaskViewModel = 
                             .fillMaxWidth()
                             .padding(start = 24.dp)
                             .offset(x = -16.dp)
-                            .animateContentSize(), value = state.task.title, onValueChange = {
-                        }, colors = TextFieldDefaults.colors(
+                            .animateContentSize(),
+                        value = state.task.title,
+                        onValueChange = {},
+                        colors = TextFieldDefaults.colors(
                             unfocusedTextColor = MaterialTheme.colorScheme.onSurface,
                             focusedTextColor = MaterialTheme.colorScheme.onSurface,
                             focusedContainerColor = MaterialTheme.colorScheme.background,
                             unfocusedContainerColor = MaterialTheme.colorScheme.background,
                             unfocusedIndicatorColor = MaterialTheme.colorScheme.background,
                             focusedIndicatorColor = MaterialTheme.colorScheme.background
-                        ), textStyle = TextStyle(
+                        ),
+                        textStyle = TextStyle(
                             fontFamily = caros,
                             fontWeight = FontWeight.Bold,
                             fontSize = 20.sp,
                             lineHeight = 28.sp
-                        ), placeholder = {
+                        ),
+                        placeholder = {
                             Text(
                                 text = stringResource(R.string.heading),
                                 fontFamily = caros,
@@ -225,28 +298,33 @@ fun TaskScreen(navHostController: NavHostController, viewModel: TaskViewModel = 
                             .offset(
                                 x = -16.dp, y = if (state.task.title.isNotEmpty()) -16.dp else 0.dp
                             )
-                            .animateContentSize(), value = state.task.content, onValueChange = {
-                        }, colors = TextFieldDefaults.colors(
+                            .animateContentSize(),
+                        value = state.task.content,
+                        onValueChange = {},
+                        colors = TextFieldDefaults.colors(
                             unfocusedTextColor = MaterialTheme.colorScheme.onSurface,
                             focusedTextColor = MaterialTheme.colorScheme.onSurface,
                             focusedContainerColor = MaterialTheme.colorScheme.background,
                             unfocusedContainerColor = MaterialTheme.colorScheme.background,
                             unfocusedIndicatorColor = MaterialTheme.colorScheme.background,
                             focusedIndicatorColor = MaterialTheme.colorScheme.background
-                        ), textStyle = TextStyle(
+                        ),
+                        textStyle = TextStyle(
                             fontFamily = caros,
                             fontWeight = FontWeight.Normal,
                             fontSize = 14.sp,
                             textAlign = TextAlign.Justify,
                             lineHeight = 20.sp
-                        ), placeholder = {
+                        ),
+                        placeholder = {
                             Text(
                                 text = stringResource(R.string.content),
                                 fontFamily = caros,
                                 fontWeight = FontWeight.Normal,
                                 fontSize = 14.sp
                             )
-                        }, readOnly = true
+                        },
+                        readOnly = true
                     )
                 }
 
@@ -258,8 +336,8 @@ fun TaskScreen(navHostController: NavHostController, viewModel: TaskViewModel = 
                 ) {
                     if (!state.contentState.isLoading.value) {
                         state.subtasks.forEach { subtask ->
-                            SubtaskRow(title = subtask.title,
-                                checked = subtask.checked.value,
+                            SubtaskRow(
+                                subtask = subtask,
                                 onCheckedChange = {
                                     viewModel.onEvent(
                                         TaskEvent.SubtaskItemCheckboxToggleEvent(
@@ -267,15 +345,14 @@ fun TaskScreen(navHostController: NavHostController, viewModel: TaskViewModel = 
                                         )
                                     )
                                 },
-                                onTitleChange = {
-                                },
+                                onTitleChange = {},
                                 onDeleteClick = {
 
-                                }, isEditingEnabled = false
+                                },
+                                isEditingEnabled = false
                             )
                         }
-                    }
-                    else {
+                    } else {
                         LoadingIndicator()
                     }
                 }
@@ -283,13 +360,32 @@ fun TaskScreen(navHostController: NavHostController, viewModel: TaskViewModel = 
         }
 
         if (state.showQuestionDialog) {
-            QuestionDialog(title = stringResource(R.string.deletion),
-                text = stringResource(R.string.really_want_to_delete),
+            QuestionDialog(title = state.questionTitle,
+                text = state.questionText,
                 onDismissRequest = {
                     viewModel.onEvent(TaskEvent.HideQuestionDialogEvent)
                 },
                 onConfirmRequest = {
-                    viewModel.onEvent(TaskEvent.DeleteTaskEvent)
+                    if (state.openPlaceInMapMode) {
+                        viewModel.onEvent(TaskEvent.OpenPlaceInMapEvent)
+                        val mapIntent =
+                            Intent(Intent.ACTION_VIEW, getMapUri(state.place.la, state.place.lt))
+                        try {
+                            mapIntent.setPackage(Constants.YANDEX_MAPS_PACKAGE)
+                            startActivity(context, mapIntent, null)
+                        } catch (e: ActivityNotFoundException) {
+                            try {
+                                mapIntent.setPackage(Constants.GOOGLE_MAPS_PACKAGE)
+                                startActivity(context, mapIntent, null)
+                            } catch (e: ActivityNotFoundException) {
+                                Toast.makeText(
+                                    context,
+                                    context.getString(R.string.not_supported_apps),
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
+                        }
+                    } else viewModel.onEvent(TaskEvent.DeleteTaskEvent)
                 })
         }
 

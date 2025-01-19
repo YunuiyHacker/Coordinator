@@ -4,6 +4,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.model.Category
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.model.Place
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.model.Subtask
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.model.Task
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.home.model.TimeType
@@ -46,6 +47,11 @@ class CreateUpdateTaskState {
     var showCategorySelectorMenu by mutableStateOf(false)
 
     var subtasks: MutableList<Subtask> = mutableListOf()
+
+    var selectedPlace by mutableStateOf(Place(id = 0))
+    var showPlacesSelectorSheet by mutableStateOf(false)
+    var places: MutableList<Place> = mutableListOf()
+    var showCreateUpdatePlaceDialog by mutableStateOf(false)
 
     val contentState by mutableStateOf(ContentState())
 

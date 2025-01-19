@@ -9,8 +9,12 @@ sealed class TaskEvent {
     data object HideTaskMenuEvent : TaskEvent()
 
     data object DeleteTaskEvent : TaskEvent()
-    data object ShowQuestionDialogEvent : TaskEvent()
+    data class ShowQuestionDialogEvent(val title: String, val text: String) : TaskEvent()
     data object HideQuestionDialogEvent : TaskEvent()
+
+    data object OnOpenPlaceInMapModeEvent : TaskEvent()
+    data object OpenPlaceInMapEvent : TaskEvent()
+    data object OffOpenPlaceInMapModeEvent : TaskEvent()
 
     data class SubtaskItemCheckboxToggleEvent(val subtask: Subtask) : TaskEvent()
 }

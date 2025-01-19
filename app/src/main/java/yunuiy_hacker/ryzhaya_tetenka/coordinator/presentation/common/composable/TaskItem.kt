@@ -14,7 +14,9 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -166,16 +168,15 @@ fun TaskItem(
             if (task.subtasks.isNotEmpty()) {
                 AnimatedVisibility(showSubtasks) {
                     Column {
-                        Spacer(modifier = Modifier.height(6.dp))
                         task.subtasks.forEach { subtask ->
                             Row(
                                 modifier = Modifier
                                     .fillMaxWidth()
-                                    .padding(start = 40.dp),
+                                    .padding(start = 48.dp),
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
                                 Checkbox(
-                                    modifier = Modifier.scale(0.7f),
+                                    modifier = Modifier.size(30.dp).scale(0.7f),
                                     checked = subtask.checked.value, onCheckedChange = {
                                         subtask.checked.value = !subtask.checked.value
                                         onCheckedSubtask(subtask)

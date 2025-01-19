@@ -48,6 +48,9 @@
     <string name="category">Категория</string>
     <string name="without_category">Без категории</string>
     <string name="add_subtask">Добавить подзадачу</string>
+    <string name="location_not_selected">Место не выбрано</string>
+    <string name="add_new_place">Добавить новое место</string>
+    <string name="place">Место</string>
 
     <!--  TimePickerDialog  -->
     <string name="select">Выбрать</string>
@@ -57,7 +60,10 @@
     <string name="edit">Редактировать</string>
     <string name="delete">Удалить</string>
     <string name="deletion">Удаление</string>
-    <string name="really_want_to_delete">Вы действительно хотите удалить эту задачу?</string>
+    <string name="really_want_to_delete_task">Вы действительно хотите удалить эту задачу?</string>
+    <string name="open_in_maps">Посмотреть на карте</string>
+    <string name="really_want_in_maps">Вы действительно хотите посмотреть место на карте?</string>
+    <string name="not_supported_apps">Не нашли подходящего приложения на вашем устройстве</string>
 
     <!--  SwipeToDeleteBackground  -->
     <string name="deleted">Удалено</string>
@@ -85,4 +91,18 @@
     <string name="really_want_to_import_data">Вы действительно хотите импортировать данные? Импортированные данные добавятся к существующим</string>
     <string name="import_exception">Ошибка при импорте файла. Возможно файл поврежден или его не существует</string>
     <string name="success_import">Импорт данных успешно произведен</string>
+    <string name="app_data">Данные приложения</string>
+    <string name="places">Места</string>
+
+    <!--  CreateUpdatePlaceDialog  -->
+    <string name="place_adding">Добавление места</string>
+    <string name="place_editing">Редактирование места</string>
+    <string name="title">Название</string>
+    <string name="longitude">Долгота</string>
+    <string name="latitude">Широта</string>
+    <string name="paste_coordinates_from_google_or_yandex_maps">Вставить координаты из Google Maps/Яндекс Карты</string>
+    <string name="no_matching_data_found">Не найдено подходящих данных</string>
+
+    <!--  PlaceScreen  -->
+    <string name="really_want_to_delete_place">Вы действительно хотите удалить это место?</string>
 </resources>

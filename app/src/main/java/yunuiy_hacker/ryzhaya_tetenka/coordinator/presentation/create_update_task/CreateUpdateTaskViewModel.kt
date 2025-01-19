@@ -4,7 +4,6 @@ import android.app.Application
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
@@ -12,20 +11,23 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.R
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.data.common.model.PlaceInTask
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.data.local.shared_prefs.SharedPrefsHelper
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.mappers.toData
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.mappers.toDomain
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.model.Category
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.model.Place
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.model.Subtask
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.model.Task
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.categories.CategoriesUseCase
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.places.PlacesUseCase
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.places_in_tasks.PlacesInTasksUseCase
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.subtasks.SubtasksUseCase
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.tasks.TasksUseCase
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.util.Constants
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.util.setCalendarTime
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.util.setDateTime
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.util.startAndEndThisWeek
-import yunuiy_hacker.ryzhaya_tetenka.coordinator.util.toTimeTypeEvent
 import java.util.Calendar
 import java.util.Date
 import java.util.GregorianCalendar
@@ -36,6 +38,8 @@ class CreateUpdateTaskViewModel @Inject constructor(
     private val tasksUseCase: TasksUseCase,
     private val categoriesUseCase: CategoriesUseCase,
     private val subtasksUseCase: SubtasksUseCase,
+    private val placesUseCase: PlacesUseCase,
+    private val placesInTasksUseCase: PlacesInTasksUseCase,
     private val sharedPrefsHelper: SharedPrefsHelper,
     private val application: Application
 ) : ViewModel() {
@@ -94,6 +98,26 @@ class CreateUpdateTaskViewModel @Inject constructor(
 
             is CreateUpdateTaskEvent.AddSubtaskEvent -> addSubtask()
             is CreateUpdateTaskEvent.DeleteSubtaskEvent -> deleteSubtask(event.subtask)
+
+            is CreateUpdateTaskEvent.ShowPlaceSelectorSheetEvent -> {
+                state.showPlacesSelectorSheet = true
+                loadPlaces()
+            }
+
+            is CreateUpdateTaskEvent.SelectPlaceEvent -> {
+                state.showPlacesSelectorSheet = false
+                state.selectedPlace = event.place
+            }
+
+            is CreateUpdateTaskEvent.HidePlaceSelectorSheetEvent -> state.showPlacesSelectorSheet =
+                false
+
+            is CreateUpdateTaskEvent.ShowPlaceCreateUpdateDialogEvent -> state.showCreateUpdatePlaceDialog =
+                true
+
+            is CreateUpdateTaskEvent.CreatePlaceEvent -> createPlace(event.place)
+            is CreateUpdateTaskEvent.HidePlaceCreateUpdateDialogEvent -> state.showCreateUpdatePlaceDialog =
+                false
 
             is CreateUpdateTaskEvent.OnBackPressEvent -> saveTaskData()
 
@@ -154,6 +178,12 @@ class CreateUpdateTaskViewModel @Inject constructor(
                     val c: Calendar = GregorianCalendar()
                     c.timeInMillis = state.date.time
                     state.weekDate = startAndEndThisWeek(c)
+                    state.subtasks.addAll(subtasksUseCase.getSubtasksByTaskIdOperator(state.taskId)
+                        .map { subtask -> subtask.toDomain() })
+                    val dataPlace = placesUseCase.getPlaceByIdOperator(
+                        placesInTasksUseCase.getPlacesInTaskByTaskId(state.taskId)?.placeId ?: 0
+                    )
+                    if (dataPlace != null) state.selectedPlace = dataPlace.toDomain()
                 }
 
                 state.contentState.isLoading.value = false
@@ -171,24 +201,19 @@ class CreateUpdateTaskViewModel @Inject constructor(
 
         state.subtasks.add(
             Subtask(
-                title = "", checked = mutableStateOf(false)
+                id = state.subtasks.size + 1, title = "", checked = mutableStateOf(false)
             )
         )
 
         state.contentState.isLoading.value = false
     }
 
-    @OptIn(DelicateCoroutinesApi::class)
     private fun deleteSubtask(subtask: Subtask) {
         state.contentState.isLoading.value = true
 
-        GlobalScope.launch(Dispatchers.IO) {
-            runBlocking {
-                state.subtasks.remove(subtask)
+        state.subtasks.removeIf { currentSubtask -> currentSubtask.id == subtask.id }
 
-                state.contentState.isLoading.value = false
-            }
-        }
+        state.contentState.isLoading.value = false
     }
 
     private fun changeCategory(event: CreateUpdateTaskEvent.SelectCategoryMenuEvent) {
@@ -252,8 +277,11 @@ class CreateUpdateTaskViewModel @Inject constructor(
                     if (state.taskId == 0) {
                         val taskId: Long = tasksUseCase.insertTaskOperator.invoke(task)
                         createOrUpdateSubtasks(taskId)
+                        createOrUpdatePlace(taskId.toInt())
                     } else {
                         tasksUseCase.updateTaskOperator.invoke(task)
+                        createOrUpdateSubtasks(task.id.toLong())
+                        createOrUpdatePlace(task.id)
                     }
                     state.success = true
                 }
@@ -267,10 +295,13 @@ class CreateUpdateTaskViewModel @Inject constructor(
         } else {
             GlobalScope.launch(Dispatchers.IO) {
                 if (state.taskId == 0) {
-                    val taskId = tasksUseCase.insertTaskOperator.invoke(task)
+                    val taskId: Long = tasksUseCase.insertTaskOperator.invoke(task)
                     createOrUpdateSubtasks(taskId)
+                    createOrUpdatePlace(taskId.toInt())
                 } else {
                     tasksUseCase.updateTaskOperator.invoke(task)
+                    createOrUpdateSubtasks(task.id.toLong())
+                    createOrUpdatePlace(task.id)
                 }
                 state.success = true
             }
@@ -280,7 +311,7 @@ class CreateUpdateTaskViewModel @Inject constructor(
 
     private suspend fun createOrUpdateSubtasks(taskId: Long) {
         state.subtasks.removeIf { subtask -> subtask.title.isEmpty() }
-        state.subtasks.replaceAll { subtask -> subtask.copy(taskId = taskId.toInt()) }
+        state.subtasks.replaceAll { subtask -> subtask.copy(id = 0, taskId = taskId.toInt()) }
 
         subtasksUseCase.insertSubtasksOperator.invoke(state.subtasks.map { subtask -> subtask.toData() })
     }
@@ -288,5 +319,46 @@ class CreateUpdateTaskViewModel @Inject constructor(
     private fun clearUnsavedData() {
         sharedPrefsHelper.unsavedTitle = ""
         sharedPrefsHelper.unsavedContent = ""
+    }
+
+    @OptIn(DelicateCoroutinesApi::class)
+    private fun loadPlaces() {
+        state.contentState.isLoading.value = true
+
+        GlobalScope.launch(Dispatchers.IO) {
+            launch {
+                state.places = placesUseCase.getPlacesOperator().map { place -> place.toDomain() }
+                    .toMutableList()
+
+                state.contentState.isLoading.value = false
+            }
+        }
+    }
+
+    @OptIn(DelicateCoroutinesApi::class)
+    private fun createPlace(place: Place) {
+        state.showCreateUpdatePlaceDialog = false
+
+        GlobalScope.launch(Dispatchers.IO) {
+            launch {
+                placesUseCase.insertPlaceOperator(place.toData())
+                loadPlaces()
+            }
+        }
+    }
+
+    private suspend fun createOrUpdatePlace(taskId: Int) {
+        if (state.selectedPlace.id != 0) {
+            val place = placesInTasksUseCase.getPlacesInTaskByTaskId(taskId)
+
+            if (place == null) placesInTasksUseCase.insertPlaceInTaskOperator(
+                placeInTask = PlaceInTask(
+                    taskId = taskId, placeId = state.selectedPlace.id
+                )
+            )
+            else placesInTasksUseCase.updatePlaceInTaskOperator(
+                placeInTask = place.copy(placeId = state.selectedPlace.id)
+            )
+        }
     }
 }

@@ -13,4 +13,8 @@ object Constants {
     )
     const val TASKS_DATABASE_NAME = "tasks_db"
 
+    //Package uri's of maps
+    const val YANDEX_MAPS_PACKAGE = "ru.yandex.yandexmaps"
+    const val GOOGLE_MAPS_PACKAGE = "com.google.android.apps.maps"
+
 }

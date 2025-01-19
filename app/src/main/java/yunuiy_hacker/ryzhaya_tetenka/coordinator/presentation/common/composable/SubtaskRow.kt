@@ -5,6 +5,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Close
@@ -28,36 +29,27 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.R
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.model.Subtask
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.ui.theme.caros
 
 @Composable
 fun SubtaskRow(
     modifier: Modifier = Modifier,
-    checked: Boolean,
+    subtask: Subtask,
     onCheckedChange: (Boolean) -> Unit,
-    title: String,
     onTitleChange: (String) -> Unit,
-    onDeleteClick: () -> Unit,
+    onDeleteClick: (subtask: Subtask) -> Unit,
     isEditingEnabled: Boolean = true
 ) {
     val interactionSource = remember { MutableInteractionSource() }
-    var localTitle by remember { mutableStateOf(title) }
+    var localTitle by remember { mutableStateOf(subtask.title) }
 
     Row(modifier = modifier, verticalAlignment = Alignment.CenterVertically) {
-        if (isEditingEnabled) {
-            Icon(
-                imageVector = Icons.Rounded.DragHandle,
-                contentDescription = null,
-                tint = MaterialTheme.colorScheme.primary
-            )
-            Spacer(modifier = Modifier.width(16.dp))
-        }
         Checkbox(
-            checked = checked, onCheckedChange = {
-                onCheckedChange(!checked)
+            checked = subtask.checked.value, onCheckedChange = {
+                onCheckedChange(!subtask.checked.value)
             }, colors = CheckboxDefaults.colors(
                 uncheckedColor = MaterialTheme.colorScheme.onSurface,
                 checkedColor = MaterialTheme.colorScheme.primary
@@ -102,7 +94,7 @@ fun SubtaskRow(
                 modifier = Modifier.clickable(
                     interactionSource = interactionSource, indication = null
                 ) {
-                    onDeleteClick()
+                    onDeleteClick(subtask)
                 },
                 imageVector = Icons.Rounded.Close,
                 contentDescription = null,

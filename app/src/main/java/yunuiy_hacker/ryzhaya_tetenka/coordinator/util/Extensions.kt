@@ -1,6 +1,8 @@
 package yunuiy_hacker.ryzhaya_tetenka.coordinator.util
 
 import android.app.Application
+import android.content.Context
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.util.Log
 import androidx.core.content.ContentProviderCompat.requireContext
@@ -79,4 +81,31 @@ fun getFileDataFromUri(application: Application, uri: Uri): String {
 
     inputStream.close()
     return data
+}
+
+fun getLaAndLtFromString(coordinates: String): List<Double>? {
+    val split = coordinates.split(",")
+    if (split.size == 4) {
+        return listOf(
+            (split[0].trim() + "." + split[1].trim()).toDouble(),
+            (split[2].trim() + "." + split[3].trim()).toDouble()
+        )
+    } else if (split.size == 2) {
+        return listOf(split[0].trim().toDouble(), split[1].trim().toDouble())
+    }
+    return null
+}
+
+fun appIsInstalled(context: Context, stringUri: String): Boolean {
+    val packageManager: PackageManager = context.packageManager
+    try {
+        packageManager.getPackageInfo(stringUri, PackageManager.GET_ACTIVITIES)
+        return true
+    } catch (e: PackageManager.NameNotFoundException) {
+    }
+    return false
+}
+
+fun getMapUri(la: Double, lt: Double): Uri {
+    return Uri.parse("geo:0,0?q=$la, $lt")
 }

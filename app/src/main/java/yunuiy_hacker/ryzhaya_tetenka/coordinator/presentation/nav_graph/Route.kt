@@ -6,4 +6,5 @@ sealed class Route(val route: String) {
     data object CreateUpdateTaskScreen : Route("createUpdateTaskScreen")
     data object TaskScreen : Route("taskScreen")
     data object SettingsScreen : Route("settingsScreen")
+    data object PlacesScreen: Route("placesScreen")
 }

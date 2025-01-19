@@ -1,6 +1,7 @@
 package yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.create_update_task
 
 import androidx.activity.compose.BackHandler
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.LocalIndication
 import androidx.compose.foundation.background
@@ -24,10 +25,13 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AddLocationAlt
+import androidx.compose.material.icons.filled.Place
 import androidx.compose.material.icons.rounded.Add
 import androidx.compose.material.icons.rounded.ArrowBack
 import androidx.compose.material.icons.rounded.MoreVert
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDefaults
@@ -36,6 +40,7 @@ import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.ShapeDefaults
 import androidx.compose.material3.Text
@@ -63,7 +68,10 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.R
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.home.model.TimeTypeEnum
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.common.composable.AddPlaceButton
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.common.composable.CreateUpdatePlaceDialog
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.common.composable.MessageDialog
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.common.composable.PlaceRow
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.common.composable.SubtaskRow
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.common.composable.TimePickerDialog
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.common.composable.TimeRow
@@ -158,8 +166,7 @@ fun CreateUpdateTaskScreen(
                                 ) {
                                     DropdownMenuItem(text = {
                                         Row(verticalAlignment = Alignment.CenterVertically) {
-                                            Checkbox(
-                                                checked = state.endTimeChecked,
+                                            Checkbox(checked = state.endTimeChecked,
                                                 onCheckedChange = {
                                                     viewModel.onEvent(CreateUpdateTaskEvent.EndTimeCheckToggleEvent)
                                                 })
@@ -424,12 +431,13 @@ fun CreateUpdateTaskScreen(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(horizontal = 24.dp)
+                                .offset(y = -16.dp)
                                 .animateContentSize()
                         ) {
                             if (!state.contentState.isLoading.value) {
                                 state.subtasks.forEach { subtask ->
-                                    SubtaskRow(title = subtask.title,
-                                        checked = subtask.checked.value,
+                                    SubtaskRow(
+                                        subtask = subtask,
                                         onCheckedChange = {
                                             subtask.checked.value = !subtask.checked.value
                                         },
@@ -439,7 +447,7 @@ fun CreateUpdateTaskScreen(
                                         onDeleteClick = {
                                             viewModel.onEvent(
                                                 CreateUpdateTaskEvent.DeleteSubtaskEvent(
-                                                    subtask
+                                                    it
                                                 )
                                             )
                                         })
@@ -447,34 +455,62 @@ fun CreateUpdateTaskScreen(
                             }
                         }
                         Spacer(modifier = Modifier.height(16.dp))
-                        Row(
+                        AddPlaceButton(
                             modifier = Modifier
                                 .offset(x = 0.dp, y = -16.dp)
                                 .fillMaxWidth()
                                 .padding(horizontal = 24.dp)
-                                .clip(RoundedCornerShape(12.dp))
-                                .clickable {
-                                    viewModel.onEvent(CreateUpdateTaskEvent.AddSubtaskEvent)
-                                }, verticalAlignment = Alignment.CenterVertically
                         ) {
+                            viewModel.onEvent(CreateUpdateTaskEvent.AddSubtaskEvent)
+                        }
+                        AnimatedVisibility(state.selectedPlace.id == 0) {
                             Row(
                                 modifier = Modifier
                                     .fillMaxWidth()
-                                    .padding(vertical = 6.dp),
-                                verticalAlignment = Alignment.CenterVertically
+                                    .padding(horizontal = 24.dp)
+                                    .clip(RoundedCornerShape(10.dp))
+                                    .clickable {
+                                        viewModel.onEvent(CreateUpdateTaskEvent.ShowPlaceSelectorSheetEvent)
+                                    }, verticalAlignment = Alignment.CenterVertically
                             ) {
-                                Icon(
-                                    imageVector = Icons.Rounded.Add,
-                                    contentDescription = null,
-                                    tint = MaterialTheme.colorScheme.onSurface
-                                )
-                                Spacer(modifier = Modifier.width(16.dp))
-                                Text(
-                                    text = stringResource(R.string.add_subtask),
-                                    fontFamily = caros,
-                                    color = MaterialTheme.colorScheme.onSurface
-                                )
+                                Row(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .background(
+                                            color = MaterialTheme.colorScheme.surfaceVariant,
+                                            shape = RoundedCornerShape(10.dp)
+                                        )
+                                        .clip(RoundedCornerShape(10.dp))
+                                        .padding(horizontal = 16.dp, vertical = 10.dp),
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    Icon(
+                                        modifier = Modifier.size(16.dp),
+                                        imageVector = Icons.Default.Place,
+                                        contentDescription = null,
+                                        tint = MaterialTheme.colorScheme.onSurfaceVariant
+                                    )
+                                    Spacer(modifier = Modifier.width(16.dp))
+                                    Text(
+                                        text = stringResource(R.string.location_not_selected),
+                                        fontFamily = caros,
+                                        fontWeight = FontWeight.Normal,
+                                        fontSize = 16.sp,
+                                        color = MaterialTheme.colorScheme.onSurface
+                                    )
+                                }
                             }
+                        }
+                        AnimatedVisibility(state.selectedPlace.id != 0) {
+                            PlaceRow(modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 24.dp),
+                                place = state.selectedPlace,
+                                onClick = {
+                                    viewModel.onEvent(
+                                        CreateUpdateTaskEvent.ShowPlaceSelectorSheetEvent
+                                    )
+                                })
                         }
                         Spacer(modifier = Modifier.height(16.dp))
                     }
@@ -589,9 +625,10 @@ fun CreateUpdateTaskScreen(
         }
 
         if (state.showTimePickerDialog || state.showEndTimePickerDialog) {
-            TimePickerDialog(onDismissRequest = {
-                viewModel.onEvent(CreateUpdateTaskEvent.HideTimePickerDialogEvent)
-            },
+            TimePickerDialog(
+                onDismissRequest = {
+                    viewModel.onEvent(CreateUpdateTaskEvent.HideTimePickerDialogEvent)
+                },
                 onSelectButtonClick = { hour, minute ->
                     if (state.showTimePickerDialog) viewModel.onEvent(
                         CreateUpdateTaskEvent.SelectTimePickerDialogEvent(
@@ -610,11 +647,87 @@ fun CreateUpdateTaskScreen(
         }
 
         if (state.showMessageDialog) {
-            MessageDialog(
-                message = state.contentState.exception.value?.message ?: "",
+            MessageDialog(message = state.contentState.exception.value?.message ?: "",
                 onDismissRequest = {
                     viewModel.onEvent(CreateUpdateTaskEvent.HideMessageDialogEvent)
                 })
+        }
+
+        if (state.showPlacesSelectorSheet) {
+            ModalBottomSheet(onDismissRequest = {
+                viewModel.onEvent(CreateUpdateTaskEvent.HidePlaceSelectorSheetEvent)
+            }, containerColor = MaterialTheme.colorScheme.surfaceVariant) {
+                Column {
+                    Text(
+                        modifier = Modifier.fillMaxWidth(),
+                        text = stringResource(R.string.place),
+                        textAlign = TextAlign.Center,
+                        fontFamily = caros,
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.Normal,
+                        color = MaterialTheme.colorScheme.onSurface
+                    )
+                    Spacer(modifier = Modifier.height(24.dp))
+                    Button(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 24.dp),
+                        onClick = {
+                            viewModel.onEvent(CreateUpdateTaskEvent.ShowPlaceCreateUpdateDialogEvent)
+                        },
+                        shape = RoundedCornerShape(12.dp),
+                        colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primaryContainer)
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.AddLocationAlt,
+                            contentDescription = null,
+                            tint = MaterialTheme.colorScheme.onSurface
+                        )
+                        Spacer(modifier = Modifier.width(16.dp))
+                        Text(
+                            modifier = Modifier
+                                .weight(1f)
+                                .offset(x = -16.dp),
+                            text = stringResource(R.string.add_new_place),
+                            fontFamily = caros,
+                            fontWeight = FontWeight.Medium,
+                            color = MaterialTheme.colorScheme.onSurface,
+                            textAlign = TextAlign.Center
+                        )
+                    }
+                    Spacer(modifier = Modifier.height(4.dp))
+                    AnimatedVisibility(!state.contentState.isLoading.value) {
+                        if (!state.contentState.isLoading.value) {
+                            Column {
+                                state.places.forEach { place ->
+                                    PlaceRow(
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .padding(horizontal = 24.dp),
+                                        place = place,
+                                        onClick = {
+                                            viewModel.onEvent(
+                                                CreateUpdateTaskEvent.SelectPlaceEvent(
+                                                    place
+                                                )
+                                            )
+                                        },
+                                    )
+                                    Spacer(modifier = Modifier.height(8.dp))
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        if (state.showCreateUpdatePlaceDialog) {
+            CreateUpdatePlaceDialog(onDismissRequest = {
+                viewModel.onEvent(CreateUpdateTaskEvent.HidePlaceCreateUpdateDialogEvent)
+            }, onAddClick = {
+                viewModel.onEvent(CreateUpdateTaskEvent.CreatePlaceEvent(it))
+            }, isEditMode = false)
         }
     }
 

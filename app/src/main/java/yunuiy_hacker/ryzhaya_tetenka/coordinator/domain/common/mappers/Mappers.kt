@@ -2,6 +2,8 @@ package yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.mappers
 
 import androidx.compose.runtime.mutableStateOf
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.data.common.model.Category
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.data.common.model.Place
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.data.common.model.PlaceInTask
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.data.common.model.Subtask
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.data.common.model.Task
 import java.util.Date
@@ -62,4 +64,24 @@ fun Subtask.toDomain(): yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.
 
 fun yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.model.Subtask.toData(): Subtask {
     return Subtask(id = id, taskId = taskId, title = title, checked = checked.value, index = 0)
+}
+
+fun Place.toDomain(): yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.model.Place {
+    return yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.model.Place(
+        id = id, title = title ?: "", la = la ?: 0.0, lt = lt ?: 0.0
+    )
+}
+
+fun yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.model.Place.toData(): Place {
+    return Place(id = id, title = title, la = la, lt = lt)
+}
+
+fun PlaceInTask.toDomain(): yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.model.PlaceInTask {
+    return yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.model.PlaceInTask(
+        id = id, placeId = placeId, taskId = taskId
+    )
+}
+
+fun yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.model.PlaceInTask.toData(): PlaceInTask {
+    return PlaceInTask(id = id, placeId = placeId, taskId = taskId)
 }

@@ -113,6 +113,7 @@ fun SettingsScreen(navHostController: NavHostController, viewModel: SettingsView
                     .verticalScroll(rememberScrollState())
             ) {
                 Spacer(modifier = Modifier.height(24.dp))
+                //personal data
                 Text(
                     modifier = Modifier.padding(horizontal = 24.dp),
                     text = stringResource(R.string.personal_data).toUpperCase(Locale.ROOT),
@@ -149,6 +150,41 @@ fun SettingsScreen(navHostController: NavHostController, viewModel: SettingsView
                     }
                 }
                 Spacer(modifier = Modifier.height(16.dp))
+                Text(
+                    modifier = Modifier.padding(horizontal = 24.dp),
+                    text = stringResource(R.string.app_data).toUpperCase(Locale.ROOT),
+                    fontFamily = caros,
+                    fontWeight = FontWeight.Medium,
+                    fontSize = 14.sp,
+                    color = MaterialTheme.colorScheme.primary
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clip(RoundedCornerShape(14.dp))
+                        .clickable {
+                            navHostController.navigate(Route.PlacesScreen.route)
+                        }, verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Row(modifier = Modifier.padding(horizontal = 24.dp, vertical = 12.dp)) {
+                        Text(
+                            modifier = Modifier.weight(1f),
+                            text = stringResource(R.string.places),
+                            fontFamily = caros,
+                            fontWeight = FontWeight.Normal,
+                            fontSize = 16.sp,
+                            color = MaterialTheme.colorScheme.onSurface
+                        )
+                        Icon(
+                            imageVector = Icons.Rounded.KeyboardArrowRight,
+                            contentDescription = null,
+                            tint = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    }
+                }
+                Spacer(modifier = Modifier.height(16.dp))
+                //import export data
                 Text(
                     modifier = Modifier.padding(horizontal = 24.dp),
                     text = stringResource(R.string.import_export_data).toUpperCase(Locale.ROOT),
