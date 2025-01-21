@@ -3,6 +3,7 @@
 
     <style name="Theme.Coordinator" parent="android:Theme.Material.Light.NoActionBar">
         <item name="android:colorBackground">@color/white</item>
+        <item name="colorPrimary">#FF6b00b8</item>
     </style>
 
 </resources>

@@ -6,6 +6,8 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.core.view.WindowCompat
 import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.data.local.shared_prefs.SharedPrefsHelper
@@ -22,21 +24,21 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
+        WindowCompat.setDecorFitsSystemWindows(window, false)
+        val content: () -> Unit = {
+            setContent {
+                val navHostController = rememberNavController()
+                val userNameExists: Boolean = !sharedPrefsHelper.name.isNullOrEmpty()
 
-        val clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-        clipboard.primaryClip
-
-        setContent {
-            val navHostController = rememberNavController()
-            val userNameExists: Boolean = !sharedPrefsHelper.name.isNullOrEmpty()
-
-            CoordinatorTheme {
-                NavGraph(
-                    navHostController = navHostController,
-                    startDestination = if (userNameExists) Route.HomeScreen.route else Route.OnboardingScreen.route
-                )
+                CoordinatorTheme {
+                    NavGraph(
+                        navHostController = navHostController,
+                        startDestination = if (userNameExists) Route.HomeScreen.route else Route.OnboardingScreen.route
+                    )
+                }
             }
         }
+        installSplashScreen()
+        content()
     }
 }

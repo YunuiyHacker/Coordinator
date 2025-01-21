@@ -157,7 +157,8 @@ fun NavGraph(
                         300, easing = LinearEasing
                     )
                 )
-            }) {
+            }
+        ) {
             val taskId = it.arguments?.getString("task_id")!!.toInt()
 
             val viewModel: TaskViewModel = hiltViewModel()

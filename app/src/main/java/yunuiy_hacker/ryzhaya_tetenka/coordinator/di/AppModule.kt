@@ -142,17 +142,36 @@ object AppModule {
     @Provides
     @Singleton
     fun provideExportDataUseCase(
-        tasksDao: TaskDao, categoryDao: CategoryDao, subtaskDao: SubtaskDao
-    ): ExportDataUseCase = ExportDataUseCase(tasksDao, categoryDao, subtaskDao)
+        tasksUseCase: TasksUseCase,
+        categoriesUseCase: CategoriesUseCase,
+        subtasksUseCase: SubtasksUseCase,
+        placesUseCase: PlacesUseCase,
+        placesInTasksUseCase: PlacesInTasksUseCase
+    ): ExportDataUseCase = ExportDataUseCase(
+        tasksUseCase,
+        categoriesUseCase,
+        subtasksUseCase,
+        placesUseCase,
+        placesInTasksUseCase
+    )
 
     @Provides
     @Singleton
     fun provideImportDataUseCase(
-        tasksDao: TaskDao,
-        categoryDao: CategoryDao,
-        subtaskDao: SubtaskDao,
+        tasksUseCase: TasksUseCase,
+        categoriesUseCase: CategoriesUseCase,
+        subtasksUseCase: SubtasksUseCase,
+        placesUseCase: PlacesUseCase,
+        placesInTasksUseCase: PlacesInTasksUseCase,
         application: Application
-    ): ImportDataUseCase = ImportDataUseCase(tasksDao, categoryDao, subtaskDao, application)
+    ): ImportDataUseCase = ImportDataUseCase(
+        tasksUseCase,
+        categoriesUseCase,
+        subtasksUseCase,
+        placesUseCase,
+        placesInTasksUseCase,
+        application
+    )
 
     @Provides
     @Singleton

@@ -119,6 +119,7 @@ fun HomeScreen(navHostController: NavHostController, viewModel: HomeViewModel = 
     }
 
     viewModel.state.let { state ->
+        val state = remember { state }
 
         Scaffold(floatingActionButton = {
             AnimatedVisibility(!state.isDeletionMode, exit = fadeOut(), enter = fadeIn()) {
@@ -614,7 +615,7 @@ fun HomeScreen(navHostController: NavHostController, viewModel: HomeViewModel = 
                     modifier = Modifier.fillMaxSize(), visible = !state.contentState.isLoading.value
                 ) {
                     Column(
-                        modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.Center
+                        modifier = Modifier.fillMaxSize().animateContentSize(), verticalArrangement = Arrangement.Center
                     ) {
                         if (state.tasks.isNotEmpty()) {
                             state.tasks.forEach { task ->

@@ -78,7 +78,7 @@ fun yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.model.Place.toData()
 
 fun PlaceInTask.toDomain(): yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.model.PlaceInTask {
     return yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.model.PlaceInTask(
-        id = id, placeId = placeId, taskId = taskId
+        id = id, placeId = placeId ?: 0, taskId = taskId ?: 0
     )
 }
 
