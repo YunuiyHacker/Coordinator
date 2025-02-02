@@ -194,7 +194,8 @@ class HomeViewModel @Inject constructor(
 
         state.tasks.forEachIndexed { index, task ->
             state.tasks[index].subtasks =
-                subtasksUseCase.getSubtasksByTaskIdOperator(task.id).map { subtask -> subtask.toDomain() }
+                subtasksUseCase.getSubtasksByTaskIdOperator(task.id)
+                    .map { subtask -> subtask.toDomain() }
                     .toMutableList()
         }
     }
@@ -354,13 +355,12 @@ class HomeViewModel @Inject constructor(
         GlobalScope.launch(Dispatchers.IO) {
             tasksUseCase.updateTaskOperator.invoke(
                 event.task.copy(
-                    checked = mutableStateOf(
-                        event.task.checked.value
-                    )
+                    checked =
+                    event.task.checked
                 ).toData()
             )
         }
-        event.task.checked.value = !event.task.checked.value
+        event.task.checked = !event.task.checked
     }
 
     @OptIn(DelicateCoroutinesApi::class)

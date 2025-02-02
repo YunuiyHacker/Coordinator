@@ -3,6 +3,7 @@ package yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.task
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.model.People
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.model.Place
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.model.Subtask
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.model.Task
@@ -21,6 +22,7 @@ class TaskState {
     var task by mutableStateOf(Task())
     var subtasks: MutableList<Subtask> = mutableListOf()
     var place by mutableStateOf(Place())
+    var peoples: List<People> = listOf()
 
     var showTaskMenu by mutableStateOf(false)
     var questionTitle by mutableStateOf("")
@@ -28,6 +30,9 @@ class TaskState {
     var showQuestionDialog by mutableStateOf(false)
 
     var openPlaceInMapMode by mutableStateOf(false)
+
+    var selectedPeople by mutableStateOf(People())
+    var showCreateUpdatePeopleBottomSheet by mutableStateOf(false)
 
     var success by mutableStateOf(false)
 

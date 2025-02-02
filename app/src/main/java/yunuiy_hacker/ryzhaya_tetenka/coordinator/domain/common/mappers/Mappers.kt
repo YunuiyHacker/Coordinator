@@ -2,6 +2,8 @@ package yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.mappers
 
 import androidx.compose.runtime.mutableStateOf
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.data.common.model.Category
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.data.common.model.People
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.data.common.model.PeopleInTask
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.data.common.model.Place
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.data.common.model.PlaceInTask
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.data.common.model.Subtask
@@ -21,7 +23,7 @@ fun Task.toDomain(): yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.mod
         endMinute = endMinute ?: 0,
         title = title ?: "",
         content = content ?: "",
-        checked = mutableStateOf(checked ?: false)
+        checked = checked ?: false
     )
 }
 
@@ -38,7 +40,7 @@ fun yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.model.Task.toData():
         endMinute = endMinute,
         title = title,
         content = content,
-        checked = checked.value
+        checked = checked
     )
 }
 
@@ -84,4 +86,44 @@ fun PlaceInTask.toDomain(): yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.com
 
 fun yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.model.PlaceInTask.toData(): PlaceInTask {
     return PlaceInTask(id = id, placeId = placeId, taskId = taskId)
+}
+
+fun People.toDomain(): yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.model.People {
+    return yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.model.People(
+        id = id,
+        surname = surname ?: "",
+        name = name ?: "",
+        lastname = lastname ?: "",
+        sex = sex ?: true,
+        dateOfBirthInMilliseconds = dateOfBirthInMilliseconds,
+        displayName = displayName ?: "",
+        address = address ?: "",
+        avatarPath = avatarPath ?: ""
+    )
+}
+
+fun yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.model.People.toData(): People {
+    return People(
+        id = id,
+        surname = surname,
+        name = name,
+        lastname = lastname,
+        sex = sex,
+        dateOfBirthInMilliseconds = dateOfBirthInMilliseconds,
+        displayName = displayName,
+        address = address,
+        avatarPath = avatarPath
+    )
+}
+
+fun PeopleInTask.toDomain(): yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.model.PeopleInTask {
+    return yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.model.PeopleInTask(
+        id = id,
+        peopleId = peopleId ?: 0,
+        taskId = taskId ?: 0
+    )
+}
+
+fun yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.model.PeopleInTask.toData(): PeopleInTask {
+    return PeopleInTask(id = id, peopleId = peopleId, taskId = taskId)
 }

@@ -1,7 +1,6 @@
 package yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.common.composable
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.LocalIndication
 import androidx.compose.foundation.background
@@ -14,7 +13,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -71,6 +69,9 @@ fun TaskItem(
     var showSubtasks by remember {
         mutableStateOf(false)
     }
+    var checked by remember {
+        mutableStateOf(task.checked)
+    }
 
     Row(
         modifier = modifier
@@ -87,6 +88,8 @@ fun TaskItem(
                 onClick = {
                     if (!isDeletionMode)
                         onClick()
+                    else
+                        onDeleteCheckedChange(!isDeleteChecked)
                 }), verticalAlignment = Alignment.CenterVertically
     ) {
         Column(modifier = Modifier.padding(12.dp)) {
@@ -95,8 +98,9 @@ fun TaskItem(
             ) {
                 AnimatedVisibility(!isDeletionMode) {
                     Checkbox(
-                        checked = task.checked.value, onCheckedChange = {
-                            onCheckedChange(!task.checked.value)
+                        checked = checked, onCheckedChange = {
+                            checked = !checked
+                            onCheckedChange(checked)
                         }, colors = CheckboxDefaults.colors(
                             uncheckedColor = MaterialTheme.colorScheme.onSurface,
                             checkedColor = MaterialTheme.colorScheme.primary
@@ -110,10 +114,10 @@ fun TaskItem(
                         fontFamily = caros,
                         fontSize = 16.sp,
                         fontWeight = FontWeight.Medium,
-                        color = if (task.checked.value) Color.Gray else MaterialTheme.colorScheme.onSurface,
+                        color = if (checked) Color.Gray else MaterialTheme.colorScheme.onSurface,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
-                        textDecoration = if (task.checked.value) TextDecoration.LineThrough else TextDecoration.None
+                        textDecoration = if (checked) TextDecoration.LineThrough else TextDecoration.None
                     )
                     if (task.title.isNotEmpty() && task.content.isNotEmpty()) {
                         Spacer(
@@ -126,10 +130,10 @@ fun TaskItem(
                             fontFamily = caros,
                             fontSize = 12.sp,
                             fontWeight = FontWeight.Normal,
-                            color = if (task.checked.value) Color.Gray else MaterialTheme.colorScheme.onSurfaceVariant,
+                            color = if (checked) Color.Gray else MaterialTheme.colorScheme.onSurfaceVariant,
                             maxLines = 3,
                             overflow = TextOverflow.Ellipsis,
-                            textDecoration = if (task.checked.value) TextDecoration.LineThrough else TextDecoration.None,
+                            textDecoration = if (checked) TextDecoration.LineThrough else TextDecoration.None,
                             lineHeight = 16.sp
                         )
                     }
@@ -147,7 +151,7 @@ fun TaskItem(
                                 task.endMinute
                             )
                         }",
-                        color = if (task.checked.value) Color.Gray else MaterialTheme.colorScheme.onSurface,
+                        color = if (checked) Color.Gray else MaterialTheme.colorScheme.onSurface,
                         fontFamily = roboto,
                         fontWeight = FontWeight.Bold,
                         fontSize = 18.sp
@@ -176,7 +180,9 @@ fun TaskItem(
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
                                 Checkbox(
-                                    modifier = Modifier.size(30.dp).scale(0.7f),
+                                    modifier = Modifier
+                                        .size(30.dp)
+                                        .scale(0.7f),
                                     checked = subtask.checked.value, onCheckedChange = {
                                         subtask.checked.value = !subtask.checked.value
                                         onCheckedSubtask(subtask)

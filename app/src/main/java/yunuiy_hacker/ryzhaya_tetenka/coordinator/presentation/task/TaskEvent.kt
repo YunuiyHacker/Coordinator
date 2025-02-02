@@ -1,5 +1,6 @@
 package yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.task
 
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.model.People
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.model.Subtask
 
 sealed class TaskEvent {
@@ -17,4 +18,10 @@ sealed class TaskEvent {
     data object OffOpenPlaceInMapModeEvent : TaskEvent()
 
     data class SubtaskItemCheckboxToggleEvent(val subtask: Subtask) : TaskEvent()
+
+    data class ShowCreateUpdatePeopleBottomSheetEvent(
+        val people: People
+    ) : TaskEvent()
+
+    data object HideCreateUpdatePeopleBottomSheetEvent : TaskEvent()
 }

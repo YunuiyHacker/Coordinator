@@ -8,8 +8,11 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.data.common.model.PeopleInTask
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.data.local.room.CategoryDao
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.data.local.room.CoordinatorDatabase
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.data.local.room.PeopleDao
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.data.local.room.PeopleInTaskDao
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.data.local.room.PlaceDao
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.data.local.room.PlaceInTaskDao
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.data.local.room.SubtaskDao
@@ -22,6 +25,21 @@ import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.categori
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.categories.InsertCategoriesOperator
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.categories.InsertCategoryOperator
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.categories.UpdateCategoryOperator
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.peoples.DeletePeopleOperator
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.peoples.GetPeopleByIdOperator
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.peoples.GetPeoplesOperator
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.peoples.InsertPeopleOperator
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.peoples.InsertPeoplesOperator
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.peoples.PeoplesUseCase
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.peoples.UpdatePeopleOperator
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.peoples_in_tasks.DeletePeopleInTaskOperator
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.peoples_in_tasks.DeletePeoplesInTasksOperator
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.peoples_in_tasks.GetPeoplesInTasksByTaskIdOperator
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.peoples_in_tasks.GetPeoplesInTasksOperator
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.peoples_in_tasks.InsertPeopleInTaskOperator
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.peoples_in_tasks.InsertPeoplesInTasksOperator
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.peoples_in_tasks.PeoplesInTasksUseCase
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.peoples_in_tasks.UpdatePeopleInTaskOperator
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.places.DeletePlaceOperator
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.places.GetPlaceByIdOperator
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.places.GetPlacesOperator
@@ -30,19 +48,21 @@ import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.places.I
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.places.PlacesUseCase
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.places.UpdatePlaceOperator
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.places_in_tasks.DeletePlaceInTaskOperator
-import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.places_in_tasks.GetPlaceInTaskByTaskId
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.places_in_tasks.GetPlaceInTaskByTaskIdOperator
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.places_in_tasks.GetPlacesInTasksOperator
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.places_in_tasks.InsertPlaceInTaskOperator
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.places_in_tasks.InsertPlacesInTasksOperator
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.places_in_tasks.PlacesInTasksUseCase
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.places_in_tasks.UpdatePlaceInTaskOperator
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.subtasks.DeleteSubtaskOperator
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.subtasks.DeleteSubtasksOperator
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.subtasks.GetSubtasksByTaskIdOperator
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.subtasks.GetSubtasksOperator
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.subtasks.InsertSubtaskOperator
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.subtasks.InsertSubtasksOperator
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.subtasks.SubtasksUseCase
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.subtasks.UpdateSubtaskOperator
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.subtasks.UpdateSubtasksOperator
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.tasks.DeleteTaskOperator
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.tasks.GetTaskByIdOperator
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.tasks.GetTasksByLikeQueryOperator
@@ -55,6 +75,7 @@ import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.tasks.Up
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.home.use_case.DefineTimeOfDayUseCase
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.settings.use_case.ExportDataUseCase
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.settings.use_case.ImportDataUseCase
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.settings.use_case.SaveImageUseCase
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.util.Constants.TASKS_DATABASE_NAME
 import javax.inject.Singleton
 
@@ -131,11 +152,13 @@ object AppModule {
     fun provideSubtasksUseCase(subtaskDao: SubtaskDao): SubtasksUseCase {
         return SubtasksUseCase(
             deleteSubtaskOperator = DeleteSubtaskOperator(subtaskDao),
+            deleteSubtasksOperator = DeleteSubtasksOperator(subtaskDao),
             getSubtasksByTaskIdOperator = GetSubtasksByTaskIdOperator(subtaskDao),
             getSubtasksOperator = GetSubtasksOperator(subtaskDao),
             insertSubtaskOperator = InsertSubtaskOperator(subtaskDao),
             insertSubtasksOperator = InsertSubtasksOperator(subtaskDao),
-            updateSubtaskOperator = UpdateSubtaskOperator(subtaskDao)
+            updateSubtaskOperator = UpdateSubtaskOperator(subtaskDao),
+            updateSubtasksOperator = UpdateSubtasksOperator(subtaskDao)
         )
     }
 
@@ -146,13 +169,19 @@ object AppModule {
         categoriesUseCase: CategoriesUseCase,
         subtasksUseCase: SubtasksUseCase,
         placesUseCase: PlacesUseCase,
-        placesInTasksUseCase: PlacesInTasksUseCase
+        peoplesUseCase: PeoplesUseCase,
+        peoplesInTasksUseCase: PeoplesInTasksUseCase,
+        placesInTasksUseCase: PlacesInTasksUseCase,
+        application: Application
     ): ExportDataUseCase = ExportDataUseCase(
         tasksUseCase,
         categoriesUseCase,
         subtasksUseCase,
         placesUseCase,
-        placesInTasksUseCase
+        placesInTasksUseCase,
+        peoplesUseCase,
+        peoplesInTasksUseCase,
+        application
     )
 
     @Provides
@@ -163,6 +192,8 @@ object AppModule {
         subtasksUseCase: SubtasksUseCase,
         placesUseCase: PlacesUseCase,
         placesInTasksUseCase: PlacesInTasksUseCase,
+        peoplesUseCase: PeoplesUseCase,
+        peoplesInTasksUseCase: PeoplesInTasksUseCase,
         application: Application
     ): ImportDataUseCase = ImportDataUseCase(
         tasksUseCase,
@@ -170,6 +201,8 @@ object AppModule {
         subtasksUseCase,
         placesUseCase,
         placesInTasksUseCase,
+        peoplesUseCase,
+        peoplesInTasksUseCase,
         application
     )
 
@@ -202,10 +235,53 @@ object AppModule {
         return PlacesInTasksUseCase(
             deletePlaceInTaskOperator = DeletePlaceInTaskOperator(placeInTaskDao),
             getPlacesInTasksOperator = GetPlacesInTasksOperator(placeInTaskDao),
-            getPlacesInTaskByTaskId = GetPlaceInTaskByTaskId(placeInTaskDao),
+            getPlacesInTaskByTaskId = GetPlaceInTaskByTaskIdOperator(placeInTaskDao),
             updatePlaceInTaskOperator = UpdatePlaceInTaskOperator(placeInTaskDao),
             insertPlaceInTaskOperator = InsertPlaceInTaskOperator(placeInTaskDao),
             insertPlacesInTasksOperator = InsertPlacesInTasksOperator(placeInTaskDao)
+        )
+    }
+
+    @Provides
+    @Singleton
+    fun providePeopleDao(coordinatorDatabase: CoordinatorDatabase): PeopleDao =
+        coordinatorDatabase.peopleDao
+
+    @Provides
+    @Singleton
+    fun providePeoplesUseCase(peopleDao: PeopleDao): PeoplesUseCase {
+        return PeoplesUseCase(
+            deletePeopleOperator = DeletePeopleOperator(peopleDao),
+            getPeoplesOperator = GetPeoplesOperator(peopleDao),
+            getPeopleByIdOperator = GetPeopleByIdOperator(peopleDao),
+            insertPeopleOperator = InsertPeopleOperator(peopleDao),
+            insertPeoplesOperator = InsertPeoplesOperator(peopleDao),
+            updatePeopleOperator = UpdatePeopleOperator(peopleDao)
+        )
+    }
+
+    @Provides
+    @Singleton
+    fun provideSaveImageUseCase(): SaveImageUseCase {
+        return SaveImageUseCase()
+    }
+
+    @Provides
+    @Singleton
+    fun providePeopleInTaskDao(coordinatorDatabase: CoordinatorDatabase): PeopleInTaskDao =
+        coordinatorDatabase.peopleInTaskDao
+
+    @Provides
+    @Singleton
+    fun providePeoplesInTasksUseCase(peopleInTaskDao: PeopleInTaskDao): PeoplesInTasksUseCase {
+        return PeoplesInTasksUseCase(
+            deletePeopleInTaskOperator = DeletePeopleInTaskOperator(peopleInTaskDao),
+            deletePeoplesInTasksOperator = DeletePeoplesInTasksOperator(peopleInTaskDao),
+            getPeoplesInTasksByTaskIdOperator = GetPeoplesInTasksByTaskIdOperator(peopleInTaskDao),
+            getPeoplesInTasksOperator = GetPeoplesInTasksOperator(peopleInTaskDao),
+            insertPeopleInTaskOperator = InsertPeopleInTaskOperator(peopleInTaskDao),
+            insertPeoplesInTasksOperator = InsertPeoplesInTasksOperator(peopleInTaskDao),
+            updatePeopleInTaskOperator = UpdatePeopleInTaskOperator(peopleInTaskDao)
         )
     }
 }

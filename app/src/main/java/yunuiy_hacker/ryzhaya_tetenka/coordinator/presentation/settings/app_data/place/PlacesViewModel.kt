@@ -1,4 +1,4 @@
-package yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.settings.app_data
+package yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.settings.app_data.place
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -30,15 +30,24 @@ class PlacesViewModel @Inject constructor(private val placesUseCase: PlacesUseCa
             is PlacesEvent.HidePlaceCreateUpdateDialogEvent -> state.showCreateUpdatePlaceDialog =
                 false
 
-            is PlacesEvent.SelectPlaceEvent -> state.selectedPlace = event.place
-            is PlacesEvent.DeletePlaceEvent -> deletePlace()
-            is PlacesEvent.ShowQuestionDialogEvent -> {
-                state.showQuestionDialog = true
+            is PlacesEvent.PreExecutionOperationWithPlaceEvent -> {
+                state.selectedPlace.value = event.place
                 state.questionTitle = event.title
                 state.questionText = event.text
+                state.selectedOperation = event.operation
+                state.showQuestionDialog = true
             }
 
-            is PlacesEvent.HideQuestionDialog -> state.showQuestionDialog = false
+            is PlacesEvent.DeletePlaceEvent -> deletePlace()
+            is PlacesEvent.OpenInMapPlaceEvent -> {
+                state.showQuestionDialog = false
+                state.selectedPlace.value = null
+            }
+
+            is PlacesEvent.HideQuestionDialog -> {
+                state.showQuestionDialog = false
+                state.selectedPlace.value = null
+            }
         }
     }
 
@@ -59,11 +68,14 @@ class PlacesViewModel @Inject constructor(private val placesUseCase: PlacesUseCa
 
     @OptIn(DelicateCoroutinesApi::class)
     private fun createOrUpdatePlace(place: Place) {
+        state.showQuestionDialog = false
         state.contentState.isLoading.value = true
 
         GlobalScope.launch(Dispatchers.IO) {
             runBlocking {
-                if (state.isEditMode) placesUseCase.updatePlaceOperator(place.toData())
+                if (state.selectedOperation == PlaceOperationsEnum.EDIT) placesUseCase.updatePlaceOperator(
+                    place.toData()
+                )
                 else placesUseCase.insertPlaceOperator(place.toData())
                 loadData()
                 state.showCreateUpdatePlaceDialog = false
@@ -80,8 +92,8 @@ class PlacesViewModel @Inject constructor(private val placesUseCase: PlacesUseCa
 
         GlobalScope.launch(Dispatchers.IO) {
             runBlocking {
-                placesUseCase.deletePlaceOperator(state.selectedPlace.toData())
-                state.places.remove(state.selectedPlace)
+                placesUseCase.deletePlaceOperator(state.selectedPlace.value!!.toData())
+                state.places.remove(state.selectedPlace.value)
 
                 state.contentState.isLoading.value = false
             }

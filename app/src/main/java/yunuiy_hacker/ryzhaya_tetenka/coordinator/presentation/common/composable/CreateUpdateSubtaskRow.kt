@@ -4,12 +4,8 @@ import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.offset
-import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Close
-import androidx.compose.material.icons.rounded.DragHandle
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.Icon
@@ -36,6 +32,50 @@ import yunuiy_hacker.ryzhaya_tetenka.coordinator.ui.theme.caros
 
 @Composable
 fun SubtaskRow(
+    modifier: Modifier = Modifier,
+    subtask: Subtask,
+    onCheckedChange: (Boolean) -> Unit,
+    onDeleteClick: (subtask: Subtask) -> Unit,
+    isEditingEnabled: Boolean = true
+) {
+    val interactionSource = remember { MutableInteractionSource() }
+    var localTitle by remember { mutableStateOf(subtask.title) }
+
+    Row(verticalAlignment = Alignment.CenterVertically) {
+        Checkbox(
+            checked = subtask.checked.value, onCheckedChange = {
+                onCheckedChange(!subtask.checked.value)
+            }, colors = CheckboxDefaults.colors(
+                uncheckedColor = MaterialTheme.colorScheme.onSurface,
+                checkedColor = MaterialTheme.colorScheme.primary
+            )
+        )
+        Text(
+            modifier = Modifier
+                .weight(1f),
+            text = localTitle,
+            fontFamily = caros,
+            fontWeight = FontWeight.Normal,
+            fontSize = 14.sp,
+            textAlign = TextAlign.Start
+        )
+        if (isEditingEnabled) {
+            Icon(
+                modifier = Modifier.clickable(
+                    interactionSource = interactionSource, indication = null
+                ) {
+                    onDeleteClick(subtask)
+                },
+                imageVector = Icons.Rounded.Close,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.onSurface
+            )
+        }
+    }
+}
+
+@Composable
+fun CreateUpdateSubtaskRow(
     modifier: Modifier = Modifier,
     subtask: Subtask,
     onCheckedChange: (Boolean) -> Unit,

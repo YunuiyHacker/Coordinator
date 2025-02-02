@@ -3,7 +3,7 @@ package yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.places_
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.data.common.model.PlaceInTask
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.data.local.room.PlaceInTaskDao
 
-class GetPlaceInTaskByTaskId(private val placeInTaskDao: PlaceInTaskDao) {
+class GetPlaceInTaskByTaskIdOperator(private val placeInTaskDao: PlaceInTaskDao) {
     suspend operator fun invoke(taskId: Int): PlaceInTask? {
         return placeInTaskDao.getPlaceInTaskByTaskId(taskId)
     }

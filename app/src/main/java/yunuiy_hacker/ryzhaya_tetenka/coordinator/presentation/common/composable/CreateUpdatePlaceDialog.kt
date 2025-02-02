@@ -7,11 +7,14 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredWidth
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
@@ -33,6 +36,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -53,9 +57,10 @@ fun CreateUpdatePlaceDialog(
     val clipboardManager = LocalClipboardManager.current
     val context = LocalContext.current
 
-    var title by remember { mutableStateOf(place?.title ?: "") }
-    var la by remember { mutableDoubleStateOf(place?.la ?: 0.0) }
-    var lt by remember { mutableDoubleStateOf(place?.lt ?: 0.0) }
+    var localPlace = remember { place }
+    var title by remember { mutableStateOf(localPlace?.title ?: "") }
+    var la by remember { mutableDoubleStateOf(localPlace?.la ?: 0.0) }
+    var lt by remember { mutableDoubleStateOf(localPlace?.lt ?: 0.0) }
 
     Dialog(onDismissRequest = { onDismissRequest() }) {
         Column(
@@ -65,7 +70,10 @@ fun CreateUpdatePlaceDialog(
                     color = MaterialTheme.colorScheme.surfaceVariant,
                     shape = RoundedCornerShape(20.dp)
                 )
-                .padding(24.dp), horizontalAlignment = Alignment.CenterHorizontally
+                .padding(24.dp)
+                .verticalScroll(rememberScrollState())
+                .imePadding(),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
                 text = if (isEditMode) stringResource(R.string.place_editing) else stringResource(
@@ -79,19 +87,29 @@ fun CreateUpdatePlaceDialog(
             )
             Spacer(modifier = Modifier.height(16.dp))
             OutlinedTextField(
-                modifier = Modifier.fillMaxWidth(), value = title, onValueChange = {
+                modifier = Modifier.fillMaxWidth(),
+                value = title,
+                onValueChange = {
                     title = it
-                }, colors = TextFieldDefaults.colors(
+                },
+                colors = TextFieldDefaults.colors(
                     unfocusedContainerColor = MaterialTheme.colorScheme.surfaceVariant,
                     focusedContainerColor = MaterialTheme.colorScheme.surfaceVariant
-                ), shape = RoundedCornerShape(16.dp), placeholder = {
+                ),
+                shape = RoundedCornerShape(16.dp),
+                placeholder = {
                     Text(
                         modifier = Modifier.fillMaxWidth(),
                         text = stringResource(R.string.title),
                         style = TextStyle(fontFamily = caros, fontStyle = FontStyle.Normal),
                         textAlign = TextAlign.Left
                     )
-                }, textStyle = TextStyle(textAlign = TextAlign.Left), singleLine = true
+                },
+                textStyle = TextStyle(textAlign = TextAlign.Left),
+                singleLine = true,
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Text, imeAction = ImeAction.Next
+                )
             )
             Spacer(modifier = Modifier.height(16.dp))
             Row(modifier = Modifier.fillMaxWidth()) {
@@ -125,7 +143,9 @@ fun CreateUpdatePlaceDialog(
                     },
                     textStyle = TextStyle(textAlign = TextAlign.Left),
                     singleLine = true,
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+                    keyboardOptions = KeyboardOptions(
+                        keyboardType = KeyboardType.Number, imeAction = ImeAction.Next
+                    )
                 )
                 Spacer(modifier = Modifier.width(16.dp))
                 OutlinedTextField(
@@ -158,7 +178,9 @@ fun CreateUpdatePlaceDialog(
                     },
                     textStyle = TextStyle(textAlign = TextAlign.Left),
                     singleLine = true,
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+                    keyboardOptions = KeyboardOptions(
+                        keyboardType = KeyboardType.Number, imeAction = ImeAction.Done
+                    )
                 )
             }
             Spacer(modifier = Modifier.height(16.dp))
@@ -183,8 +205,7 @@ fun CreateUpdatePlaceDialog(
                 Text(
                     text = stringResource(
                         R.string.paste_coordinates_from_google_or_yandex_maps
-                    ), fontFamily = caros,
-                    textAlign = TextAlign.Center
+                    ), fontFamily = caros, textAlign = TextAlign.Center
                 )
             }
             Spacer(modifier = Modifier.height(16.dp))
@@ -208,11 +229,16 @@ fun CreateUpdatePlaceDialog(
                     modifier = Modifier.weight(1f),
                     onClick = {
                         onAddClick(
-                            Place(
+                            if (!isEditMode) Place(
+                                title = title,
+                                la = la.toString().toDouble(),
+                                lt = lt.toString().toDouble()
+                            )
+                            else localPlace!!.copy(
                                 id = place?.id ?: 0,
-                                title = place?.title ?: title,
-                                la = place?.la ?: la.toString().toDouble(),
-                                lt = place?.lt ?: lt.toString().toDouble()
+                                title = title,
+                                la = la.toString().toDouble(),
+                                lt = lt.toString().toDouble()
                             )
                         )
                     },

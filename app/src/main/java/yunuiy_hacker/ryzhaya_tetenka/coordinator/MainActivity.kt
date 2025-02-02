@@ -1,11 +1,10 @@
 package yunuiy_hacker.ryzhaya_tetenka.coordinator
 
-import android.content.ClipboardManager
-import android.content.Context
 import android.os.Bundle
+import android.os.Environment
+import android.view.WindowManager
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.WindowCompat
 import androidx.navigation.compose.rememberNavController
@@ -14,6 +13,8 @@ import yunuiy_hacker.ryzhaya_tetenka.coordinator.data.local.shared_prefs.SharedP
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.nav_graph.NavGraph
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.nav_graph.Route
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.ui.theme.CoordinatorTheme
+import java.io.BufferedReader
+import java.io.FileReader
 import javax.inject.Inject
 
 @AndroidEntryPoint

@@ -1,6 +1,7 @@
 package yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.create_update_task
 
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.model.Category
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.model.People
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.model.Place
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.model.Subtask
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.home.model.TimeType
@@ -51,6 +52,10 @@ sealed class CreateUpdateTaskEvent {
     data object ShowPlaceCreateUpdateDialogEvent : CreateUpdateTaskEvent()
     data class CreatePlaceEvent(val place: Place) : CreateUpdateTaskEvent()
     data object HidePlaceCreateUpdateDialogEvent : CreateUpdateTaskEvent()
+
+    data object ShowPeopleSelectorSheetEvent : CreateUpdateTaskEvent()
+    data class AddPeopleEvent(val people: People) : CreateUpdateTaskEvent()
+    data object HidePeopleSelectorSheetEvent : CreateUpdateTaskEvent()
 
     data object OnBackPressEvent : CreateUpdateTaskEvent()
 

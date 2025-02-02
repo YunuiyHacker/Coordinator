@@ -15,9 +15,12 @@ import androidx.navigation.navArgument
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.create_update_task.CreateUpdateTaskScreen
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.create_update_task.CreateUpdateTaskViewModel
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.home.HomeScreen
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.fill_name.FillNameScreen
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.onboarding.OnboardingScreen
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.settings.SettingsScreen
-import yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.settings.app_data.PlacesScreen
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.settings.app_data.place.PlacesScreen
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.settings.app_data.people.PeoplesScreen
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.settings.dev.DeveloperScreen
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.task.TaskScreen
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.task.TaskViewModel
 import java.util.Date
@@ -29,11 +32,80 @@ fun NavGraph(
     NavHost(
         navController = navHostController, startDestination = startDestination
     ) {
+        composable(route = Route.OnboardingScreen.route, enterTransition = {
+            fadeIn(
+                animationSpec = tween(
+                    300, easing = LinearEasing
+                )
+            ) + slideIntoContainer(
+                towards = AnimatedContentTransitionScope.SlideDirection.End,
+                animationSpec = tween(
+                    300, easing = LinearEasing
+                )
+            )
+        }, exitTransition = {
+            fadeOut(
+                animationSpec = tween(
+                    300, easing = LinearEasing
+                )
+            ) + slideOutOfContainer(
+                towards = AnimatedContentTransitionScope.SlideDirection.Start,
+                animationSpec = tween(
+                    300, easing = LinearEasing
+                )
+            )
+        }, popEnterTransition = {
+            fadeIn(
+                animationSpec = tween(
+                    300, easing = LinearEasing
+                )
+            ) + slideIntoContainer(
+                towards = AnimatedContentTransitionScope.SlideDirection.End,
+                animationSpec = tween(
+                    300, easing = LinearEasing
+                )
+            )
+        }) {
+            OnboardingScreen(navHostController)
+        }
         composable(route = Route.HomeScreen.route) {
             HomeScreen(navHostController)
         }
-        composable(route = Route.OnboardingScreen.route) {
-            OnboardingScreen(navHostController)
+        composable(route = Route.FillNameScreen.route, enterTransition = {
+            fadeIn(
+                animationSpec = tween(
+                    300, easing = LinearEasing
+                )
+            ) + slideIntoContainer(
+                towards = AnimatedContentTransitionScope.SlideDirection.Start,
+                animationSpec = tween(
+                    300, easing = LinearEasing
+                )
+            )
+        }, exitTransition = {
+            fadeOut(
+                animationSpec = tween(
+                    300, easing = LinearEasing
+                )
+            ) + slideOutOfContainer(
+                towards = AnimatedContentTransitionScope.SlideDirection.End,
+                animationSpec = tween(
+                    300, easing = LinearEasing
+                )
+            )
+        }, popEnterTransition = {
+            fadeIn(
+                animationSpec = tween(
+                    300, easing = LinearEasing
+                )
+            ) + slideIntoContainer(
+                towards = AnimatedContentTransitionScope.SlideDirection.Start,
+                animationSpec = tween(
+                    300, easing = LinearEasing
+                )
+            )
+        }) {
+            FillNameScreen(navHostController)
         }
         composable(
             route = "${Route.CreateUpdateTaskScreen.route}/{time_type_id}/{date_in_long}/{week_date_first_part_in_milliseconds}/{week_date_second_part_in_milliseconds}/{category_id}",
@@ -157,8 +229,7 @@ fun NavGraph(
                         300, easing = LinearEasing
                     )
                 )
-            }
-        ) {
+            }) {
             val taskId = it.arguments?.getString("task_id")!!.toInt()
 
             val viewModel: TaskViewModel = hiltViewModel()
@@ -194,8 +265,7 @@ fun NavGraph(
                     300, easing = LinearEasing
                 )
             ) + slideIntoContainer(
-                towards = AnimatedContentTransitionScope.SlideDirection.End,
-                animationSpec = tween(
+                towards = AnimatedContentTransitionScope.SlideDirection.End, animationSpec = tween(
                     300, easing = LinearEasing
                 )
             )
@@ -205,8 +275,7 @@ fun NavGraph(
                     300, easing = LinearEasing
                 )
             ) + slideOutOfContainer(
-                towards = AnimatedContentTransitionScope.SlideDirection.End,
-                animationSpec = tween(
+                towards = AnimatedContentTransitionScope.SlideDirection.End, animationSpec = tween(
                     300, easing = LinearEasing
                 )
             )
@@ -236,6 +305,54 @@ fun NavGraph(
             )
         }) {
             PlacesScreen(navHostController = navHostController, viewModel = hiltViewModel())
+        }
+        composable(route = Route.PeoplesScreen.route, enterTransition = {
+            fadeIn(
+                animationSpec = tween(
+                    300, easing = LinearEasing
+                )
+            ) + slideIntoContainer(
+                towards = AnimatedContentTransitionScope.SlideDirection.Start,
+                animationSpec = tween(
+                    300, easing = LinearEasing
+                )
+            )
+        }, exitTransition = {
+            fadeOut(
+                animationSpec = tween(
+                    300, easing = LinearEasing
+                )
+            ) + slideOutOfContainer(
+                towards = AnimatedContentTransitionScope.SlideDirection.End, animationSpec = tween(
+                    300, easing = LinearEasing
+                )
+            )
+        }) {
+            PeoplesScreen(navHostController = navHostController, viewModel = hiltViewModel())
+        }
+        composable(route = Route.DeveloperScreen.route, enterTransition = {
+            fadeIn(
+                animationSpec = tween(
+                    300, easing = LinearEasing
+                )
+            ) + slideIntoContainer(
+                towards = AnimatedContentTransitionScope.SlideDirection.Start,
+                animationSpec = tween(
+                    300, easing = LinearEasing
+                )
+            )
+        }, exitTransition = {
+            fadeOut(
+                animationSpec = tween(
+                    300, easing = LinearEasing
+                )
+            ) + slideOutOfContainer(
+                towards = AnimatedContentTransitionScope.SlideDirection.End, animationSpec = tween(
+                    300, easing = LinearEasing
+                )
+            )
+        }) {
+            DeveloperScreen(navHostController = navHostController, viewModel = hiltViewModel())
         }
     }
 }

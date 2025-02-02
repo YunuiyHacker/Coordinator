@@ -11,7 +11,11 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.mappers.toData
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.mappers.toDomain
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.model.People
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.model.Subtask
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.model.Task
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.peoples.PeoplesUseCase
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.peoples_in_tasks.PeoplesInTasksUseCase
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.places.PlacesUseCase
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.places_in_tasks.PlacesInTasksUseCase
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.subtasks.SubtasksUseCase
@@ -19,6 +23,7 @@ import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.tasks.Ta
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.util.startAndEndThisWeek
 import java.util.Calendar
 import java.util.GregorianCalendar
+import java.util.stream.Collectors.toList
 import javax.inject.Inject
 
 @HiltViewModel
@@ -26,7 +31,9 @@ class TaskViewModel @Inject constructor(
     private val tasksUseCase: TasksUseCase,
     private val placesUseCase: PlacesUseCase,
     private val placesInTasksUseCase: PlacesInTasksUseCase,
-    private val subtasksUseCase: SubtasksUseCase
+    private val subtasksUseCase: SubtasksUseCase,
+    private val peoplesUseCase: PeoplesUseCase,
+    private val peoplesInTasksUseCase: PeoplesInTasksUseCase
 ) : ViewModel() {
     val state by mutableStateOf(TaskState())
 
@@ -54,12 +61,20 @@ class TaskViewModel @Inject constructor(
 
             is TaskEvent.SubtaskItemCheckboxToggleEvent -> subtaskItemToggle(event.subtask)
             is TaskEvent.DeleteTaskEvent -> deleteTask()
+
+            is TaskEvent.ShowCreateUpdatePeopleBottomSheetEvent -> {
+                state.showCreateUpdatePeopleBottomSheet = true
+                state.selectedPeople = event.people
+            }
+
+            is TaskEvent.HideCreateUpdatePeopleBottomSheetEvent -> state.showCreateUpdatePeopleBottomSheet =
+                false
         }
     }
 
     @OptIn(DelicateCoroutinesApi::class)
     private fun loadData() {
-        GlobalScope.launch {
+        GlobalScope.launch(Dispatchers.IO) {
             runBlocking {
                 state.task = tasksUseCase.getTaskByIdOperator(state.taskId).toDomain()
                 state.subtasks = subtasksUseCase.getSubtasksByTaskIdOperator(state.task.id)
@@ -67,8 +82,19 @@ class TaskViewModel @Inject constructor(
                 val dataPlace = placesUseCase.getPlaceByIdOperator(
                     placesInTasksUseCase.getPlacesInTaskByTaskId(state.taskId)?.placeId ?: 0
                 )
-                if (dataPlace != null)
-                    state.place = dataPlace.toDomain()
+                if (dataPlace != null) state.place = dataPlace.toDomain()
+                val peoplesInTasks =
+                    peoplesInTasksUseCase.getPeoplesInTasksByTaskIdOperator(state.taskId)
+                val localPeoples: MutableList<People> = mutableListOf()
+                for (i in 0..<peoplesInTasks.size) {
+                    val localPeople =
+                        peoplesUseCase.getPeopleByIdOperator(peoplesInTasks[i].peopleId!!)
+                    if (localPeople != null)
+                        localPeoples.add(
+                            localPeople.toDomain()
+                        )
+                }
+                state.peoples = localPeoples.toList()
 
                 val calendar: Calendar = GregorianCalendar()
                 calendar.timeInMillis = state.task.date.time

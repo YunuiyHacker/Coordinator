@@ -15,6 +15,22 @@
     <string name="life">Жизнь</string>
 
     <!--  OnboardingScreen  -->
+    <string name="letter_continue">Продолжить</string>
+    <string name="skip">Пропустить</string>
+    <string name="start">Начать</string>
+    <string name="onboarding_screen1_task1_title">Установить Coordinator</string>
+    <string name="onboarding_screen1_task1_content">Установить Coordinator, создать задачи</string>
+    <string name="onboarding_screen1_task2_title">Выполнить задачи</string>
+    <string name="onboarding_screen1_task2_content">Выполнить созданные задачи</string>
+    <string name="onboarding_screen1_title">Управляй своим днем</string>
+    <string name="onboarding_screen1_content">Создавай задачи каждый день, чтобы все успеть и ничего не забыть</string>
+    <string name="onboarding_screen2_title">Добавляй к задачам места</string>
+    <string name="onboarding_screen2_content">Так тебе будет еще удобнее заниматься своими делами. Если надо посмотреть место на карте, просто нажми на карточку места</string>
+    <string name="home">Дом</string>
+    <string name="onboarding_screen3_title">Добавляй людей в задачи</string>
+    <string name="onboarding_screen3_content">Чтобы не забыть с кем ты будешь их выполнять</string>
+
+    <!--  FillNameScreen  -->
     <string name="what_is_your_name_title">Как Вас зовут?</string>
     <string name="what_is_your_name_description">Пожалуйста, укажите свое имя, которое мы будем использовать для отображения и персонализации ваших задач</string>
     <string name="your_name">Ваше имя</string>
@@ -51,6 +67,9 @@
     <string name="location_not_selected">Место не выбрано</string>
     <string name="add_new_place">Добавить новое место</string>
     <string name="place">Место</string>
+    <string name="peoples_not_selected">Участники не выбраны</string>
+    <string name="this_people_already_will_selected">Этот человек уже выбран</string>
+    <string name="peoples_list_is_empty">Список людей пока пуст, их можно добавить в настройках</string>
 
     <!--  TimePickerDialog  -->
     <string name="select">Выбрать</string>
@@ -62,7 +81,7 @@
     <string name="deletion">Удаление</string>
     <string name="really_want_to_delete_task">Вы действительно хотите удалить эту задачу?</string>
     <string name="open_in_maps">Посмотреть на карте</string>
-    <string name="really_want_in_maps">Вы действительно хотите посмотреть место на карте?</string>
+    <string name="really_want_open_in_maps">Вы действительно хотите посмотреть место на карте?</string>
     <string name="not_supported_apps">Не нашли подходящего приложения на вашем устройстве</string>
 
     <!--  SwipeToDeleteBackground  -->
@@ -93,6 +112,15 @@
     <string name="success_import">Импорт данных успешно произведен</string>
     <string name="app_data">Данные приложения</string>
     <string name="places">Места</string>
+    <string name="peoples">Люди</string>
+    <string name="add_new_people">Добавить нового человека</string>
+    <string name="additionally">Дополнительно</string>
+    <string name="info_about_developer">Информация о разработчике</string>
+    <string name="letter_for">для</string>
+    <string name="by">от</string>
+    <string name="access_denied">Доступ к файлу запрещен</string>
+    <string name="undefined_error">Неизвестная ошибка</string>
+    <string name="incorrect_file_format">Неправильный формат файла</string>
 
     <!--  CreateUpdatePlaceDialog  -->
     <string name="place_adding">Добавление места</string>
@@ -105,4 +133,42 @@
 
     <!--  PlaceScreen  -->
     <string name="really_want_to_delete_place">Вы действительно хотите удалить это место?</string>
+    <string name="editing">Редактирование</string>
+    <string name="really_want_to_edit_place">Вы действительно хотите отредактировать это место?</string>
+
+    <!--  CreateUpdatePeopleColumn  -->
+    <string name="people_adding">Добавление человека</string>
+    <string name="people_editing">Редактирование человека</string>
+    <string name="surname">Фамилия</string>
+    <string name="name">Имя</string>
+    <string name="lastname">Отчество</string>
+    <string name="sex">Пол</string>
+    <string name="male">Мужской</string>
+    <string name="female">Женский</string>
+    <string name="date_of_birth">Дата рождения</string>
+    <string name="display_name">Отображаемое имя</string>
+    <string name="address">Адрес</string>
+    <string name="not_selected">Не выбрана</string>
+    <string name="really_want_to_delete_people">Вы действительно хотите удалить этого человека?</string>
+
+    <!--  DeveloperScreen  -->
+    <string name="developer">Разработчик</string>
+    <string name="developer_nickname" translatable="false">yunuiy_hacker</string>
+    <string name="developer_full_name">Нуркаев Альфир Харисович</string>
+    <string name="developer_surname">Нуркаев</string>
+    <string name="developer_name">Альфир</string>
+    <string name="developer_lastname">Харисович</string>
+    <string name="support_developer">Поддержать разработчика</string>
+    <string name="developer_info_part_1">Привет, дорогой пользователь. Меня зовут </string>
+    <string name="developer_info_part_2">, я молодой Android-разработчик из Перми. В этой сфере с 2021 года, в начале было сложно, многое понимал с трудом, но я знал, что это мое, и трудности только подогревали меня учиться все больше и больше, которые в итоге привели меня к таким результатам.</string>
+    <string name="developer_info_part_3">Это мое первое приложение, официально выпущенное в магазине приложений. На этом, конечно останавливаться не собираюсь, еще есть куда расти и что изучать.</string>
+    <string name="developer_info_part_4">Это только начало</string>
+    <string name="developer_info_part_5">Если вам нравится мое творчество, вы хотите сотрудничать со мной - все ссылки выше, буду рад вам помочь</string>
+    <string name="developer_reference">Хватит нажимать, успокойся</string>
+    <string name="developer_phone_formatted" translatable="false">7(922)32–32–042</string>
+    <string name="developer_phone" translatable="false">79223232042</string>
+    <string name="support_developer_text_part1">Вы можете поддержать меня переводом средств по номеру телефона. Возможно, тем самым, вы поддержите начало новой истории.</string>
+    <string name="support_developer_text_part2">А может быть и нет</string>
+    <string name="copy">Скопировать</string>
+    <string name="copied">Скопировано</string>
 </resources>

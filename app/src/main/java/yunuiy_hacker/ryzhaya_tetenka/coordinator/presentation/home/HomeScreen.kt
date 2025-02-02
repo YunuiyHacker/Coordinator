@@ -3,6 +3,7 @@ package yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.home
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
@@ -61,13 +62,19 @@ import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.key
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.layout.positionInRoot
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -113,6 +120,7 @@ fun HomeScreen(navHostController: NavHostController, viewModel: HomeViewModel = 
         SnackbarHostState()
     }
     val datePickerState = rememberDatePickerState()
+    val selectedCategoryOffset = remember { mutableStateOf(Offset(0f, 0f)) }
 
     LaunchedEffect(Unit) {
         viewModel.onEvent(HomeEvent.LoadDataEvent)
@@ -182,178 +190,222 @@ fun HomeScreen(navHostController: NavHostController, viewModel: HomeViewModel = 
                 }
             }
         }, topBar = {
-            AnimatedVisibility(!state.isDeletionMode, exit = fadeOut(), enter = fadeIn()) {
-                Column(
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    Spacer(modifier = Modifier.statusBarsPadding())
-                    Row(
-                        modifier = Modifier.padding(horizontal = 24.dp),
-                        verticalAlignment = Alignment.CenterVertically
+            Box(modifier = Modifier.animateContentSize(tween(20))) {
+                AnimatedVisibility(!state.isDeletionMode, exit = fadeOut(), enter = fadeIn()) {
+                    Column(
+                        modifier = Modifier.fillMaxWidth()
                     ) {
-                        Column(modifier = Modifier.weight(1f)) {
-                            TopTimeOfDayText(
-                                Modifier.padding(top = 8.dp),
-                                timeOfDay = state.timeOfDay,
-                                userName = state.userName
-                            )
-                            Spacer(Modifier.height(16.dp))
-                            Row(
-                                verticalAlignment = Alignment.CenterVertically
-                            ) {
-                                if (state.showLazySwipeColumn) {
-                                    if (state.timeType.toTimeTypeEvent() != TimeTypeEnum.LIFE) {
-                                        SwipeLazyColumn(modifier = Modifier
-                                            .clickable(
-                                                interactionSource = interactionSource,
-                                                indication = null
-                                            ) {
-                                                viewModel.onEvent(HomeEvent.ShowDatePickerDialogEvent)
-                                            }
-                                            .wrapContentWidth()
-                                            .animateContentSize(),
-                                            selectedIndex = if (state.showLazySwipeColumn) when (state.timeType.toTimeTypeEvent()) {
-                                                TimeTypeEnum.DAY -> state.daysList.indexOfLast {
-                                                    val c: GregorianCalendar = GregorianCalendar()
-                                                    c.time = it
-                                                    val year: Int = c.get(Calendar.YEAR)
-                                                    val month: Int = c.get(Calendar.MONTH)
-                                                    val day: Int = c.get(Calendar.DAY_OF_MONTH)
-                                                    val tc: GregorianCalendar = GregorianCalendar()
-                                                    tc.time = state.selectedDate
-                                                    val tyear: Int = tc.get(Calendar.YEAR)
-                                                    val tmonth: Int = tc.get(Calendar.MONTH)
-                                                    val tday: Int = tc.get(Calendar.DAY_OF_MONTH)
-                                                    year == tyear && month == tmonth && day == tday
+                        Spacer(modifier = Modifier.statusBarsPadding())
+                        Row(
+                            modifier = Modifier.padding(horizontal = 24.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Column(modifier = Modifier.weight(1f)) {
+                                TopTimeOfDayText(
+                                    Modifier.padding(top = 8.dp),
+                                    timeOfDay = state.timeOfDay,
+                                    userName = state.userName
+                                )
+                                Spacer(Modifier.height(16.dp))
+                                Row(
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    if (state.showLazySwipeColumn) {
+                                        if (state.timeType.toTimeTypeEvent() != TimeTypeEnum.LIFE) {
+                                            SwipeLazyColumn(modifier = Modifier
+                                                .clickable(
+                                                    interactionSource = interactionSource,
+                                                    indication = null
+                                                ) {
+                                                    viewModel.onEvent(HomeEvent.ShowDatePickerDialogEvent)
                                                 }
-
-                                                TimeTypeEnum.WEEK -> state.weeksList.indexOfFirst {
-                                                    val c_first: GregorianCalendar =
-                                                        GregorianCalendar()
-                                                    c_first.time = it.first
-                                                    val c_second: GregorianCalendar =
-                                                        GregorianCalendar()
-                                                    c_second.time = it.second
-                                                    val c_first_year: Int =
-                                                        c_first.get(Calendar.YEAR)
-                                                    val c_first_month: Int =
-                                                        c_first.get(Calendar.MONTH)
-                                                    val c_first_day: Int =
-                                                        c_first.get(Calendar.DAY_OF_MONTH)
-                                                    val c_second_year: Int =
-                                                        c_second.get(Calendar.YEAR)
-                                                    val c_second_month: Int =
-                                                        c_second.get(Calendar.MONTH)
-                                                    val c_second_day: Int =
-                                                        c_second.get(Calendar.DAY_OF_MONTH)
-
-                                                    val tc_first: GregorianCalendar =
-                                                        GregorianCalendar()
-                                                    tc_first.time = state.selectedWeekStart
-                                                    val tc_second: GregorianCalendar =
-                                                        GregorianCalendar()
-                                                    tc_second.time = state.selectedWeekEnd
-                                                    val tc_first_year: Int =
-                                                        tc_first.get(Calendar.YEAR)
-                                                    val tc_first_month: Int =
-                                                        tc_first.get(Calendar.MONTH)
-                                                    val tc_first_day: Int =
-                                                        tc_first.get(Calendar.DAY_OF_MONTH)
-                                                    val tc_second_year: Int =
-                                                        tc_second.get(Calendar.YEAR)
-                                                    val tc_second_month: Int =
-                                                        tc_second.get(Calendar.MONTH)
-                                                    val tc_second_day: Int =
-                                                        tc_second.get(Calendar.DAY_OF_MONTH)
-
-                                                    (c_first_day == tc_first_day && c_first_month == tc_first_month && c_first_year == tc_first_year) && (c_second_day == tc_second_day && c_second_month == tc_second_month && c_second_year == tc_second_year)
-                                                }
-
-                                                TimeTypeEnum.MONTH -> state.monthsList.indexOfLast {
-                                                    val c: GregorianCalendar = GregorianCalendar()
-                                                    c.time = it
-                                                    val year: Int = c.get(Calendar.YEAR)
-                                                    val month: Int = c.get(Calendar.MONTH)
-                                                    val tc: GregorianCalendar = GregorianCalendar()
-                                                    tc.time = state.selectedMonth
-                                                    val tyear: Int = tc.get(Calendar.YEAR)
-                                                    val tmonth: Int = tc.get(Calendar.MONTH)
-                                                    year == tyear && month == tmonth
-                                                }
-
-                                                TimeTypeEnum.YEAR -> state.yearsList.indexOfLast {
-                                                    val c: GregorianCalendar = GregorianCalendar()
-                                                    c.time = it
-                                                    val year: Int = c.get(Calendar.YEAR)
-                                                    val tc: GregorianCalendar = GregorianCalendar()
-                                                    tc.time = state.selectedYear
-                                                    val tyear: Int = tc.get(Calendar.YEAR)
-                                                    year == tyear
-                                                }
-
-                                                else -> -100
-                                            } else -1,
-                                            items = when (state.timeType.toTimeTypeEvent()) {
-                                                TimeTypeEnum.DAY -> state.daysList
-                                                TimeTypeEnum.WEEK -> state.weeksList
-                                                TimeTypeEnum.MONTH -> state.monthsList
-                                                TimeTypeEnum.YEAR -> state.yearsList
-                                                else -> mutableListOf()
-                                            }.map { date ->
-                                                when (state.timeType.toTimeTypeEvent()) {
-                                                    TimeTypeEnum.DAY -> DateFormats.DayTimeTypeOutputFormat.format(
-                                                        date
-                                                    )
-
-                                                    TimeTypeEnum.WEEK -> "${
-                                                        DateFormats.WeekTimeTypeOutputFormatFirstPart.format(
-                                                            (date as Pair<*, *>).first
-                                                        )
-                                                    } - ${
-                                                        DateFormats.WeekTimeTypeOutputFormatSecondPart.format(
-                                                            (date).second
-                                                        )
-                                                    }"
-
-                                                    TimeTypeEnum.MONTH -> DateFormats.MonthTimeTypeOutputFormat.format(
-                                                        date
-                                                    )
-
-                                                    TimeTypeEnum.YEAR -> DateFormats.YearTimeTypeOutputFormat.format(
-                                                        date
-                                                    )
-
-                                                    else -> ""
-                                                }
-                                            }.toMutableList(),
-                                            onSelectedIndexChange = {
-                                                when (state.timeType.toTimeTypeEvent()) {
-                                                    TimeTypeEnum.DAY -> state.selectedDate =
-                                                        state.daysList[it]
-
-                                                    TimeTypeEnum.WEEK -> {
-                                                        state.selectedWeekStart =
-                                                            state.weeksList[it].first
-                                                        state.selectedWeekEnd =
-                                                            state.weeksList[it].second
+                                                .wrapContentWidth(),
+                                                selectedIndex = if (state.showLazySwipeColumn) when (state.timeType.toTimeTypeEvent()) {
+                                                    TimeTypeEnum.DAY -> state.daysList.indexOfLast {
+                                                        val c: GregorianCalendar =
+                                                            GregorianCalendar()
+                                                        c.time = it
+                                                        val year: Int = c.get(Calendar.YEAR)
+                                                        val month: Int = c.get(Calendar.MONTH)
+                                                        val day: Int = c.get(Calendar.DAY_OF_MONTH)
+                                                        val tc: GregorianCalendar =
+                                                            GregorianCalendar()
+                                                        tc.time = state.selectedDate
+                                                        val tyear: Int = tc.get(Calendar.YEAR)
+                                                        val tmonth: Int = tc.get(Calendar.MONTH)
+                                                        val tday: Int =
+                                                            tc.get(Calendar.DAY_OF_MONTH)
+                                                        year == tyear && month == tmonth && day == tday
                                                     }
 
-                                                    TimeTypeEnum.MONTH -> state.selectedMonth =
-                                                        state.monthsList[it]
+                                                    TimeTypeEnum.WEEK -> state.weeksList.indexOfFirst {
+                                                        val c_first: GregorianCalendar =
+                                                            GregorianCalendar()
+                                                        c_first.time = it.first
+                                                        val c_second: GregorianCalendar =
+                                                            GregorianCalendar()
+                                                        c_second.time = it.second
+                                                        val c_first_year: Int =
+                                                            c_first.get(Calendar.YEAR)
+                                                        val c_first_month: Int =
+                                                            c_first.get(Calendar.MONTH)
+                                                        val c_first_day: Int =
+                                                            c_first.get(Calendar.DAY_OF_MONTH)
+                                                        val c_second_year: Int =
+                                                            c_second.get(Calendar.YEAR)
+                                                        val c_second_month: Int =
+                                                            c_second.get(Calendar.MONTH)
+                                                        val c_second_day: Int =
+                                                            c_second.get(Calendar.DAY_OF_MONTH)
 
-                                                    TimeTypeEnum.YEAR -> state.selectedYear =
-                                                        state.yearsList[it]
+                                                        val tc_first: GregorianCalendar =
+                                                            GregorianCalendar()
+                                                        tc_first.time = state.selectedWeekStart
+                                                        val tc_second: GregorianCalendar =
+                                                            GregorianCalendar()
+                                                        tc_second.time = state.selectedWeekEnd
+                                                        val tc_first_year: Int =
+                                                            tc_first.get(Calendar.YEAR)
+                                                        val tc_first_month: Int =
+                                                            tc_first.get(Calendar.MONTH)
+                                                        val tc_first_day: Int =
+                                                            tc_first.get(Calendar.DAY_OF_MONTH)
+                                                        val tc_second_year: Int =
+                                                            tc_second.get(Calendar.YEAR)
+                                                        val tc_second_month: Int =
+                                                            tc_second.get(Calendar.MONTH)
+                                                        val tc_second_day: Int =
+                                                            tc_second.get(Calendar.DAY_OF_MONTH)
 
-                                                    else -> state.selectedDate = state.daysList[it]
-                                                }
+                                                        (c_first_day == tc_first_day && c_first_month == tc_first_month && c_first_year == tc_first_year) && (c_second_day == tc_second_day && c_second_month == tc_second_month && c_second_year == tc_second_year)
+                                                    }
 
-                                                viewModel.onEvent(HomeEvent.SelectedDateChangeEvent)
-                                            },
-                                            height = 20.dp,
-                                            onScrollingStopped = {})
+                                                    TimeTypeEnum.MONTH -> state.monthsList.indexOfLast {
+                                                        val c: GregorianCalendar =
+                                                            GregorianCalendar()
+                                                        c.time = it
+                                                        val year: Int = c.get(Calendar.YEAR)
+                                                        val month: Int = c.get(Calendar.MONTH)
+                                                        val tc: GregorianCalendar =
+                                                            GregorianCalendar()
+                                                        tc.time = state.selectedMonth
+                                                        val tyear: Int = tc.get(Calendar.YEAR)
+                                                        val tmonth: Int = tc.get(Calendar.MONTH)
+                                                        year == tyear && month == tmonth
+                                                    }
+
+                                                    TimeTypeEnum.YEAR -> state.yearsList.indexOfLast {
+                                                        val c: GregorianCalendar =
+                                                            GregorianCalendar()
+                                                        c.time = it
+                                                        val year: Int = c.get(Calendar.YEAR)
+                                                        val tc: GregorianCalendar =
+                                                            GregorianCalendar()
+                                                        tc.time = state.selectedYear
+                                                        val tyear: Int = tc.get(Calendar.YEAR)
+                                                        year == tyear
+                                                    }
+
+                                                    else -> -100
+                                                } else -1,
+                                                items = when (state.timeType.toTimeTypeEvent()) {
+                                                    TimeTypeEnum.DAY -> state.daysList
+                                                    TimeTypeEnum.WEEK -> state.weeksList
+                                                    TimeTypeEnum.MONTH -> state.monthsList
+                                                    TimeTypeEnum.YEAR -> state.yearsList
+                                                    else -> mutableListOf()
+                                                }.map { date ->
+                                                    when (state.timeType.toTimeTypeEvent()) {
+                                                        TimeTypeEnum.DAY -> DateFormats.DayTimeTypeOutputFormat.format(
+                                                            date
+                                                        )
+
+                                                        TimeTypeEnum.WEEK -> "${
+                                                            DateFormats.WeekTimeTypeOutputFormatFirstPart.format(
+                                                                (date as Pair<*, *>).first
+                                                            )
+                                                        } - ${
+                                                            DateFormats.WeekTimeTypeOutputFormatSecondPart.format(
+                                                                (date).second
+                                                            )
+                                                        }"
+
+                                                        TimeTypeEnum.MONTH -> DateFormats.MonthTimeTypeOutputFormat.format(
+                                                            date
+                                                        )
+
+                                                        TimeTypeEnum.YEAR -> DateFormats.YearTimeTypeOutputFormat.format(
+                                                            date
+                                                        )
+
+                                                        else -> ""
+                                                    }
+                                                }.toMutableList(),
+                                                onSelectedIndexChange = {
+                                                    when (state.timeType.toTimeTypeEvent()) {
+                                                        TimeTypeEnum.DAY -> state.selectedDate =
+                                                            state.daysList[it]
+
+                                                        TimeTypeEnum.WEEK -> {
+                                                            state.selectedWeekStart =
+                                                                state.weeksList[it].first
+                                                            state.selectedWeekEnd =
+                                                                state.weeksList[it].second
+                                                        }
+
+                                                        TimeTypeEnum.MONTH -> state.selectedMonth =
+                                                            state.monthsList[it]
+
+                                                        TimeTypeEnum.YEAR -> state.selectedYear =
+                                                            state.yearsList[it]
+
+                                                        else -> state.selectedDate =
+                                                            state.daysList[it]
+                                                    }
+
+                                                    viewModel.onEvent(HomeEvent.SelectedDateChangeEvent)
+                                                },
+                                                height = 20.dp,
+                                                onScrollingStopped = {})
+                                        } else {
+                                            Text(
+                                                text = stringResource(R.string.life).toLowerCase(
+                                                    Locale.ROOT
+                                                ),
+                                                modifier = Modifier,
+                                                color = MaterialTheme.colorScheme.onSurface,
+                                                fontFamily = caros,
+                                                fontWeight = FontWeight.Medium,
+                                                fontSize = 20.sp
+                                            )
+                                        }
                                     } else {
                                         Text(
-                                            text = stringResource(R.string.life).toLowerCase(Locale.ROOT),
+                                            text = when (state.timeType.toTimeTypeEvent()) {
+                                                TimeTypeEnum.DAY -> DateFormats.DayTimeTypeOutputFormat.format(
+                                                    state.selectedDate
+                                                )
+
+                                                TimeTypeEnum.WEEK -> "${
+                                                    DateFormats.WeekTimeTypeOutputFormatFirstPart.format(
+                                                        state.selectedWeekStart
+                                                    )
+                                                } - ${
+                                                    DateFormats.WeekTimeTypeOutputFormatSecondPart.format(
+                                                        state.selectedWeekEnd
+                                                    )
+                                                }"
+
+                                                TimeTypeEnum.MONTH -> DateFormats.MonthTimeTypeOutputFormat.format(
+                                                    state.selectedMonth
+                                                )
+
+                                                TimeTypeEnum.YEAR -> DateFormats.YearTimeTypeOutputFormat.format(
+                                                    state.selectedYear
+                                                )
+
+                                                else -> ""
+                                            },
                                             modifier = Modifier,
                                             color = MaterialTheme.colorScheme.onSurface,
                                             fontFamily = caros,
@@ -361,129 +413,102 @@ fun HomeScreen(navHostController: NavHostController, viewModel: HomeViewModel = 
                                             fontSize = 20.sp
                                         )
                                     }
-                                } else {
-                                    Text(
-                                        text = when (state.timeType.toTimeTypeEvent()) {
-                                            TimeTypeEnum.DAY -> DateFormats.DayTimeTypeOutputFormat.format(
-                                                state.selectedDate
-                                            )
-
-                                            TimeTypeEnum.WEEK -> "${
-                                                DateFormats.WeekTimeTypeOutputFormatFirstPart.format(
-                                                    state.selectedWeekStart
-                                                )
-                                            } - ${
-                                                DateFormats.WeekTimeTypeOutputFormatSecondPart.format(
-                                                    state.selectedWeekEnd
-                                                )
-                                            }"
-
-                                            TimeTypeEnum.MONTH -> DateFormats.MonthTimeTypeOutputFormat.format(
-                                                state.selectedMonth
-                                            )
-
-                                            TimeTypeEnum.YEAR -> DateFormats.YearTimeTypeOutputFormat.format(
-                                                state.selectedYear
-                                            )
-
-                                            else -> ""
-                                        },
-                                        modifier = Modifier,
-                                        color = MaterialTheme.colorScheme.onSurface,
-                                        fontFamily = caros,
-                                        fontWeight = FontWeight.Medium,
-                                        fontSize = 20.sp
-                                    )
-                                }
-                                Spacer(Modifier.width(4.dp))
-                                Box(modifier = Modifier.clickable(
-                                    interactionSource = interactionSource, indication = null
-                                ) {
-                                    state.timeTypeRowVisible = !state.timeTypeRowVisible
-                                }) {
-                                    Icon(
-                                        imageVector = if (state.timeTypeRowVisible) Icons.Rounded.ArrowDropUp else Icons.Rounded.ArrowDropDown,
-                                        contentDescription = null,
-                                        tint = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f)
-                                    )
+                                    Spacer(Modifier.width(4.dp))
+                                    Box(modifier = Modifier.clickable(
+                                        interactionSource = interactionSource, indication = null
+                                    ) {
+                                        state.timeTypeRowVisible = !state.timeTypeRowVisible
+                                    }) {
+                                        Icon(
+                                            imageVector = if (state.timeTypeRowVisible) Icons.Rounded.ArrowDropUp else Icons.Rounded.ArrowDropDown,
+                                            contentDescription = null,
+                                            tint = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f)
+                                        )
+                                    }
                                 }
                             }
+                            Box(modifier = Modifier
+                                .clip(CircleShape)
+                                .border(
+                                    width = 0.5.dp,
+                                    color = Color.DarkGray,
+                                    shape = CircleShape
+                                )
+                                .clickable {
+                                    navHostController.navigate(Route.SettingsScreen.route)
+                                }) {
+                                Icon(
+                                    modifier = Modifier
+                                        .padding(8.dp)
+                                        .rotate(30f),
+                                    painter = painterResource(R.drawable.ic_settings),
+                                    contentDescription = null,
+                                    tint = MaterialTheme.colorScheme.onSurface
+                                )
+                            }
                         }
-                        Box(modifier = Modifier
-                            .clip(CircleShape)
-                            .border(width = 0.5.dp, color = Color.DarkGray, shape = CircleShape)
-                            .clickable {
-                                navHostController.navigate(Route.SettingsScreen.route)
-                            }) {
-                            Icon(
-                                modifier = Modifier
-                                    .padding(8.dp)
-                                    .rotate(30f),
-                                painter = painterResource(R.drawable.ic_settings),
-                                contentDescription = null,
-                                tint = MaterialTheme.colorScheme.onSurface
-                            )
+                        Spacer(modifier = Modifier.height(4.dp))
+                        AnimatedVisibility(
+                            state.timeTypeRowVisible
+                        ) {
+                            Column {
+                                Spacer(modifier = Modifier.height(8.dp))
+                                TimeTypeSelectRow(modifier = Modifier.padding(horizontal = 24.dp),
+                                    selectedTimeType = state.timeType,
+                                    onChangeSelectedTimeType = {
+                                        viewModel.onEvent(HomeEvent.TimeTypeChangeEvent(it))
+                                    })
+                                Spacer(modifier = Modifier.height(4.dp))
+                            }
                         }
                     }
-                    AnimatedVisibility(
-                        state.timeTypeRowVisible
-                    ) {
-                        Column {
-                            Spacer(modifier = Modifier.height(12.dp))
-                            TimeTypeSelectRow(modifier = Modifier.padding(horizontal = 24.dp),
-                                selectedTimeType = state.timeType,
-                                onChangeSelectedTimeType = {
-                                    viewModel.onEvent(HomeEvent.TimeTypeChangeEvent(it))
-                                })
-                        }
-                    }
+                    Spacer(Modifier.height(4.dp))
                 }
-                Spacer(Modifier.height(4.dp))
-            }
-            AnimatedVisibility(state.isDeletionMode, exit = fadeOut(), enter = fadeIn()) {
-                TopAppBar(
-                    navigationIcon = {
-                        Row {
-                            Spacer(modifier = Modifier.width(24.dp))
+                AnimatedVisibility(state.isDeletionMode, exit = fadeOut(), enter = fadeIn()) {
+                    TopAppBar(
+                        navigationIcon = {
+                            Row {
+                                Spacer(modifier = Modifier.width(24.dp))
+                                Icon(
+                                    modifier = Modifier.clickable(
+                                        interactionSource = interactionSource, indication = null
+                                    ) {
+                                        viewModel.onEvent(HomeEvent.OffDeletionModeEvent)
+                                    },
+                                    imageVector = Icons.Rounded.Close,
+                                    contentDescription = null,
+                                    tint = MaterialTheme.colorScheme.onSurface
+                                )
+                            }
+                        },
+                        title = {
+                            Text(
+                                modifier = Modifier.fillMaxWidth(),
+                                text = stringResource(R.string.deletion_mode),
+                                fontFamily = caros,
+                                fontWeight = FontWeight.Medium,
+                                fontSize = 20.sp,
+                                color = MaterialTheme.colorScheme.onSurface,
+                                textAlign = TextAlign.Center
+                            )
+                        },
+                        actions = {
                             Icon(
                                 modifier = Modifier.clickable(
                                     interactionSource = interactionSource, indication = null
                                 ) {
-                                    viewModel.onEvent(HomeEvent.OffDeletionModeEvent)
+                                    if (state.selectedAll) viewModel.onEvent(HomeEvent.UnselectAllEvent)
+                                    else viewModel.onEvent(HomeEvent.SelectAllEvent)
                                 },
-                                imageVector = Icons.Rounded.Close,
+                                imageVector = if (state.selectedAll) Icons.Rounded.CheckBox else Icons.Rounded.CheckBoxOutlineBlank,
                                 contentDescription = null,
                                 tint = MaterialTheme.colorScheme.onSurface
                             )
-                        }
-                    },
-                    title = {
-                        Text(
-                            modifier = Modifier.fillMaxWidth(),
-                            text = stringResource(R.string.deletion_mode),
-                            fontFamily = caros,
-                            fontWeight = FontWeight.Medium,
-                            fontSize = 20.sp,
-                            color = MaterialTheme.colorScheme.onSurface,
-                            textAlign = TextAlign.Center
-                        )
-                    },
-                    actions = {
-                        Icon(
-                            modifier = Modifier.clickable(
-                                interactionSource = interactionSource, indication = null
-                            ) {
-                                if (state.selectedAll) viewModel.onEvent(HomeEvent.UnselectAllEvent)
-                                else viewModel.onEvent(HomeEvent.SelectAllEvent)
-                            },
-                            imageVector = if (state.selectedAll) Icons.Rounded.CheckBox else Icons.Rounded.CheckBoxOutlineBlank,
-                            contentDescription = null,
-                            tint = MaterialTheme.colorScheme.onSurface
-                        )
-                        Spacer(modifier = Modifier.width(24.dp))
-                    },
-                    colors = TopAppBarDefaults.topAppBarColors(containerColor = MaterialTheme.colorScheme.background)
-                )
+                            Spacer(modifier = Modifier.width(24.dp))
+                        },
+                        colors = TopAppBarDefaults.topAppBarColors(containerColor = MaterialTheme.colorScheme.background)
+                    )
+                }
             }
         }, bottomBar = {
 
@@ -533,26 +558,32 @@ fun HomeScreen(navHostController: NavHostController, viewModel: HomeViewModel = 
                                 })
                             Spacer(modifier = Modifier.width(12.dp))
                             state.categories.forEach { category ->
-                                CategoryCard(modifier = Modifier.clip(CircleShape),
-                                    category = category,
-                                    selected = state.selectedCategory == category,
-                                    onSelectChange = {
-                                        viewModel.onEvent(HomeEvent.SelectCategoryEvent(category))
-                                    },
-                                    onLongClick = {
-                                        viewModel.onEvent(HomeEvent.ShowCategoryMenuEvent)
-                                        viewModel.onEvent(
-                                            HomeEvent.SetCategoryEvent(
-                                                category
+                                key(category.id) {
+                                    CategoryCard(modifier = Modifier
+                                        .clip(CircleShape)
+                                        .onGloballyPositioned {
+                                            selectedCategoryOffset.value = it.positionInRoot()
+                                        },
+                                        category = category,
+                                        selected = state.selectedCategory == category,
+                                        onSelectChange = {
+                                            viewModel.onEvent(HomeEvent.SelectCategoryEvent(category))
+                                        },
+                                        onLongClick = {
+                                            viewModel.onEvent(HomeEvent.ShowCategoryMenuEvent)
+                                            viewModel.onEvent(
+                                                HomeEvent.SetCategoryEvent(
+                                                    category
+                                                )
                                             )
+                                        })
+                                    if (state.categories.last() == category) Spacer(
+                                        modifier = Modifier.width(
+                                            24.dp
                                         )
-                                    })
-                                if (state.categories.last() == category) Spacer(
-                                    modifier = Modifier.width(
-                                        24.dp
                                     )
-                                )
-                                else Spacer(modifier = Modifier.width(12.dp))
+                                    else Spacer(modifier = Modifier.width(12.dp))
+                                }
                             }
                             MaterialTheme(
                                 colorScheme = MaterialTheme.colorScheme.copy(surface = MaterialTheme.colorScheme.surfaceVariant),
@@ -566,9 +597,15 @@ fun HomeScreen(navHostController: NavHostController, viewModel: HomeViewModel = 
                                             width = 0.3.dp,
                                             color = Color.DarkGray,
                                             shape = RoundedCornerShape(12.dp)
-                                        ), expanded = state.showCategoryMenu, onDismissRequest = {
+                                        ),
+                                    expanded = state.showCategoryMenu,
+                                    onDismissRequest = {
                                         viewModel.onEvent(HomeEvent.HideCategoryMenuEvent)
-                                    }, offset = DpOffset(x = 90.dp, y = 0.dp)
+                                    },
+                                    offset = DpOffset(
+                                        x = with(LocalDensity.current) { selectedCategoryOffset.value.x.toDp() },
+                                        y = 0.dp
+                                    )
                                 ) {
                                     DropdownMenuItem(text = {
                                         MenuItem(
@@ -615,58 +652,63 @@ fun HomeScreen(navHostController: NavHostController, viewModel: HomeViewModel = 
                     modifier = Modifier.fillMaxSize(), visible = !state.contentState.isLoading.value
                 ) {
                     Column(
-                        modifier = Modifier.fillMaxSize().animateContentSize(), verticalArrangement = Arrangement.Center
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .animateContentSize(),
+                        verticalArrangement = Arrangement.Center
                     ) {
                         if (state.tasks.isNotEmpty()) {
                             state.tasks.forEach { task ->
-                                TaskItem(
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .padding(horizontal = 24.dp),
-                                    task = task,
-                                    onCheckedChange = {
-                                        viewModel.onEvent(
-                                            HomeEvent.TaskItemCheckboxToggleEvent(
-                                                task
+                                key(task.id) {
+                                    TaskItem(
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .padding(horizontal = 24.dp),
+                                        task = task,
+                                        onCheckedChange = {
+                                            viewModel.onEvent(
+                                                HomeEvent.TaskItemCheckboxToggleEvent(
+                                                    task
+                                                )
                                             )
-                                        )
-                                    },
-                                    onClick = {
-                                        navHostController.navigate("${Route.TaskScreen.route}/${task.id}")
-                                    },
-                                    onLongClick = {
-                                        viewModel.onEvent(HomeEvent.OnDeletionModeEvent)
-                                        if (state.deletionTasks.contains(task)) viewModel.onEvent(
-                                            HomeEvent.RemoveSelectedTaskEvent(task)
-                                        )
-                                        else viewModel.onEvent(
-                                            HomeEvent.AddSelectedTaskEvent(
-                                                task
+                                        },
+                                        onClick = {
+                                            navHostController.navigate("${Route.TaskScreen.route}/${task.id}")
+                                        },
+                                        onLongClick = {
+                                            viewModel.onEvent(HomeEvent.OnDeletionModeEvent)
+                                            if (state.deletionTasks.contains(task)) viewModel.onEvent(
+                                                HomeEvent.RemoveSelectedTaskEvent(task)
                                             )
-                                        )
-                                    },
-                                    isDeletionMode = state.isDeletionMode,
-                                    onDeleteCheckedChange = {
-                                        if (state.deletionTasks.contains(task)) viewModel.onEvent(
-                                            HomeEvent.RemoveSelectedTaskEvent(task)
-                                        )
-                                        else viewModel.onEvent(
-                                            HomeEvent.AddSelectedTaskEvent(
-                                                task
+                                            else viewModel.onEvent(
+                                                HomeEvent.AddSelectedTaskEvent(
+                                                    task
+                                                )
                                             )
-                                        )
-                                    },
-                                    isDeleteChecked = state.deletionTasks.contains(task),
-                                    onCheckedSubtask = {
-                                        viewModel.onEvent(
-                                            HomeEvent.SubtaskItemCheckboxToggleEvent(
-                                                it
+                                        },
+                                        isDeletionMode = state.isDeletionMode,
+                                        onDeleteCheckedChange = {
+                                            if (state.deletionTasks.contains(task)) viewModel.onEvent(
+                                                HomeEvent.RemoveSelectedTaskEvent(task)
                                             )
-                                        )
+                                            else viewModel.onEvent(
+                                                HomeEvent.AddSelectedTaskEvent(
+                                                    task
+                                                )
+                                            )
+                                        },
+                                        isDeleteChecked = state.deletionTasks.contains(task),
+                                        onCheckedSubtask = {
+                                            viewModel.onEvent(
+                                                HomeEvent.SubtaskItemCheckboxToggleEvent(
+                                                    it
+                                                )
+                                            )
+                                        }
+                                    )
+                                    if (task.id != state.tasks.last().id) {
+                                        Spacer(modifier = Modifier.height(16.dp))
                                     }
-                                )
-                                if (task.id != state.tasks.last().id) {
-                                    Spacer(modifier = Modifier.height(16.dp))
                                 }
                             }
                         } else {

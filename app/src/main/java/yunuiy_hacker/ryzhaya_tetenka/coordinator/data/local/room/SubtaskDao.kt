@@ -20,8 +20,14 @@ interface SubtaskDao {
     @Delete
     suspend fun delete(subtask: Subtask)
 
+    @Delete
+    suspend fun allDelete(subtasks: List<Subtask>)
+
     @Update(entity = Subtask::class, onConflict = OnConflictStrategy.REPLACE)
     suspend fun update(subtask: Subtask)
+
+    @Update(entity = Subtask::class, onConflict = OnConflictStrategy.REPLACE)
+    suspend fun allUpdate(subtasks: List<Subtask>)
 
     @Query("SELECT * FROM subtasks")
     suspend fun getSubtasks(): List<Subtask>

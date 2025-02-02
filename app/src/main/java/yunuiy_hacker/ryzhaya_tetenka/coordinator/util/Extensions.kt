@@ -4,21 +4,20 @@ import android.app.Application
 import android.content.Context
 import android.content.pm.PackageManager
 import android.net.Uri
-import android.util.Log
-import androidx.core.content.ContentProviderCompat.requireContext
+import android.provider.OpenableColumns
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.R
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.home.model.TimeType
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.home.model.TimeTypeEnum
-import java.io.File
-import java.io.FileOutputStream
-import java.io.IOException
 import java.io.InputStream
+import java.security.MessageDigest
+import java.text.SimpleDateFormat
 import java.time.ZoneId
 import java.time.ZoneOffset
 import java.time.ZonedDateTime
 import java.util.Calendar
 import java.util.Date
 import java.util.Formatter
+import kotlin.random.Random
 
 fun TimeType.toTimeTypeEvent(): TimeTypeEnum {
     return when (this.id) {
@@ -108,4 +107,70 @@ fun appIsInstalled(context: Context, stringUri: String): Boolean {
 
 fun getMapUri(la: Double, lt: Double): Uri {
     return Uri.parse("geo:0,0?q=$la, $lt")
+}
+
+fun Date.toStringFormat(): String {
+    return SimpleDateFormat(
+        "dd.MM.yyyy"
+    ).format(
+        this
+    )
+}
+
+fun hashString(type: String, input: String): String {
+    val HEX_CHARS = "0123456789ABCDEF"
+    val bytes = MessageDigest.getInstance(type).digest(input.toByteArray())
+    val result = StringBuilder(bytes.size * 2)
+
+    bytes.forEach {
+        val i = it.toInt()
+        result.append(HEX_CHARS[i shr 4 and 0x0f])
+        result.append(HEX_CHARS[i and 0x0f])
+    }
+
+    return result.toString()
+}
+
+fun getHashedRandomString(): String {
+    return hashString("SHA-256", (Date().time * Random(1000).nextInt()).toString())
+}
+
+fun displayName(displayName: String, surname: String, name: String, lastname: String): String {
+    var returnValue = ""
+    if (displayName.isNotEmpty()) return displayName
+    else {
+        if (surname.isNotEmpty()) returnValue += surname
+        if (name.isNotEmpty()) returnValue += if (returnValue.isNotEmpty()) " " else {
+            ""
+        } + name
+        if (lastname.isNotEmpty()) returnValue += if (returnValue.isNotEmpty()) " " else {
+            ""
+        } + lastname
+    }
+    return returnValue
+}
+
+fun getAppInfo(context: Context): String {
+    val packageInfo = context.packageManager.getPackageInfo(context.packageName, 0)
+    val appName = context.getString(R.string.app_name)
+    val version = packageInfo.versionName
+    return "$appName ${context.getString(R.string.letter_for)} Android v$version ${
+        context.getString(
+            R.string.by
+        )
+    } ${context.getString(R.string.developer_nickname)}"
+}
+
+fun getFileName(context: Context, uri: Uri): String {
+
+    if (uri.scheme == "content") {
+        val cursor = context.contentResolver.query(uri, null, null, null, null)
+        cursor.use {
+            if (cursor?.moveToFirst()!!) {
+                return cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME))
+            }
+        }
+    }
+
+    return uri.path.toString()
 }

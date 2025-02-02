@@ -4,6 +4,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.model.Category
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.model.People
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.model.Place
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.model.Subtask
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.model.Task
@@ -23,6 +24,7 @@ class CreateUpdateTaskState {
 
     var heading by mutableStateOf("")
     var content by mutableStateOf("")
+    var checked by mutableStateOf(false)
 
     var showDatePickerDialog by mutableStateOf(false)
     var selectedDateInMilliseconds by mutableStateOf(0L)
@@ -52,6 +54,11 @@ class CreateUpdateTaskState {
     var showPlacesSelectorSheet by mutableStateOf(false)
     var places: MutableList<Place> = mutableListOf()
     var showCreateUpdatePlaceDialog by mutableStateOf(false)
+
+    var selectedPeople by mutableStateOf(People(id = 0))
+    var showPeoplesSelectorSheet by mutableStateOf(false)
+    var peoples: MutableList<People> = mutableListOf()
+    var selectedPeoples: MutableList<People> = mutableListOf()
 
     val contentState by mutableStateOf(ContentState())
 

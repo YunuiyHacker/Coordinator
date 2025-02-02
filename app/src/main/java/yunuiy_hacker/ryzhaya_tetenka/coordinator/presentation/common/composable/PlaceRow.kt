@@ -1,8 +1,10 @@
 package yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.common.composable
 
 import androidx.compose.animation.animateContentSize
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -12,9 +14,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Cancel
 import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Place
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -30,11 +30,13 @@ import androidx.compose.ui.unit.sp
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.model.Place
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.ui.theme.caros
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun PlaceRow(
     modifier: Modifier = Modifier,
     place: Place,
     onClick: () -> Unit,
+    onLongClick: () -> Unit,
     showDeletionButton: Boolean = false,
     onDeleteClick: () -> Unit = {}
 ) {
@@ -46,14 +48,16 @@ fun PlaceRow(
                 color = MaterialTheme.colorScheme.surfaceVariant, shape = RoundedCornerShape(10.dp)
             )
             .clip(RoundedCornerShape(10.dp))
-            .clickable {
+            .combinedClickable(onClick = {
                 onClick()
-            }, verticalAlignment = Alignment.CenterVertically
+            }, onLongClick = {
+                onLongClick()
+            }), verticalAlignment = Alignment.CenterVertically
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 16.dp),
+                .padding(horizontal = 16.dp, vertical = 6.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Icon(

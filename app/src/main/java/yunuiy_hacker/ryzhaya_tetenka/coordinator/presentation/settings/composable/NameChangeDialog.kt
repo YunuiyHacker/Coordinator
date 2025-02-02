@@ -13,6 +13,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
@@ -64,14 +65,14 @@ fun NameChangeDialog(
                 textAlign = TextAlign.Center
             )
             Spacer(modifier = Modifier.height(24.dp))
-            TextField(
+            OutlinedTextField(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 48.dp),
+                    .fillMaxWidth(),
                 value = localUserName,
                 onValueChange = {
-                    localUserName = it
+                    localUserName = it.take(23)
                 },
+                shape = RoundedCornerShape(16.dp),
                 colors = TextFieldDefaults.colors(
                     unfocusedContainerColor = MaterialTheme.colorScheme.surfaceVariant,
                     focusedContainerColor = MaterialTheme.colorScheme.surfaceVariant
