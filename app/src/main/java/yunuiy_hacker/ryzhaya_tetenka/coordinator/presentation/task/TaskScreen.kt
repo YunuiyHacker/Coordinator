@@ -90,6 +90,7 @@ import yunuiy_hacker.ryzhaya_tetenka.coordinator.ui.theme.caros
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.ui.theme.roboto
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.util.Constants
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.util.ImageUtils
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.util.displayName
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.util.getMapUri
 
 
@@ -309,7 +310,7 @@ fun TaskScreen(navHostController: NavHostController, viewModel: TaskViewModel = 
                                         Box {
                                             state.peoples.forEachIndexed { index, people ->
                                                 if (index <= 4) {
-                                                    key (people.id) {
+                                                    key(people.id) {
                                                         Row(modifier = Modifier.padding(start = index * 30.dp)) {
                                                             if (people.avatarPath.isNotEmpty()) {
                                                                 AsyncImage(
@@ -346,7 +347,12 @@ fun TaskScreen(navHostController: NavHostController, viewModel: TaskViewModel = 
                                         Spacer(modifier = Modifier.width(16.dp))
                                         Text(
                                             modifier = Modifier.weight(1f),
-                                            text = state.peoples[0].displayName + if (state.peoples.size == 1) "" else ", ...",
+                                            text = if (state.peoples.size > 0) displayName(
+                                                state.peoples[0].displayName,
+                                                state.peoples[0].surname,
+                                                state.peoples[0].name,
+                                                state.peoples[0].lastname
+                                            ) + if (state.peoples.size == 1) "" else ", ..." else "",
                                             fontFamily = caros,
                                             fontWeight = FontWeight.Normal,
                                             fontSize = 16.sp,
@@ -426,7 +432,7 @@ fun TaskScreen(navHostController: NavHostController, viewModel: TaskViewModel = 
                         Spacer(modifier = Modifier.height(12.dp))
                         if (!state.contentState.isLoading.value) {
                             state.subtasks.forEach { subtask ->
-                                key (subtask.id) {
+                                key(subtask.id) {
                                     SubtaskRow(
                                         subtask = subtask,
                                         onCheckedChange = {
