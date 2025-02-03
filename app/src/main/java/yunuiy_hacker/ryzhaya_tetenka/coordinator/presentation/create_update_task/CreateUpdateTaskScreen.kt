@@ -14,11 +14,14 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.imePadding
+import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -131,6 +134,8 @@ fun CreateUpdateTaskScreen(
     var topHeightPaddingOfHeading by remember { mutableStateOf(0) }
     var heightOfHeadingTextField by remember { mutableStateOf(0) }
     var cursorPosition by remember { mutableStateOf(Offset.Zero) }
+
+    val paddingValues = WindowInsets.navigationBars.asPaddingValues()
 
     LaunchedEffect(Unit) {
         viewModel.onEvent(CreateUpdateTaskEvent.LoadDataEvent)
@@ -815,6 +820,7 @@ fun CreateUpdateTaskScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .align(Alignment.BottomCenter)
+                    .padding(paddingValues)
             ) {
                 Row(
                     modifier = Modifier
@@ -850,7 +856,10 @@ fun CreateUpdateTaskScreen(
                         )
                     }
                 }
-                Spacer(modifier = Modifier.height(24.dp))
+                if (paddingValues.calculateBottomPadding() == 0.dp)
+                    Spacer(modifier = Modifier.height(24.dp))
+                else
+                    Spacer(modifier = Modifier.height(8.dp))
             }
 
             LaunchedEffect(state.success) {
@@ -1072,25 +1081,4 @@ fun CreateUpdateTaskScreen(
             Route.HomeScreen.route, inclusive = false, saveState = false
         )
     }
-}
-
-fun getLine(textFieldValue: TextFieldValue): Int {
-    val text = textFieldValue.text
-    val selection = textFieldValue.selection.start
-    val lineList = mutableListOf<Int>()
-    text.forEachIndexed { index: Int, c: Char ->
-        if (c == '\n') {
-            lineList.add(index)
-        }
-    }
-
-    if (lineList.isEmpty()) return 1
-
-    lineList.forEachIndexed { index, lineEndIndex ->
-        if (selection <= lineEndIndex) {
-            return index + 1
-        }
-    }
-
-    return lineList.size + 1
 }
