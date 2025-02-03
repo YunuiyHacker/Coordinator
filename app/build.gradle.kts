@@ -16,8 +16,8 @@ android {
         applicationId = "yunuiy_hacker.ryzhaya_tetenka.coordinator"
         minSdk = 33
         targetSdk = 34
-        versionCode = 1
-        versionName = "1.0.0"
+        versionCode = 3
+        versionName = "1.0.2"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }

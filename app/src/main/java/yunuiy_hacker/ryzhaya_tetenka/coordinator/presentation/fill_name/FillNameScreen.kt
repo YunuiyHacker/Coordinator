@@ -2,8 +2,11 @@ package yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.fill_name
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
@@ -34,9 +37,13 @@ import yunuiy_hacker.ryzhaya_tetenka.coordinator.ui.theme.caros
 fun FillNameScreen(
     navHostController: NavHostController, viewModel: FillNameViewModel = hiltViewModel()
 ) {
+    val paddingValues = WindowInsets.navigationBars.asPaddingValues()
+
     viewModel.state.let { state ->
         Scaffold(bottomBar = {
-            Column(modifier = Modifier.fillMaxWidth()) {
+            Column(modifier = Modifier
+                .fillMaxWidth()
+                .padding(paddingValues)) {
                 Button(
                     modifier = Modifier
                         .fillMaxWidth()
