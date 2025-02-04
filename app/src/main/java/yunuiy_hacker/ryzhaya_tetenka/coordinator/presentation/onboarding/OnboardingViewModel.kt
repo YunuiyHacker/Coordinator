@@ -24,6 +24,9 @@ class OnboardingViewModel @Inject constructor(private val application: Applicati
     fun loadData() {
         state.contentState.isLoading.value = true
 
+        state.tasks.clear()
+        state.peoples.clear()
+
         state.tasks.add(
             Task(
                 id = 1,

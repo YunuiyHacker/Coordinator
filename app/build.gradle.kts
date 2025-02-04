@@ -14,7 +14,7 @@ android {
 
     defaultConfig {
         applicationId = "yunuiy_hacker.ryzhaya_tetenka.coordinator"
-        minSdk = 33
+        minSdk = 31
         targetSdk = 34
         versionCode = 3
         versionName = "1.0.2"

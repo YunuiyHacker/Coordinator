@@ -1,5 +1,6 @@
 package yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.fill_name
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
@@ -120,6 +121,10 @@ fun FillNameScreen(
             if (state.succes) {
                 navHostController.navigate(Route.HomeScreen.route)
             }
+        }
+
+        BackHandler {
+
         }
     }
 }
