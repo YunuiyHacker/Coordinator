@@ -15,4 +15,8 @@ sealed class SettingsEvent {
 
     data object ExportDataOnClick : SettingsEvent()
     data object ImportDataOnClick : SettingsEvent()
+
+    data object ChangeThemeToLightEvent : SettingsEvent()
+    data object ToggleThemeEvent : SettingsEvent()
+    data object ChangeThemeToDarkEvent : SettingsEvent()
 }

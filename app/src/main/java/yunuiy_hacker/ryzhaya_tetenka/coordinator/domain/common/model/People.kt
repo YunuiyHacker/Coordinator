@@ -8,6 +8,8 @@ data class People(
     val sex: Boolean = true,
     val dateOfBirthInMilliseconds: Long? = null,
     val displayName: String = "",
+    val phone: String = "",
+    val email: String = "",
     val address: String = "",
     val avatarPath: String = ""
 )

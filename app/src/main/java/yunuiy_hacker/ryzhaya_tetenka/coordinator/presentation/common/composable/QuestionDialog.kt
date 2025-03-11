@@ -66,8 +66,8 @@ fun QuestionDialog(
                         onDismissRequest()
                     },
                     colors = ButtonDefaults.buttonColors(
-                        contentColor = MaterialTheme.colorScheme.onSurface,
-                        containerColor = Color.DarkGray
+                        contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                        containerColor = MaterialTheme.colorScheme.surfaceContainer
                     ),
                     shape = RoundedCornerShape(10.dp)
                 ) {
@@ -83,7 +83,7 @@ fun QuestionDialog(
                     onClick = {
                         onConfirmRequest()
                     },
-                    colors = ButtonDefaults.buttonColors(contentColor = MaterialTheme.colorScheme.onSurface),
+                    colors = ButtonDefaults.buttonColors(contentColor = Color.White),
                     shape = RoundedCornerShape(10.dp)
                 ) {
                     Text(

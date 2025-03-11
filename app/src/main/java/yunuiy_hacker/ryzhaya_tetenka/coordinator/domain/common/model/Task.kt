@@ -1,6 +1,5 @@
 package yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.model
 
-import androidx.compose.runtime.mutableStateOf
 import java.util.Date
 
 data class Task(
@@ -16,5 +15,9 @@ data class Task(
     val title: String = "",
     val content: String = "",
     var checked: Boolean = false,
-    var subtasks: List<Subtask> = listOf()
+    var subtasks: List<Subtask> = listOf(),
+    val notify: Boolean = false,
+    val notifyDate: Date = Date(),
+    val notifyHour: Int = 0,
+    val notifyMinute: Int = 0
 )

@@ -13,6 +13,8 @@ data class People(
     @ColumnInfo(name = "sex") val sex: Boolean? = true,
     @ColumnInfo(name = "date_of_birth_in_milliseconds") val dateOfBirthInMilliseconds: Long? = 0L,
     @ColumnInfo(name = "display_name") val displayName: String? = "",
+    @ColumnInfo(name = "phone") val phone: String? = "",
+    @ColumnInfo(name = "email") val email: String? = "",
     @ColumnInfo(name = "address") val address: String? = "",
     @ColumnInfo(name = "avatar_path") val avatarPath: String? = ""
 )

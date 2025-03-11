@@ -80,7 +80,7 @@ fun SearchBar(
                         fontFamily = caros,
                         fontWeight = FontWeight.Medium,
                         fontSize = 16.sp,
-                        color = MaterialTheme.colorScheme.onSurface
+                        color = Color.White
                     )
                 }
                 Spacer(Modifier.width(8.dp))

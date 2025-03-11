@@ -1,8 +1,11 @@
 package yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.settings.app_data.people
 
+import android.app.Activity
 import android.app.Application
+import android.content.Intent
 import android.graphics.ImageDecoder
 import android.net.Uri
+import android.widget.Toast
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -36,8 +39,11 @@ class PeoplesViewModel @Inject constructor(
                 state.showCreateUpdatePeopleBottomSheet = true
             }
 
-            is PeoplesEvent.HideCreateUpdatePeopleBottomSheetEvent -> state.showCreateUpdatePeopleBottomSheet =
-                false
+            is PeoplesEvent.HideCreateUpdatePeopleBottomSheetEvent -> {
+                state.showCreateUpdatePeopleBottomSheet =
+                    false
+                state.isEditMode = false
+            }
 
             is PeoplesEvent.CreateUpdatePeopleEvent -> createUpdatePeople(
                 event.people, event.imageUri

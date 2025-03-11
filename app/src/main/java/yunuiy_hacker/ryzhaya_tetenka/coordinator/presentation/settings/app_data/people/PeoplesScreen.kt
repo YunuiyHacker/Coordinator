@@ -36,6 +36,7 @@ import androidx.compose.runtime.key
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -130,7 +131,7 @@ fun PeoplesScreen(
                             Icon(
                                 imageVector = Icons.Default.PersonAddAlt1,
                                 contentDescription = null,
-                                tint = MaterialTheme.colorScheme.onSurface
+                                tint = Color.White
                             )
                             Spacer(modifier = Modifier.width(16.dp))
                             Text(
@@ -140,7 +141,7 @@ fun PeoplesScreen(
                                 text = stringResource(R.string.add_new_people),
                                 fontFamily = caros,
                                 fontWeight = FontWeight.Medium,
-                                color = MaterialTheme.colorScheme.onSurface,
+                                color = Color.White,
                                 textAlign = TextAlign.Center
                             )
                         }
@@ -190,8 +191,7 @@ fun PeoplesScreen(
                 Dialog(onDismissRequest = {
                     viewModel.onEvent(PeoplesEvent.HideImageEvent)
                 }, properties = DialogProperties(usePlatformDefaultWidth = false)) {
-                    ShowPeopleImageScreen(
-                        imageName = state.selectedPeople.value?.avatarPath.toString(),
+                    ShowPeopleImageScreen(imageName = state.selectedPeople.value?.avatarPath.toString(),
                         displayName = state.selectedPeople.value.let { p ->
                             displayName(
                                 p?.displayName ?: "",

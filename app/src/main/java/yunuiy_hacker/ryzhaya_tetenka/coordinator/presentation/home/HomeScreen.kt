@@ -39,6 +39,7 @@ import androidx.compose.material.icons.rounded.Close
 import androidx.compose.material.icons.rounded.Delete
 import androidx.compose.material.icons.rounded.Edit
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDefaults
 import androidx.compose.material3.DropdownMenu
@@ -136,12 +137,15 @@ fun HomeScreen(navHostController: NavHostController, viewModel: HomeViewModel = 
                     onClick = {
                         navHostController.navigate("${Route.CreateUpdateTaskScreen.route}/${state.timeType.id}/${state.selectedDate.time}/${state.selectedWeekStart.time}/${state.selectedWeekEnd.time}/${state.selectedCategory.id}")
                     },
-                    colors = IconButtonDefaults.iconButtonColors(containerColor = MaterialTheme.colorScheme.primary)
+                    colors = IconButtonDefaults.iconButtonColors(
+                        containerColor = MaterialTheme.colorScheme.primary,
+                        contentColor = Color.White
+                    )
                 ) {
                     Icon(
                         modifier = Modifier,
                         imageVector = Icons.Rounded.Add,
-                        tint = MaterialTheme.colorScheme.onSurface,
+                        tint = Color.White,
                         contentDescription = null
                     )
                 }
@@ -161,7 +165,7 @@ fun HomeScreen(navHostController: NavHostController, viewModel: HomeViewModel = 
                         text = stringResource(R.string.delete_all_selected),
                         fontFamily = caros,
                         fontWeight = FontWeight.Medium,
-                        color = MaterialTheme.colorScheme.onSurface
+                        color = Color.White
                     )
                 }
             }
@@ -764,11 +768,12 @@ fun HomeScreen(navHostController: NavHostController, viewModel: HomeViewModel = 
                                     datePickerState.selectedDateMillis ?: 0
                                 )
                             )
-                        }, shape = RoundedCornerShape(12.dp)
+                        }, shape = RoundedCornerShape(12.dp),
+                        colors = ButtonDefaults.buttonColors(contentColor = Color.White)
                     ) {
                         Text(
                             text = stringResource(R.string.select),
-                            color = MaterialTheme.colorScheme.onSurface,
+                            color = Color.White,
                             fontFamily = caros,
                             fontWeight = FontWeight.Medium
                         )

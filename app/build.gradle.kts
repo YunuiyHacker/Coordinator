@@ -13,7 +13,7 @@ android {
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "yunuiy_hacker.ryzhaya_tetenka.coordinator"
+        applicationId = "yunuiy_hacker.ryzhaya_tetenka.coordinator.v2"
         minSdk = 31
         targetSdk = 34
         versionCode = 4
@@ -55,6 +55,7 @@ dependencies {
     //accompanist
     implementation("com.google.accompanist:accompanist-systemuicontroller:0.27.0")
     implementation("com.google.accompanist:accompanist-navigation-animation:0.36.0")
+    implementation("com.google.accompanist:accompanist-permissions:0.37.0")
 
     //splash-api
     implementation("androidx.core:core-splashscreen:1.0.1")

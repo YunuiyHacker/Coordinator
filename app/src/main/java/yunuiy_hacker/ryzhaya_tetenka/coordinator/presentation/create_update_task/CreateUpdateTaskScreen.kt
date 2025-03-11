@@ -1,6 +1,9 @@
 package yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.create_update_task
 
+import android.Manifest
 import androidx.activity.compose.BackHandler
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.LocalIndication
@@ -11,7 +14,6 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
@@ -41,10 +43,13 @@ import androidx.compose.material.icons.rounded.ArrowBack
 import androidx.compose.material.icons.rounded.KeyboardArrowDown
 import androidx.compose.material.icons.rounded.KeyboardArrowUp
 import androidx.compose.material.icons.rounded.MoreVert
+import androidx.compose.material.icons.rounded.Notifications
+import androidx.compose.material.icons.rounded.NotificationsActive
 import androidx.compose.material.icons.rounded.Person
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Checkbox
+import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDefaults
 import androidx.compose.material3.DropdownMenu
@@ -56,7 +61,6 @@ import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.ShapeDefaults
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
@@ -83,7 +87,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -95,6 +98,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.accompanist.permissions.isGranted
+import com.google.accompanist.permissions.rememberPermissionState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.R
@@ -104,6 +110,7 @@ import yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.common.composable.
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.common.composable.CreateUpdatePlaceDialog
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.common.composable.CreateUpdateSubtaskRow
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.common.composable.MessageDialog
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.common.composable.PermissionInfoDialog
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.common.composable.PeopleRow
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.common.composable.PlaceRow
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.common.composable.TimePickerDialog
@@ -111,13 +118,14 @@ import yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.common.composable.
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.nav_graph.Route
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.ui.theme.caros
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.util.Constants
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.util.DateFormats
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.util.ImageUtils
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.util.displayName
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.util.timeFormatter
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.util.toTimeTypeEvent
-import kotlin.math.sign
 
 @OptIn(
-    ExperimentalMaterial3Api::class
+    ExperimentalMaterial3Api::class, ExperimentalPermissionsApi::class
 )
 @Composable
 fun CreateUpdateTaskScreen(
@@ -136,6 +144,9 @@ fun CreateUpdateTaskScreen(
     var cursorPosition by remember { mutableStateOf(Offset.Zero) }
 
     val paddingValues = WindowInsets.navigationBars.asPaddingValues()
+
+    val notificationPermissionState =
+        rememberPermissionState(Manifest.permission.POST_NOTIFICATIONS)
 
     LaunchedEffect(Unit) {
         viewModel.onEvent(CreateUpdateTaskEvent.LoadDataEvent)
@@ -417,11 +428,11 @@ fun CreateUpdateTaskScreen(
                                 minute = state.selectedMinute,
                                 onDateClick = {
                                     if (state.timeType.toTimeTypeEvent() != TimeTypeEnum.LIFE) viewModel.onEvent(
-                                        CreateUpdateTaskEvent.ShowDatePickerDialogEvent
+                                        CreateUpdateTaskEvent.ShowDatePickerDialogEvent()
                                     )
                                 },
                                 onTimeClick = {
-                                    viewModel.onEvent(CreateUpdateTaskEvent.ShowTimePickerDialogEvent)
+                                    viewModel.onEvent(CreateUpdateTaskEvent.ShowTimePickerDialogEvent())
                                 },
                                 onEndTimeClick = {
                                     viewModel.onEvent(CreateUpdateTaskEvent.ShowEndTimePickerDialogEvent)
@@ -432,15 +443,14 @@ fun CreateUpdateTaskScreen(
                             )
                             Spacer(modifier = Modifier.height(8.dp))
                         }
-                        BasicTextField(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(start = 24.dp)
-                                .offset(x = -16.dp)
-                                .onGloballyPositioned {
-                                    heightOfHeadingTextField = it.size.height
-                                }
-                                .animateContentSize(),
+                        BasicTextField(modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(start = 24.dp)
+                            .offset(x = -16.dp)
+                            .onGloballyPositioned {
+                                heightOfHeadingTextField = it.size.height
+                            }
+                            .animateContentSize(),
                             value = state.heading,
                             onValueChange = {
                                 viewModel.onEvent(
@@ -791,6 +801,130 @@ fun CreateUpdateTaskScreen(
                                         }
                                     }
                                 }
+
+                            }
+                        }
+                        Spacer(modifier = Modifier.height(16.dp))
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 24.dp)
+                                .clickable(
+                                    interactionSource = interactionSource, indication = null
+                                ) {
+                                    viewModel.onEvent(CreateUpdateTaskEvent.ToggleRemindLaterEvent)
+
+                                    if (state.remindLaterIsChecked) {
+                                        if (!notificationPermissionState.status.isGranted) viewModel.onEvent(
+                                            CreateUpdateTaskEvent.ShowNotificationPermissionInfoDialogEvent
+                                        )
+                                    }
+                                }, verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Checkbox(
+                                checked = state.remindLaterIsChecked, onCheckedChange = {
+                                    viewModel.onEvent(CreateUpdateTaskEvent.ToggleRemindLaterEvent)
+
+                                    if (state.remindLaterIsChecked) {
+                                        if (!notificationPermissionState.status.isGranted) viewModel.onEvent(
+                                            CreateUpdateTaskEvent.ShowNotificationPermissionInfoDialogEvent
+                                        )
+                                    }
+                                }, colors = CheckboxDefaults.colors(
+                                    uncheckedColor = MaterialTheme.colorScheme.onSurface,
+                                    checkedColor = MaterialTheme.colorScheme.primary,
+                                    checkmarkColor = MaterialTheme.colorScheme.background
+                                )
+                            )
+                            Text(
+                                text = stringResource(R.string.remind_later),
+                                fontFamily = caros,
+                                fontWeight = FontWeight.Normal,
+                                fontSize = 16.sp,
+                                color = MaterialTheme.colorScheme.onSurface
+                            )
+                        }
+                        AnimatedVisibility(state.remindLaterIsChecked) {
+                            Column(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(horizontal = 24.dp)
+                            ) {
+                                Spacer(modifier = Modifier.height(6.dp))
+                                Row(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(horizontal = 12.dp)
+                                        .clip(RoundedCornerShape(10.dp)),
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    Icon(
+                                        modifier = Modifier.size(20.dp),
+                                        imageVector = Icons.Rounded.Notifications,
+                                        contentDescription = null,
+                                        tint = MaterialTheme.colorScheme.onSurface
+                                    )
+                                    Spacer(modifier = Modifier.width(12.dp))
+                                    Row(modifier = Modifier
+                                        .background(
+                                            color = MaterialTheme.colorScheme.surfaceVariant,
+                                            shape = RoundedCornerShape(10.dp)
+                                        )
+                                        .clip(RoundedCornerShape(10.dp))
+                                        .clickable {
+                                            viewModel.onEvent(
+                                                CreateUpdateTaskEvent.ShowDatePickerDialogEvent(
+                                                    true
+                                                )
+                                            )
+                                        }) {
+                                        Row(
+                                            modifier = Modifier.padding(
+                                                horizontal = 12.dp, vertical = 8.dp
+                                            ), verticalAlignment = Alignment.CenterVertically
+                                        ) {
+                                            Text(
+                                                text = DateFormats.DayTimeTypeOutputFormat.format(
+                                                    state.notifyDate
+                                                ),
+                                                color = MaterialTheme.colorScheme.onSurface,
+                                                fontFamily = caros,
+                                                fontWeight = FontWeight.Normal,
+                                                fontSize = 16.sp
+                                            )
+                                        }
+                                    }
+                                    Spacer(modifier = Modifier.width(12.dp))
+                                    Row(modifier = Modifier
+                                        .background(
+                                            color = MaterialTheme.colorScheme.surfaceVariant,
+                                            shape = RoundedCornerShape(10.dp)
+                                        )
+                                        .clip(RoundedCornerShape(10.dp))
+                                        .clickable {
+                                            viewModel.onEvent(
+                                                CreateUpdateTaskEvent.ShowTimePickerDialogEvent(
+                                                    true
+                                                )
+                                            )
+                                        }) {
+                                        Row(
+                                            modifier = Modifier.padding(
+                                                horizontal = 12.dp, vertical = 8.dp
+                                            ), verticalAlignment = Alignment.CenterVertically
+                                        ) {
+                                            Text(
+                                                text = timeFormatter(
+                                                    state.notifyHour, state.notifyMinute
+                                                ),
+                                                color = MaterialTheme.colorScheme.onSurface,
+                                                fontFamily = caros,
+                                                fontWeight = FontWeight.Normal,
+                                                fontSize = 16.sp
+                                            )
+                                        }
+                                    }
+                                }
                             }
                         }
                         Spacer(modifier = Modifier.height(64.dp))
@@ -852,14 +986,16 @@ fun CreateUpdateTaskScreen(
                             ),
                             fontFamily = caros,
                             fontWeight = FontWeight.Medium,
-                            color = MaterialTheme.colorScheme.onSurface
+                            color = Color.White
                         )
                     }
                 }
-                if (paddingValues.calculateBottomPadding() == 0.dp)
-                    Spacer(modifier = Modifier.height(24.dp))
-                else
-                    Spacer(modifier = Modifier.height(8.dp))
+                if (paddingValues.calculateBottomPadding() == 0.dp) Spacer(
+                    modifier = Modifier.height(
+                        24.dp
+                    )
+                )
+                else Spacer(modifier = Modifier.height(8.dp))
             }
 
             LaunchedEffect(state.success) {
@@ -968,7 +1104,7 @@ fun CreateUpdateTaskScreen(
                             Icon(
                                 imageVector = Icons.Default.AddLocationAlt,
                                 contentDescription = null,
-                                tint = MaterialTheme.colorScheme.onSurface
+                                tint = Color.White
                             )
                             Spacer(modifier = Modifier.width(16.dp))
                             Text(
@@ -978,7 +1114,7 @@ fun CreateUpdateTaskScreen(
                                 text = stringResource(R.string.add_new_place),
                                 fontFamily = caros,
                                 fontWeight = FontWeight.Medium,
-                                color = MaterialTheme.colorScheme.onSurface,
+                                color = Color.White,
                                 textAlign = TextAlign.Center
                             )
                         }
@@ -1071,6 +1207,21 @@ fun CreateUpdateTaskScreen(
                 }, onAddClick = {
                     viewModel.onEvent(CreateUpdateTaskEvent.CreatePlaceEvent(it))
                 }, isEditMode = false)
+            }
+
+            if (state.showNotificationPermissionInfoDialog) {
+                PermissionInfoDialog(
+                    onDismissRequest = {
+                        viewModel.onEvent(CreateUpdateTaskEvent.HideNotificationPermissionInfoDialogEvent)
+                        state.remindLaterIsChecked = false
+                    },
+                    onContinueClick = {
+                        viewModel.onEvent(CreateUpdateTaskEvent.HideNotificationPermissionInfoDialogEvent)
+                        notificationPermissionState.launchPermissionRequest()
+                    },
+                    icon = Icons.Rounded.NotificationsActive,
+                    text = stringResource(R.string.need_notification_permission)
+                )
             }
         }
     }

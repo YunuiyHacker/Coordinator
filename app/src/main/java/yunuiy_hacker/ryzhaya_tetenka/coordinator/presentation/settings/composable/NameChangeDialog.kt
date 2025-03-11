@@ -94,8 +94,8 @@ fun NameChangeDialog(
                     modifier = Modifier.weight(1f), onClick = {
                         onDismissRequest()
                     }, colors = ButtonDefaults.buttonColors(
-                        contentColor = MaterialTheme.colorScheme.onSurface,
-                        containerColor = Color.DarkGray
+                        contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                        containerColor = MaterialTheme.colorScheme.surfaceContainer
                     ), shape = RoundedCornerShape(10.dp)
                 ) {
                     Text(
@@ -110,7 +110,7 @@ fun NameChangeDialog(
                     onClick = {
                         onSaveClick(localUserName)
                     },
-                    colors = ButtonDefaults.buttonColors(contentColor = MaterialTheme.colorScheme.onSurface),
+                    colors = ButtonDefaults.buttonColors(contentColor = Color.White),
                     shape = RoundedCornerShape(10.dp)
                 ) {
                     Text(

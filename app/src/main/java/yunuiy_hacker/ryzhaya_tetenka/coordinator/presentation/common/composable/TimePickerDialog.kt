@@ -13,10 +13,13 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TimePicker
+import androidx.compose.material3.TimePickerColors
+import androidx.compose.material3.TimePickerDefaults
 import androidx.compose.material3.rememberTimePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -56,7 +59,8 @@ fun TimePickerDialog(
                     end = 24.dp,
                     bottom = 8.dp
                 ),
-                state = timePickerState
+                state = timePickerState,
+                colors = TimePickerDefaults.colors(clockDialSelectedContentColor = Color.White)
             )
             Button(
                 modifier = Modifier
@@ -71,7 +75,7 @@ fun TimePickerDialog(
             ) {
                 Text(
                     text = stringResource(R.string.select),
-                    color = MaterialTheme.colorScheme.onSurface,
+                    color = Color.White,
                     fontFamily = caros,
                     fontWeight = FontWeight.Medium
                 )

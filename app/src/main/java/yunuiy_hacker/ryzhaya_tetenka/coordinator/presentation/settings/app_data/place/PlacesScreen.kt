@@ -35,6 +35,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.key
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -117,7 +118,7 @@ fun PlacesScreen(
                         Icon(
                             imageVector = Icons.Default.AddLocationAlt,
                             contentDescription = null,
-                            tint = MaterialTheme.colorScheme.onSurface
+                            tint = Color.White
                         )
                         Spacer(modifier = Modifier.width(16.dp))
                         Text(
@@ -127,14 +128,14 @@ fun PlacesScreen(
                             text = stringResource(R.string.add_new_place),
                             fontFamily = caros,
                             fontWeight = FontWeight.Medium,
-                            color = MaterialTheme.colorScheme.onSurface,
+                            color = Color.White,
                             textAlign = TextAlign.Center
                         )
                     }
                     Spacer(modifier = Modifier.height(4.dp))
                 }
                 items(state.places, key = { place -> place.id }) { place ->
-                    key (place.id) {
+                    key(place.id) {
                         PlaceRow(modifier = Modifier
                             .fillMaxWidth()
                             .padding(horizontal = 24.dp),

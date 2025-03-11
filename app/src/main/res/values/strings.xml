@@ -70,6 +70,9 @@
     <string name="peoples_not_selected">Участники не выбраны</string>
     <string name="this_people_already_will_selected">Этот человек уже выбран</string>
     <string name="peoples_list_is_empty">Список людей пока пуст, их можно добавить в настройках</string>
+    <string name="remind_later">Напомнить позже</string>
+    <string name="date">Дата</string>
+    <string name="time">Время</string>
 
     <!--  TimePickerDialog  -->
     <string name="select">Выбрать</string>
@@ -121,6 +124,10 @@
     <string name="access_denied">Доступ к файлу запрещен</string>
     <string name="undefined_error">Неизвестная ошибка</string>
     <string name="incorrect_file_format">Неправильный формат файла</string>
+    <string name="styling">Стилизация</string>
+    <string name="theme">Тема</string>
+    <string name="light_theme">Светлая тема</string>
+    <string name="dark_theme">Темная тема</string>
 
     <!--  CreateUpdatePlaceDialog  -->
     <string name="place_adding">Добавление места</string>
@@ -147,9 +154,14 @@
     <string name="female">Женский</string>
     <string name="date_of_birth">Дата рождения</string>
     <string name="display_name">Отображаемое имя</string>
+    <string name="phone_number">Номер телефона</string>
+    <string name="email">Электронная почта</string>
     <string name="address">Адрес</string>
     <string name="not_selected">Не выбрана</string>
     <string name="really_want_to_delete_people">Вы действительно хотите удалить этого человека?</string>
+    <string name="select_post_app">Выберите почтовое приложение</string>
+    <string name="post_app_not_defined">На устройстве не обнаружено почтовых приложений</string>
+    <string name="error_occurred_when_opening_the_phone">При открытии номера телефона произошла ошибка</string>
 
     <!--  DeveloperScreen  -->
     <string name="developer">Разработчик</string>
@@ -171,4 +183,7 @@
     <string name="support_developer_text_part2">А может быть и нет</string>
     <string name="copy">Скопировать</string>
     <string name="copied">Скопировано</string>
+
+    <!--  NotificationPermissionInfoDialog  -->
+    <string name="need_notification_permission">Чтобы отправлять уведомления приложению необходимо дать на это разрешение</string>
 </resources>

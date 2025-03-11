@@ -8,6 +8,8 @@ class SharedPrefsHelper(context: Context) {
     private val tasker = context.getSharedPreferences(TASKER_TITLE, Context.MODE_PRIVATE)
     private val personal_data =
         context.getSharedPreferences(PERSONAL_DATA_TITLE, Context.MODE_PRIVATE)
+    private val settings =
+        context.getSharedPreferences(SETTINGS, Context.MODE_PRIVATE)
 
     //tasker
     var timeTypeEnum
@@ -68,17 +70,38 @@ class SharedPrefsHelper(context: Context) {
     //personal data
     var name
         set(value) {
-            with(tasker.edit()) {
+            with(personal_data.edit()) {
                 if (value.isNullOrEmpty()) remove(NAME)
                 else putString(NAME, value)
                 apply()
             }
         }
-        get() = tasker.getString(NAME, "")
+        get() = personal_data.getString(NAME, "")
+
+    //settings
+    var color
+        set(value) {
+            with(settings.edit()) {
+                if (value.isNullOrEmpty()) remove(COLOR)
+                else putString(COLOR, value)
+                apply()
+            }
+        }
+        get() = settings.getString(COLOR, "")
+
+    var isDarkTheme
+        set(value) {
+            with(settings.edit()) {
+                putBoolean(IS_DARK_THEME, value)
+                apply()
+            }
+        }
+        get() = settings.getBoolean(IS_DARK_THEME, false)
 
     companion object {
         private const val TASKER_TITLE = "tasker"
         private const val PERSONAL_DATA_TITLE = "personal_data"
+        private const val SETTINGS = "settings"
 
         //tasker
         private const val TIME_TYPE_ENUM = "timeTypeEnum"
@@ -88,5 +111,9 @@ class SharedPrefsHelper(context: Context) {
 
         //personal data
         private const val NAME = "name"
+
+        //settings
+        private const val COLOR = "color"
+        private const val IS_DARK_THEME = "theme"
     }
 }

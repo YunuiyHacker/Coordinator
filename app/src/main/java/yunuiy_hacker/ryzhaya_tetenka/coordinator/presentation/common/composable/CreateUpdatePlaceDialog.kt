@@ -198,7 +198,7 @@ fun CreateUpdatePlaceDialog(
                         ).show()
                     }
                 }, colors = ButtonDefaults.buttonColors(
-                    contentColor = MaterialTheme.colorScheme.onSurface,
+                    contentColor = Color.White,
                     containerColor = MaterialTheme.colorScheme.primaryContainer
                 ), shape = RoundedCornerShape(10.dp)
             ) {
@@ -214,8 +214,8 @@ fun CreateUpdatePlaceDialog(
                     modifier = Modifier.weight(1f), onClick = {
                         onDismissRequest()
                     }, colors = ButtonDefaults.buttonColors(
-                        contentColor = MaterialTheme.colorScheme.onSurface,
-                        containerColor = Color.DarkGray
+                        contentColor = Color.White,
+                        containerColor = MaterialTheme.colorScheme.surfaceContainer
                     ), shape = RoundedCornerShape(10.dp)
                 ) {
                     Text(
@@ -242,7 +242,7 @@ fun CreateUpdatePlaceDialog(
                             )
                         )
                     },
-                    colors = ButtonDefaults.buttonColors(contentColor = MaterialTheme.colorScheme.onSurface),
+                    colors = ButtonDefaults.buttonColors(contentColor = Color.White),
                     shape = RoundedCornerShape(10.dp),
                     enabled = title.isNotEmpty() && la != 0.0 && lt != 0.0
                 ) {

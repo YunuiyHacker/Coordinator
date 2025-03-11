@@ -17,4 +17,6 @@ object Constants {
     const val YANDEX_MAPS_PACKAGE = "ru.yandex.yandexmaps"
     const val GOOGLE_MAPS_PACKAGE = "com.google.android.apps.maps"
 
+    const val NOTIFICATION_ID: String = 17.toString()
+
 }

@@ -47,12 +47,16 @@ fun SubtaskRow(
                 onCheckedChange(!subtask.checked.value)
             }, colors = CheckboxDefaults.colors(
                 uncheckedColor = MaterialTheme.colorScheme.onSurface,
-                checkedColor = MaterialTheme.colorScheme.primary
+                checkedColor = MaterialTheme.colorScheme.primary,
+                checkmarkColor = MaterialTheme.colorScheme.background
             )
         )
         Text(
             modifier = Modifier
-                .weight(1f),
+                .weight(1f)
+                .clickable(interactionSource = interactionSource, indication = null) {
+                    onCheckedChange(!subtask.checked.value)
+                },
             text = localTitle,
             fontFamily = caros,
             fontWeight = FontWeight.Normal,
@@ -92,7 +96,8 @@ fun CreateUpdateSubtaskRow(
                 onCheckedChange(!subtask.checked.value)
             }, colors = CheckboxDefaults.colors(
                 uncheckedColor = MaterialTheme.colorScheme.onSurface,
-                checkedColor = MaterialTheme.colorScheme.primary
+                checkedColor = MaterialTheme.colorScheme.primary,
+                checkmarkColor = MaterialTheme.colorScheme.background
             )
         )
         TextField(modifier = Modifier

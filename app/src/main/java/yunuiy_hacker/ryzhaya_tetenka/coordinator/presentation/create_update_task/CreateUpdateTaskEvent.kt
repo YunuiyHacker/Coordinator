@@ -12,11 +12,15 @@ sealed class CreateUpdateTaskEvent {
     data class HeadingChangeEvent(val heading: String) : CreateUpdateTaskEvent()
     data class ContentChangeEvent(val content: String) : CreateUpdateTaskEvent()
 
-    data object ShowDatePickerDialogEvent : CreateUpdateTaskEvent()
+    data class ShowDatePickerDialogEvent(val selectNotifyDateOrTime: Boolean = false) :
+        CreateUpdateTaskEvent()
+
     data class SelectDatePickerDialogEvent(val dateInMilliseconds: Long) : CreateUpdateTaskEvent()
     data object HideDatePickerDialogEvent : CreateUpdateTaskEvent()
 
-    data object ShowTimePickerDialogEvent : CreateUpdateTaskEvent()
+    data class ShowTimePickerDialogEvent(val selectNotifyDateOrTime: Boolean = false) :
+        CreateUpdateTaskEvent()
+
     data class SelectTimePickerDialogEvent(val hour: Int, val minute: Int) : CreateUpdateTaskEvent()
     data object HideTimePickerDialogEvent : CreateUpdateTaskEvent()
 
@@ -56,6 +60,11 @@ sealed class CreateUpdateTaskEvent {
     data object ShowPeopleSelectorSheetEvent : CreateUpdateTaskEvent()
     data class AddPeopleEvent(val people: People) : CreateUpdateTaskEvent()
     data object HidePeopleSelectorSheetEvent : CreateUpdateTaskEvent()
+
+    data object ToggleRemindLaterEvent : CreateUpdateTaskEvent()
+
+    data object ShowNotificationPermissionInfoDialogEvent : CreateUpdateTaskEvent()
+    data object HideNotificationPermissionInfoDialogEvent : CreateUpdateTaskEvent()
 
     data object OnBackPressEvent : CreateUpdateTaskEvent()
 

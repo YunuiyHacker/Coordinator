@@ -1,6 +1,7 @@
 package yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.common.composable
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -42,10 +43,12 @@ import yunuiy_hacker.ryzhaya_tetenka.coordinator.ui.theme.caros
 
 @Composable
 fun AddEditCategoryDialog(
-    onDismissRequest: () -> Unit, onAddClick: (String) -> Unit,
+    onDismissRequest: () -> Unit,
+    onAddClick: (String) -> Unit,
     category: Category? = null,
     isEditMode: Boolean
 ) {
+
     var title by remember { mutableStateOf(category?.title ?: "") }
 
     Dialog(onDismissRequest = { onDismissRequest() }) {
@@ -70,8 +73,7 @@ fun AddEditCategoryDialog(
             )
             Spacer(modifier = Modifier.height(16.dp))
             OutlinedTextField(
-                modifier = Modifier
-                    .fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth(),
                 value = title,
                 onValueChange = {
                     title = it
@@ -101,8 +103,8 @@ fun AddEditCategoryDialog(
                     modifier = Modifier.weight(1f), onClick = {
                         onDismissRequest()
                     }, colors = ButtonDefaults.buttonColors(
-                        contentColor = MaterialTheme.colorScheme.onSurface,
-                        containerColor = Color.DarkGray
+                        contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                        containerColor = MaterialTheme.colorScheme.surfaceContainer
                     ), shape = RoundedCornerShape(10.dp)
                 ) {
                     Text(
@@ -117,7 +119,7 @@ fun AddEditCategoryDialog(
                     onClick = {
                         onAddClick(title)
                     },
-                    colors = ButtonDefaults.buttonColors(contentColor = MaterialTheme.colorScheme.onSurface),
+                    colors = ButtonDefaults.buttonColors(contentColor = Color.White),
                     shape = RoundedCornerShape(10.dp)
                 ) {
                     Text(

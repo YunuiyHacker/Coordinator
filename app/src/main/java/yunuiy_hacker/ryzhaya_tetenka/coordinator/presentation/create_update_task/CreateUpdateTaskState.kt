@@ -55,10 +55,17 @@ class CreateUpdateTaskState {
     var places: MutableList<Place> = mutableListOf()
     var showCreateUpdatePlaceDialog by mutableStateOf(false)
 
-    var selectedPeople by mutableStateOf(People(id = 0))
     var showPeoplesSelectorSheet by mutableStateOf(false)
     var peoples: MutableList<People> = mutableListOf()
     var selectedPeoples: MutableList<People> = mutableListOf()
+
+    var remindLaterIsChecked by mutableStateOf(false)
+    var selectNotifyDateOrTime by mutableStateOf(false)
+    var notifyDate by mutableStateOf(Date())
+    var notifyHour by mutableStateOf(0)
+    var notifyMinute by mutableStateOf(0)
+
+    var showNotificationPermissionInfoDialog by mutableStateOf(false)
 
     val contentState by mutableStateOf(ContentState())
 

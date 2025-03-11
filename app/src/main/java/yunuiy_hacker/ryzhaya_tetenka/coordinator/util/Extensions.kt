@@ -5,6 +5,9 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.provider.OpenableColumns
+import android.util.DisplayMetrics
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.R
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.home.model.TimeType
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.home.model.TimeTypeEnum
@@ -173,4 +176,19 @@ fun getFileName(context: Context, uri: Uri): String {
     }
 
     return uri.path.toString()
+}
+
+fun getScreenSizeInPx(application: Application): Pair<Int, Int> {
+    val displayMetrics: DisplayMetrics = DisplayMetrics()
+    application.display.getMetrics(displayMetrics)
+    return Pair(displayMetrics.widthPixels, displayMetrics.heightPixels)
+}
+
+fun getScreenSizeInDp(context: Context): Pair<Dp, Dp> {
+    val displayMetrics: DisplayMetrics = DisplayMetrics()
+    context.display.getMetrics(displayMetrics)
+    return Pair(
+        (displayMetrics.widthPixels / displayMetrics.density).dp,
+        (displayMetrics.heightPixels / displayMetrics.density).dp
+    )
 }

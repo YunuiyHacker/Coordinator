@@ -69,7 +69,7 @@ fun CategoryCard(
             fontFamily = caros,
             fontWeight = FontWeight.Medium,
             fontSize = 14.sp,
-            color = if (selected) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.onSurfaceVariant
+            color = if (selected) Color.White else MaterialTheme.colorScheme.onSurface
         )
     }
 }

@@ -17,5 +17,9 @@ data class Task(
     @ColumnInfo(name = "endMinute") val endMinute: Int? = 0,
     @ColumnInfo(name = "title") val title: String? = "",
     @ColumnInfo(name = "content") val content: String? = "",
-    @ColumnInfo(name = "checked") val checked: Boolean? = false
+    @ColumnInfo(name = "checked") val checked: Boolean? = false,
+    @ColumnInfo(name = "notify") val notify: Boolean? = false,
+    @ColumnInfo(name = "notifyDateInMilliseconds") val notifyDateInMilliseconds: Long? = 0L,
+    @ColumnInfo(name = "notifyHour") val notifyHour: Int? = 0,
+    @ColumnInfo(name = "notifyMinute") val notifyMinute: Int? = 0
 )

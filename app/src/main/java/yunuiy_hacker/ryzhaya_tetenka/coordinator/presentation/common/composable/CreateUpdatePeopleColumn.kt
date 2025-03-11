@@ -1,6 +1,8 @@
 package yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.common.composable
 
+import android.content.Intent
 import android.net.Uri
+import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
@@ -31,6 +33,8 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.CameraAlt
 import androidx.compose.material.icons.rounded.Delete
+import androidx.compose.material.icons.rounded.Email
+import androidx.compose.material.icons.rounded.Phone
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.DatePicker
@@ -87,6 +91,7 @@ fun CreateUpdatePeopleColumn(
     showButtons: Boolean = true,
     onClickPhoto: () -> Unit
 ) {
+    val context = LocalContext.current
     val interactionSource = remember { MutableInteractionSource() }
     val notIndicationInteractionSource = remember { MutableInteractionSource() }
     var showDatePickerDialog by remember { mutableStateOf(false) }
@@ -111,6 +116,8 @@ fun CreateUpdatePeopleColumn(
     var lastname by remember { mutableStateOf(people?.lastname ?: "") }
     var sex by remember { mutableStateOf(people?.sex ?: true) }
     var dateOfBirthInMilliseconds by remember { mutableStateOf(people?.dateOfBirthInMilliseconds) }
+    var phone by remember { mutableStateOf(people?.phone ?: "") }
+    var email by remember { mutableStateOf(people?.email ?: "") }
     var displayName by remember { mutableStateOf(people?.displayName ?: "") }
     var address by remember { mutableStateOf(people?.address ?: "") }
 
@@ -169,7 +176,7 @@ fun CreateUpdatePeopleColumn(
                     .clip(CircleShape),
                     imageVector = Icons.Rounded.CameraAlt,
                     contentDescription = null,
-                    tint = MaterialTheme.colorScheme.onSurface)
+                    tint = Color.White)
             } else {
                 Box(modifier = Modifier.align(Alignment.CenterHorizontally)) {
                     AsyncImage(modifier = Modifier
@@ -197,27 +204,25 @@ fun CreateUpdatePeopleColumn(
                         contentScale = ContentScale.Crop)
                 }
                 if (!isReadOnly || selectedImageUri.path?.isNotEmpty()!!) {
-                    Box(
-                        modifier = Modifier
-                            .size(24.dp)
-                            .align(Alignment.CenterHorizontally)
-                            .offset(x = 40.dp, y = -30.dp)
-                            .background(
-                                color = MaterialTheme.colorScheme.primary,
-                                shape = CircleShape
-                            )
-                            .clip(CircleShape)
-                            .clickable {
-                                selectedImageUri = Uri.parse("")
-                                avatarPath = ""
-                            }
-                    ) {
+                    Box(modifier = Modifier
+                        .size(24.dp)
+                        .align(Alignment.CenterHorizontally)
+                        .offset(x = 40.dp, y = -30.dp)
+                        .background(
+                            color = MaterialTheme.colorScheme.primary, shape = CircleShape
+                        )
+                        .clip(CircleShape)
+                        .clickable {
+                            selectedImageUri = Uri.parse("")
+                            avatarPath = ""
+                        }) {
                         Icon(
                             modifier = Modifier
                                 .size(16.dp)
                                 .align(Alignment.Center),
                             imageVector = Icons.Rounded.Delete,
-                            contentDescription = null
+                            contentDescription = null,
+                            tint = Color.White
                         )
                     }
                 }
@@ -341,8 +346,7 @@ fun CreateUpdatePeopleColumn(
                     }, colors = IconButtonDefaults.outlinedIconToggleButtonColors(
                         containerColor = Color.Transparent,
                         checkedContainerColor = MaterialTheme.colorScheme.primary,
-                    ), shape = RoundedCornerShape(16.dp),
-                    border = if (!sex) BorderStroke(
+                    ), shape = RoundedCornerShape(16.dp), border = if (!sex) BorderStroke(
                         width = 0.7.dp,
                         color = if (!isReadOnly) MaterialTheme.colorScheme.onSurface else outlinedTextFieldColors.disabledIndicatorColor
                     ) else null
@@ -350,7 +354,7 @@ fun CreateUpdatePeopleColumn(
                     Text(
                         text = stringResource(R.string.male),
                         style = TextStyle(fontFamily = caros, fontStyle = FontStyle.Normal),
-                        color = MaterialTheme.colorScheme.onSurface
+                        color = if (!sex) MaterialTheme.colorScheme.primary else Color.White
                     )
                 }
                 Spacer(modifier = Modifier.width(16.dp))
@@ -360,8 +364,7 @@ fun CreateUpdatePeopleColumn(
                     }, colors = IconButtonDefaults.outlinedIconToggleButtonColors(
                         containerColor = Color.Transparent,
                         checkedContainerColor = MaterialTheme.colorScheme.primary
-                    ), shape = RoundedCornerShape(16.dp),
-                    border = if (sex) BorderStroke(
+                    ), shape = RoundedCornerShape(16.dp), border = if (sex) BorderStroke(
                         width = 0.7.dp,
                         color = if (!isReadOnly) MaterialTheme.colorScheme.onSurface else outlinedTextFieldColors.disabledIndicatorColor
                     ) else null
@@ -369,7 +372,7 @@ fun CreateUpdatePeopleColumn(
                     Text(
                         text = stringResource(R.string.female),
                         style = TextStyle(fontFamily = caros, fontStyle = FontStyle.Normal),
-                        color = MaterialTheme.colorScheme.onSurface
+                        color = if (sex) MaterialTheme.colorScheme.primary else Color.White
                     )
                 }
             }
@@ -446,16 +449,16 @@ fun CreateUpdatePeopleColumn(
             Spacer(modifier = Modifier.height(16.dp))
             OutlinedTextField(
                 modifier = Modifier.fillMaxWidth(),
-                value = address,
+                value = phone,
                 onValueChange = {
-                    address = it
+                    if (it.toCharArray().none { char -> !char.isDigit() }) phone = it
                 },
                 colors = outlinedTextFieldColors,
                 shape = RoundedCornerShape(16.dp),
                 label = {
                     Text(
                         modifier = Modifier,
-                        text = stringResource(R.string.address),
+                        text = stringResource(R.string.phone_number),
                         style = TextStyle(fontFamily = caros, fontStyle = FontStyle.Normal),
                         textAlign = TextAlign.Left
                     )
@@ -463,7 +466,7 @@ fun CreateUpdatePeopleColumn(
                 placeholder = {
                     Text(
                         modifier = Modifier.fillMaxWidth(),
-                        text = stringResource(R.string.address),
+                        text = stringResource(R.string.phone_number),
                         style = TextStyle(fontFamily = caros, fontStyle = FontStyle.Normal),
                         textAlign = TextAlign.Left
                     )
@@ -471,11 +474,159 @@ fun CreateUpdatePeopleColumn(
                 textStyle = TextStyle(textAlign = TextAlign.Left),
                 singleLine = true,
                 keyboardOptions = KeyboardOptions(
-                    keyboardType = KeyboardType.Text, imeAction = ImeAction.Done
+                    keyboardType = KeyboardType.Text, imeAction = ImeAction.Next
                 ),
+                trailingIcon = {
+                    AnimatedVisibility(!isEditMode && people != null) {
+                        Row {
+                            Box(
+                                modifier = Modifier
+                                    .clip(RoundedCornerShape(12.dp))
+                                    .clickable {
+                                        try {
+                                            val intent = Intent(Intent.ACTION_DIAL)
+                                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                                            intent.data = Uri.parse("tel:${phone}")
+                                            context.startActivity(intent)
+                                        } catch (e: Exception) {
+                                            Toast.makeText(
+                                                context,
+                                                context.getString(R.string.error_occurred_when_opening_the_phone),
+                                                Toast.LENGTH_LONG
+                                            ).show()
+                                        }
+                                    }, contentAlignment = Alignment.Center
+                            ) {
+                                Icon(
+                                    modifier = Modifier.padding(8.dp),
+                                    imageVector = Icons.Rounded.Phone,
+                                    contentDescription = null,
+                                    tint = MaterialTheme.colorScheme.primary
+                                )
+                            }
+                            Spacer(modifier = Modifier.width(12.dp))
+                        }
+                    }
+                },
                 readOnly = isReadOnly,
                 enabled = !isReadOnly
             )
+            Spacer(modifier = Modifier.height(16.dp))
+            Row(
+                modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically
+            ) {
+                OutlinedTextField(
+                    modifier = Modifier.weight(1f),
+                    value = email,
+                    onValueChange = {
+                        email = it
+                    },
+                    colors = outlinedTextFieldColors,
+                    shape = RoundedCornerShape(16.dp),
+                    label = {
+                        Text(
+                            modifier = Modifier,
+                            text = stringResource(R.string.email),
+                            style = TextStyle(fontFamily = caros, fontStyle = FontStyle.Normal),
+                            textAlign = TextAlign.Left
+                        )
+                    },
+                    placeholder = {
+                        Text(
+                            modifier = Modifier.fillMaxWidth(),
+                            text = stringResource(R.string.email),
+                            style = TextStyle(fontFamily = caros, fontStyle = FontStyle.Normal),
+                            textAlign = TextAlign.Left
+                        )
+                    },
+                    textStyle = TextStyle(textAlign = TextAlign.Left),
+                    singleLine = true,
+                    keyboardOptions = KeyboardOptions(
+                        keyboardType = KeyboardType.Text, imeAction = ImeAction.Next
+                    ),
+                    trailingIcon = {
+                        AnimatedVisibility(!isEditMode && people != null) {
+                            Row {
+                                Box(
+                                    modifier = Modifier
+                                        .clip(RoundedCornerShape(12.dp))
+                                        .clickable {
+                                            val intent = Intent(Intent.ACTION_SEND).apply {
+                                                type = "message/rfc822"
+                                                putExtra(Intent.EXTRA_EMAIL, arrayOf(email))
+                                                putExtra(Intent.EXTRA_SUBJECT, "")
+                                                putExtra(Intent.EXTRA_TEXT, "")
+                                            }
+                                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                                            if (intent.resolveActivity(context.packageManager) != null) {
+                                                context.startActivity(
+                                                    Intent.createChooser(
+                                                        intent,
+                                                        context.getString(R.string.select_post_app)
+                                                    )
+                                                )
+                                            } else {
+                                                Toast.makeText(
+                                                    context,
+                                                    context.getString(R.string.post_app_not_defined),
+                                                    Toast.LENGTH_LONG
+                                                )
+                                                    .show()
+                                            }
+                                        }, contentAlignment = Alignment.Center
+                                ) {
+                                    Icon(
+                                        modifier = Modifier.padding(8.dp),
+                                        imageVector = Icons.Rounded.Email,
+                                        contentDescription = null,
+                                        tint = MaterialTheme.colorScheme.primary
+                                    )
+                                }
+                                Spacer(modifier = Modifier.width(12.dp))
+                            }
+                        }
+                    },
+                    readOnly = isReadOnly,
+                    enabled = !isReadOnly
+                )
+            }
+            Spacer(modifier = Modifier.height(16.dp))
+            Row(
+                modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically
+            ) {
+                OutlinedTextField(
+                    modifier = Modifier.weight(1f),
+                    value = address,
+                    onValueChange = {
+                        address = it
+                    },
+                    colors = outlinedTextFieldColors,
+                    shape = RoundedCornerShape(16.dp),
+                    label = {
+                        Text(
+                            modifier = Modifier,
+                            text = stringResource(R.string.address),
+                            style = TextStyle(fontFamily = caros, fontStyle = FontStyle.Normal),
+                            textAlign = TextAlign.Left
+                        )
+                    },
+                    placeholder = {
+                        Text(
+                            modifier = Modifier.fillMaxWidth(),
+                            text = stringResource(R.string.address),
+                            style = TextStyle(fontFamily = caros, fontStyle = FontStyle.Normal),
+                            textAlign = TextAlign.Left
+                        )
+                    },
+                    textStyle = TextStyle(textAlign = TextAlign.Left),
+                    singleLine = true,
+                    keyboardOptions = KeyboardOptions(
+                        keyboardType = KeyboardType.Text, imeAction = ImeAction.Done
+                    ),
+                    readOnly = isReadOnly,
+                    enabled = !isReadOnly
+                )
+            }
             if (showButtons) {
                 Spacer(modifier = Modifier.height(16.dp))
                 AnimatedVisibility(!isReadOnly) {
@@ -484,8 +635,8 @@ fun CreateUpdatePeopleColumn(
                             modifier = Modifier.weight(1f), onClick = {
                                 onDismissRequest()
                             }, colors = ButtonDefaults.buttonColors(
-                                contentColor = MaterialTheme.colorScheme.onSurface,
-                                containerColor = Color.DarkGray
+                                contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                                containerColor = MaterialTheme.colorScheme.surfaceContainer
                             ), shape = RoundedCornerShape(10.dp)
                         ) {
                             Text(
@@ -507,6 +658,8 @@ fun CreateUpdatePeopleColumn(
                                         sex = sex,
                                         dateOfBirthInMilliseconds = dateOfBirthInMilliseconds,
                                         displayName = displayName,
+                                        phone = phone,
+                                        email = email,
                                         address = address
                                     )
                                     else people?.copy(
@@ -517,11 +670,13 @@ fun CreateUpdatePeopleColumn(
                                         sex = sex,
                                         dateOfBirthInMilliseconds = dateOfBirthInMilliseconds,
                                         displayName = displayName,
+                                        phone = phone,
+                                        email = email,
                                         address = address
                                     ) ?: People(), selectedImageUri
                                 )
                             },
-                            colors = ButtonDefaults.buttonColors(contentColor = MaterialTheme.colorScheme.onSurface),
+                            colors = ButtonDefaults.buttonColors(contentColor = Color.White),
                             shape = RoundedCornerShape(10.dp),
                             enabled = surname.isNotEmpty() || name.isNotEmpty() || lastname.isNotEmpty()
                         ) {
@@ -540,7 +695,7 @@ fun CreateUpdatePeopleColumn(
                                 isReadOnly = false
                                 isEditMode = true
                             }, colors = ButtonDefaults.buttonColors(
-                                contentColor = MaterialTheme.colorScheme.onSurface,
+                                contentColor = Color.White,
                                 containerColor = MaterialTheme.colorScheme.primary
                             ), shape = RoundedCornerShape(10.dp)
                         ) {
@@ -554,7 +709,7 @@ fun CreateUpdatePeopleColumn(
                             onClick = {
                                 onDeleteClick(people!!)
                             },
-                            colors = ButtonDefaults.buttonColors(contentColor = MaterialTheme.colorScheme.onSurface),
+                            colors = ButtonDefaults.buttonColors(contentColor = Color.White),
                             shape = RoundedCornerShape(10.dp)
                         ) {
                             Text(
@@ -586,14 +741,14 @@ fun CreateUpdatePeopleColumn(
                             .fillMaxWidth()
                             .padding(horizontal = 24.dp), onClick = {
                             dateOfBirthInMilliseconds =
-                                if (datePickerState.selectedDateMillis != null)
-                                    datePickerState.selectedDateMillis!! else null
+                                if (datePickerState.selectedDateMillis != null) datePickerState.selectedDateMillis!! else null
                             showDatePickerDialog = false
-                        }, shape = RoundedCornerShape(12.dp)
+                        }, shape = RoundedCornerShape(12.dp),
+                        colors = ButtonDefaults.buttonColors(contentColor = Color.White)
                     ) {
                         Text(
                             text = stringResource(R.string.select),
-                            color = MaterialTheme.colorScheme.onSurface,
+                            color = Color.White,
                             fontFamily = caros,
                             fontWeight = FontWeight.Medium
                         )

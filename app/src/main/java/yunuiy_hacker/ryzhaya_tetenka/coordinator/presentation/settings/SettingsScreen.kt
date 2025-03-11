@@ -3,8 +3,10 @@ package yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.settings
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -14,26 +16,28 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.AccountCircle
+import androidx.compose.material.icons.filled.DarkMode
+import androidx.compose.material.icons.filled.LightMode
 import androidx.compose.material.icons.rounded.ArrowBack
+import androidx.compose.material.icons.rounded.Check
 import androidx.compose.material.icons.rounded.Code
-import androidx.compose.material.icons.rounded.Computer
 import androidx.compose.material.icons.rounded.KeyboardArrowRight
-import androidx.compose.material.icons.rounded.Person
-import androidx.compose.material.icons.rounded.Person3
-import androidx.compose.material.icons.rounded.PhoneIphone
-import androidx.compose.material.icons.rounded.Phonelink
-import androidx.compose.material.icons.rounded.VerifiedUser
-import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Switch
+import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
@@ -45,6 +49,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -54,18 +59,24 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.R
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.common.composable.LoadingDialog
-import yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.common.composable.LoadingIndicator
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.common.composable.MessageDialog
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.common.composable.QuestionDialog
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.common.theme.dynamicColors
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.nav_graph.Route
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.settings.composable.NameChangeDialog
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.ui.theme.caros
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.util.getAppInfo
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.util.getScreenSizeInDp
 import java.util.Locale
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SettingsScreen(navHostController: NavHostController, viewModel: SettingsViewModel) {
+fun SettingsScreen(
+    navHostController: NavHostController,
+    viewModel: SettingsViewModel,
+    onChangeTheme: (primary: Color) -> Unit,
+    onChangeDarkTheme: (isDarkTheme: Boolean) -> Unit
+) {
     val interactionSource = remember { MutableInteractionSource() }
     val context = LocalContext.current
     val selectFileLauncher = rememberLauncherForActivityResult(
@@ -81,6 +92,9 @@ fun SettingsScreen(navHostController: NavHostController, viewModel: SettingsView
             )
         }
     }
+
+    val stylingColorBlockSize =
+        (getScreenSizeInDp(context).first - 48.dp) / (dynamicColors.size + 1)
 
     LaunchedEffect(Unit) {
         viewModel.onEvent(SettingsEvent.LoadDataEvent)
@@ -285,7 +299,132 @@ fun SettingsScreen(navHostController: NavHostController, viewModel: SettingsView
                             )
                         }
                     }
-
+                    Spacer(modifier = Modifier.height(16.dp))
+                    //theme
+                    Text(
+                        modifier = Modifier.padding(horizontal = 24.dp),
+                        text = stringResource(R.string.theme).toUpperCase(Locale.ROOT),
+                        fontFamily = caros,
+                        fontWeight = FontWeight.Medium,
+                        fontSize = 14.sp,
+                        color = MaterialTheme.colorScheme.primary
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Column(modifier = Modifier.fillMaxWidth()) {
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 24.dp, vertical = 12.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                Text(
+                                    modifier = Modifier
+                                        .weight(1f)
+                                        .clickable(
+                                            interactionSource = interactionSource,
+                                            indication = null
+                                        ) {
+                                            viewModel.onEvent(SettingsEvent.ToggleThemeEvent)
+                                            onChangeDarkTheme(state.isDarkTheme)
+                                        },
+                                    text = stringResource(if (state.isDarkTheme) R.string.dark_theme else R.string.light_theme),
+                                    fontFamily = caros,
+                                    fontWeight = FontWeight.Normal,
+                                    fontSize = 16.sp,
+                                    color = MaterialTheme.colorScheme.onSurface
+                                )
+                                Icon(
+                                    modifier = Modifier.clickable(
+                                        interactionSource = interactionSource,
+                                        indication = null
+                                    ) {
+                                        viewModel.onEvent(
+                                            SettingsEvent.ChangeThemeToLightEvent
+                                        )
+                                        onChangeDarkTheme(false)
+                                    },
+                                    imageVector = Icons.Default.LightMode,
+                                    contentDescription = null,
+                                    tint = MaterialTheme.colorScheme.onSurface
+                                )
+                                Spacer(modifier = Modifier.width(16.dp))
+                                Switch(
+                                    modifier = Modifier.height(20.dp),
+                                    checked = state.isDarkTheme,
+                                    onCheckedChange = {
+                                        viewModel.onEvent(
+                                            SettingsEvent.ToggleThemeEvent
+                                        )
+                                        onChangeDarkTheme(state.isDarkTheme)
+                                    },
+                                    colors = SwitchDefaults.colors(
+                                        checkedBorderColor = Color.Transparent,
+                                        uncheckedBorderColor = Color.Transparent,
+                                        uncheckedThumbColor = MaterialTheme.colorScheme.primary,
+                                        checkedThumbColor = MaterialTheme.colorScheme.background
+                                    )
+                                )
+                                Spacer(modifier = Modifier.width(16.dp))
+                                Icon(
+                                    modifier = Modifier.clickable(
+                                        interactionSource = interactionSource,
+                                        indication = null
+                                    ) {
+                                        viewModel.onEvent(
+                                            SettingsEvent.ChangeThemeToDarkEvent
+                                        )
+                                        onChangeDarkTheme(true)
+                                    },
+                                    imageVector = Icons.Default.DarkMode,
+                                    contentDescription = null,
+                                    tint = MaterialTheme.colorScheme.onSurface
+                                )
+                            }
+                        }
+                    }
+                    Spacer(modifier = Modifier.height(16.dp))
+                    //app styling
+                    Text(
+                        modifier = Modifier.padding(horizontal = 24.dp),
+                        text = stringResource(R.string.styling).toUpperCase(Locale.ROOT),
+                        fontFamily = caros,
+                        fontWeight = FontWeight.Medium,
+                        fontSize = 14.sp,
+                        color = MaterialTheme.colorScheme.primary
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Column(modifier = Modifier.fillMaxWidth()) {
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 24.dp, vertical = 12.dp),
+                            horizontalArrangement = Arrangement.SpaceBetween
+                        ) {
+                            dynamicColors.forEachIndexed { index, color ->
+                                Box(
+                                    modifier = Modifier
+                                        .size(stylingColorBlockSize)
+                                        .background(
+                                            color, shape = RoundedCornerShape(
+                                                10.dp
+                                            )
+                                        )
+                                        .clip(RoundedCornerShape(10.dp))
+                                        .clickable {
+                                            onChangeTheme(color)
+                                        }, contentAlignment = Alignment.Center
+                                ) {
+                                    if (color == MaterialTheme.colorScheme.primary) Icon(
+                                        modifier = Modifier.size(stylingColorBlockSize / 2),
+                                        imageVector = Icons.Rounded.Check,
+                                        contentDescription = null,
+                                        tint = Color.White
+                                    )
+                                }
+                            }
+                        }
+                    }
                     Spacer(modifier = Modifier.height(16.dp))
                     //developer info
                     Text(
@@ -360,10 +499,9 @@ fun SettingsScreen(navHostController: NavHostController, viewModel: SettingsView
         }
 
         if (state.showMessageDialog) {
-            MessageDialog(message = state.contentState.data.value ?: "",
-                onDismissRequest = {
-                    viewModel.onEvent(SettingsEvent.HideMessageDialogEvent)
-                })
+            MessageDialog(message = state.contentState.data.value ?: "", onDismissRequest = {
+                viewModel.onEvent(SettingsEvent.HideMessageDialogEvent)
+            })
         }
 
         if (state.showQuestionDialog) {
@@ -378,3 +516,4 @@ fun SettingsScreen(navHostController: NavHostController, viewModel: SettingsView
         }
     }
 }
+

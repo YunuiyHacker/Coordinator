@@ -68,7 +68,7 @@ fun TimeTypeSelectRow(
                 Text(
                     modifier = Modifier.padding(vertical = 8.dp),
                     text = stringResource(timeType.resId),
-                    color = MaterialTheme.colorScheme.onSurface,
+                    color = if (timeType.id == selectedTimeType.id) Color.White else MaterialTheme.colorScheme.onSurface,
                     fontFamily = caros,
                     fontWeight = if (timeType.id == selectedTimeType.id) FontWeight.Bold else FontWeight.Normal
                 )

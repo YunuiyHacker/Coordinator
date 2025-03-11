@@ -4,6 +4,7 @@ import androidx.compose.runtime.mutableStateOf
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.data.common.model.Category
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.data.common.model.People
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.data.common.model.PeopleInTask
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.data.common.model.PhoneCode
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.data.common.model.Place
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.data.common.model.PlaceInTask
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.data.common.model.Subtask
@@ -23,7 +24,11 @@ fun Task.toDomain(): yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.mod
         endMinute = endMinute ?: 0,
         title = title ?: "",
         content = content ?: "",
-        checked = checked ?: false
+        checked = checked ?: false,
+        notify = notify ?: false,
+        notifyDate = Date(notifyDateInMilliseconds ?: 0L),
+        notifyHour = notifyHour ?: 0,
+        notifyMinute = notifyMinute ?: 0
     )
 }
 
@@ -40,7 +45,11 @@ fun yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.model.Task.toData():
         endMinute = endMinute,
         title = title,
         content = content,
-        checked = checked
+        checked = checked,
+        notify = notify,
+        notifyDateInMilliseconds = notifyDate.time,
+        notifyHour = notifyHour,
+        notifyMinute = notifyMinute
     )
 }
 
@@ -97,6 +106,8 @@ fun People.toDomain(): yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.m
         sex = sex ?: true,
         dateOfBirthInMilliseconds = dateOfBirthInMilliseconds,
         displayName = displayName ?: "",
+        phone = phone ?: "",
+        email = email ?: "",
         address = address ?: "",
         avatarPath = avatarPath ?: ""
     )
@@ -111,6 +122,8 @@ fun yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.model.People.toData(
         sex = sex,
         dateOfBirthInMilliseconds = dateOfBirthInMilliseconds,
         displayName = displayName,
+        phone = phone,
+        email = email,
         address = address,
         avatarPath = avatarPath
     )
@@ -118,12 +131,20 @@ fun yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.model.People.toData(
 
 fun PeopleInTask.toDomain(): yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.model.PeopleInTask {
     return yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.model.PeopleInTask(
-        id = id,
-        peopleId = peopleId ?: 0,
-        taskId = taskId ?: 0
+        id = id, peopleId = peopleId ?: 0, taskId = taskId ?: 0
     )
 }
 
 fun yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.model.PeopleInTask.toData(): PeopleInTask {
     return PeopleInTask(id = id, peopleId = peopleId, taskId = taskId)
+}
+
+fun PhoneCode.toDomain(): yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.model.PhoneCode {
+    return yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.model.PhoneCode(
+        id = id, ISOCode = ISOCode ?: "", phoneCode = phoneCode ?: 0
+    )
+}
+
+fun yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.model.PhoneCode.toData(): PhoneCode {
+    return PhoneCode(id = id, ISOCode = ISOCode, phoneCode = phoneCode)
 }

@@ -103,7 +103,8 @@ fun TaskItem(
                             onCheckedChange(checked)
                         }, colors = CheckboxDefaults.colors(
                             uncheckedColor = MaterialTheme.colorScheme.onSurface,
-                            checkedColor = MaterialTheme.colorScheme.primary
+                            checkedColor = MaterialTheme.colorScheme.primary,
+                            checkmarkColor = MaterialTheme.colorScheme.background
                         )
                     )
                 }
@@ -164,7 +165,8 @@ fun TaskItem(
                             onDeleteCheckedChange(!isDeleteChecked)
                         }, colors = CheckboxDefaults.colors(
                             uncheckedColor = MaterialTheme.colorScheme.onSurface,
-                            checkedColor = MaterialTheme.colorScheme.primary
+                            checkedColor = MaterialTheme.colorScheme.primary,
+                            checkmarkColor = MaterialTheme.colorScheme.background
                         )
                     )
                 }
@@ -188,7 +190,8 @@ fun TaskItem(
                                         onCheckedSubtask(subtask)
                                     }, colors = CheckboxDefaults.colors(
                                         uncheckedColor = MaterialTheme.colorScheme.onSurface,
-                                        checkedColor = MaterialTheme.colorScheme.primary
+                                        checkedColor = MaterialTheme.colorScheme.primary,
+                                        checkmarkColor = MaterialTheme.colorScheme.background
                                     )
                                 )
                                 Text(

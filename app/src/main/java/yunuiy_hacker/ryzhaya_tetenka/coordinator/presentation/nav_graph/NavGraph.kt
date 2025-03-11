@@ -6,6 +6,7 @@ import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -27,7 +28,9 @@ import java.util.Date
 
 @Composable
 fun NavGraph(
-    navHostController: NavHostController, startDestination: String = Route.HomeScreen.route
+    navHostController: NavHostController, startDestination: String = Route.HomeScreen.route,
+    onChangeTheme: (primary: Color) -> Unit,
+    onChangeDarkTheme: (isDarkTheme: Boolean) -> Unit
 ) {
     NavHost(
         navController = navHostController, startDestination = startDestination
@@ -280,7 +283,15 @@ fun NavGraph(
                 )
             )
         }) {
-            SettingsScreen(navHostController = navHostController, viewModel = hiltViewModel())
+            SettingsScreen(
+                navHostController = navHostController,
+                viewModel = hiltViewModel(),
+                onChangeTheme = {
+                    onChangeTheme(it)
+                },
+                onChangeDarkTheme = {
+                    onChangeDarkTheme(it)
+                })
         }
         composable(route = Route.PlacesScreen.route, enterTransition = {
             fadeIn(
