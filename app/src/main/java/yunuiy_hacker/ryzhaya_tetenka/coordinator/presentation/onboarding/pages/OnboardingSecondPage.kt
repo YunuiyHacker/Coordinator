@@ -37,8 +37,8 @@ import yunuiy_hacker.ryzhaya_tetenka.coordinator.R
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.model.Place
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.common.composable.PlaceRow
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.ui.theme.caros
-import yunuiy_hacker.ryzhaya_tetenka.coordinator.util.Constants
-import yunuiy_hacker.ryzhaya_tetenka.coordinator.util.getMapUri
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.utils.Constants
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.utils.getMapUri
 
 @Composable
 fun OnboardingSecondScreen(modifier: Modifier = Modifier, isLoading: Boolean, place: Place) {

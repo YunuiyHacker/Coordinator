@@ -29,9 +29,9 @@ import yunuiy_hacker.ryzhaya_tetenka.coordinator.R
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.home.model.TimeType
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.home.model.TimeTypeEnum
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.ui.theme.caros
-import yunuiy_hacker.ryzhaya_tetenka.coordinator.util.DateFormats
-import yunuiy_hacker.ryzhaya_tetenka.coordinator.util.timeFormatter
-import yunuiy_hacker.ryzhaya_tetenka.coordinator.util.toTimeTypeEvent
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.utils.DateFormats
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.utils.timeFormatter
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.utils.toTimeTypeEvent
 import java.util.Date
 
 @Composable

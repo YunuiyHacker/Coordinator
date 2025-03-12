@@ -45,7 +45,7 @@ import androidx.compose.ui.window.Dialog
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.R
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.model.Place
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.ui.theme.caros
-import yunuiy_hacker.ryzhaya_tetenka.coordinator.util.getLaAndLtFromString
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.utils.getLaAndLtFromString
 
 @Composable
 fun CreateUpdatePlaceDialog(

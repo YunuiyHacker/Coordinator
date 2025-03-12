@@ -25,17 +25,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import yunuiy_hacker.ryzhaya_tetenka.coordinator.R
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.ui.theme.caros
-import yunuiy_hacker.ryzhaya_tetenka.coordinator.util.ImageUtils
-import yunuiy_hacker.ryzhaya_tetenka.coordinator.util.displayName
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.utils.ImageUtils
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

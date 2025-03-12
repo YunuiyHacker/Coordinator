@@ -60,7 +60,7 @@ fun TimePickerDialog(
                     bottom = 8.dp
                 ),
                 state = timePickerState,
-                colors = TimePickerDefaults.colors(clockDialSelectedContentColor = Color.White)
+                colors = TimePickerDefaults.colors(clockDialSelectedContentColor = Color.White, timeSelectorSelectedContentColor = MaterialTheme.colorScheme.onSurface)
             )
             Button(
                 modifier = Modifier

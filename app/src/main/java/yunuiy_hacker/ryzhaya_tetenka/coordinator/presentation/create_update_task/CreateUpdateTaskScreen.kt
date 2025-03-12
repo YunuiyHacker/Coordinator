@@ -2,8 +2,6 @@ package yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.create_update_tas
 
 import android.Manifest
 import androidx.activity.compose.BackHandler
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.LocalIndication
@@ -117,12 +115,12 @@ import yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.common.composable.
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.common.composable.TimeRow
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.nav_graph.Route
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.ui.theme.caros
-import yunuiy_hacker.ryzhaya_tetenka.coordinator.util.Constants
-import yunuiy_hacker.ryzhaya_tetenka.coordinator.util.DateFormats
-import yunuiy_hacker.ryzhaya_tetenka.coordinator.util.ImageUtils
-import yunuiy_hacker.ryzhaya_tetenka.coordinator.util.displayName
-import yunuiy_hacker.ryzhaya_tetenka.coordinator.util.timeFormatter
-import yunuiy_hacker.ryzhaya_tetenka.coordinator.util.toTimeTypeEvent
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.utils.Constants
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.utils.DateFormats
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.utils.ImageUtils
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.utils.displayName
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.utils.timeFormatter
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.utils.toTimeTypeEvent
 
 @OptIn(
     ExperimentalMaterial3Api::class, ExperimentalPermissionsApi::class
@@ -133,6 +131,7 @@ fun CreateUpdateTaskScreen(
 ) {
     val context = LocalContext.current
     val interactionSource = remember { MutableInteractionSource() }
+    val bottomButtonInteractionSource = remember { MutableInteractionSource() }
     val localIndication = LocalIndication.current
     val datePickerState = rememberDatePickerState()
     val isEditMode = viewModel.state.taskId != 0
@@ -969,7 +968,7 @@ fun CreateUpdateTaskScreen(
                             )
                             .fillMaxWidth()
                             .clickable(
-                                interactionSource = interactionSource,
+                                interactionSource = bottomButtonInteractionSource,
                                 indication = if (state.heading.isEmpty() || state.content.isEmpty()) null else localIndication
                             ) {
                                 if (state.heading.isNotEmpty() || state.content.isNotEmpty()) viewModel.onEvent(
@@ -1030,11 +1029,12 @@ fun CreateUpdateTaskScreen(
                                     )
                                 )
                             },
-                            shape = RoundedCornerShape(12.dp)
+                            shape = RoundedCornerShape(12.dp),
+                            colors = ButtonDefaults.buttonColors(contentColor = Color.White)
                         ) {
                             Text(
                                 text = stringResource(R.string.select),
-                                color = MaterialTheme.colorScheme.onSurface,
+                                color = Color.White,
                                 fontFamily = caros,
                                 fontWeight = FontWeight.Medium
                             )
@@ -1060,8 +1060,8 @@ fun CreateUpdateTaskScreen(
                             )
                         )
                     },
-                    hour = if (state.showTimePickerDialog) state.selectedHour else state.selectedEndHour,
-                    minute = if (state.showTimePickerDialog) state.selectedMinute else state.selectedEndMinute
+                    hour = if (!state.selectNotifyDateOrTime) if (state.showTimePickerDialog) state.selectedHour else state.selectedEndHour else state.notifyHour,
+                    minute = if (!state.selectNotifyDateOrTime) if (state.showTimePickerDialog) state.selectedMinute else state.selectedEndMinute else state.notifyMinute
                 )
             }
 

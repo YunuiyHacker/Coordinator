@@ -50,8 +50,8 @@ import yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.common.composable.
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.common.composable.PlaceRow
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.common.composable.QuestionDialog
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.ui.theme.caros
-import yunuiy_hacker.ryzhaya_tetenka.coordinator.util.Constants
-import yunuiy_hacker.ryzhaya_tetenka.coordinator.util.getMapUri
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.utils.Constants
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.utils.getMapUri
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

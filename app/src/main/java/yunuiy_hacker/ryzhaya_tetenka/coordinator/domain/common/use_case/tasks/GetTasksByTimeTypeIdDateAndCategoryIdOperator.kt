@@ -3,8 +3,8 @@ package yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.tasks
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.data.common.model.Task
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.data.local.room.TaskDao
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.home.model.TimeTypeEnum
-import yunuiy_hacker.ryzhaya_tetenka.coordinator.util.Constants
-import yunuiy_hacker.ryzhaya_tetenka.coordinator.util.toTimeTypeEvent
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.utils.Constants
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.utils.toTimeTypeEvent
 import java.util.Date
 
 class GetTasksByTimeTypeIdDateAndCategoryIdOperator(private val taskDao: TaskDao) {

@@ -104,8 +104,8 @@ import yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.home.composable.Ti
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.home.composable.TopTimeOfDayText
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.nav_graph.Route
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.ui.theme.caros
-import yunuiy_hacker.ryzhaya_tetenka.coordinator.util.DateFormats
-import yunuiy_hacker.ryzhaya_tetenka.coordinator.util.toTimeTypeEvent
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.utils.DateFormats
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.utils.toTimeTypeEvent
 import java.util.Calendar
 import java.util.GregorianCalendar
 import java.util.Locale

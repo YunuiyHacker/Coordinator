@@ -1,13 +1,10 @@
 package yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.settings
 
 import android.app.Application
-import android.content.Context
 import android.os.Environment
-import android.os.ParcelFileDescriptor.FileDescriptorDetachedException
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.DelicateCoroutinesApi
@@ -20,10 +17,8 @@ import yunuiy_hacker.ryzhaya_tetenka.coordinator.R
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.data.local.shared_prefs.SharedPrefsHelper
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.settings.use_case.ExportDataUseCase
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.settings.use_case.ImportDataUseCase
-import yunuiy_hacker.ryzhaya_tetenka.coordinator.util.ImageUtils
-import yunuiy_hacker.ryzhaya_tetenka.coordinator.util.getFileDataFromUri
-import yunuiy_hacker.ryzhaya_tetenka.coordinator.util.getFileName
-import yunuiy_hacker.ryzhaya_tetenka.coordinator.util.getScreenSizeInDp
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.utils.ImageUtils
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.utils.getFileName
 import java.io.BufferedInputStream
 import java.io.BufferedOutputStream
 import java.io.BufferedWriter

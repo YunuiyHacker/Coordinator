@@ -83,6 +83,9 @@ dependencies {
     //coil
     implementation("io.coil-kt:coil-compose:2.7.0")
 
+    //work manager
+    implementation("androidx.work:work-runtime-ktx:2.10.0")
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)

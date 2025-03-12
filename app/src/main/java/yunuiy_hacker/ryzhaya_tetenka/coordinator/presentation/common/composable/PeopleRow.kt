@@ -17,7 +17,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.CameraAlt
 import androidx.compose.material.icons.rounded.Close
 import androidx.compose.material.icons.rounded.Person
 import androidx.compose.material3.Icon
@@ -39,7 +38,7 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.model.People
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.ui.theme.caros
-import yunuiy_hacker.ryzhaya_tetenka.coordinator.util.ImageUtils
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.utils.ImageUtils
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable

@@ -3,6 +3,7 @@ package yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.settings
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -18,10 +19,6 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -47,7 +44,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -56,6 +55,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.zIndex
 import androidx.navigation.NavHostController
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.R
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.common.composable.LoadingDialog
@@ -65,8 +65,8 @@ import yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.common.theme.dynam
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.nav_graph.Route
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.settings.composable.NameChangeDialog
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.ui.theme.caros
-import yunuiy_hacker.ryzhaya_tetenka.coordinator.util.getAppInfo
-import yunuiy_hacker.ryzhaya_tetenka.coordinator.util.getScreenSizeInDp
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.utils.getAppInfo
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.utils.getScreenSizeInDp
 import java.util.Locale
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -422,6 +422,44 @@ fun SettingsScreen(
                                         tint = Color.White
                                     )
                                 }
+                            }
+                        }
+                    }
+                    Spacer(modifier = Modifier.height(16.dp))
+                    //language
+                    Text(
+                        modifier = Modifier.padding(horizontal = 24.dp),
+                        text = stringResource(R.string.interface_language).toUpperCase(Locale.ROOT),
+                        fontFamily = caros,
+                        fontWeight = FontWeight.Medium,
+                        fontSize = 14.sp,
+                        color = MaterialTheme.colorScheme.primary
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Column(modifier = Modifier.fillMaxWidth()) {
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .clip(RoundedCornerShape(14.dp))
+                                .clickable {
+
+                                }, verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Row(modifier = Modifier.padding(horizontal = 24.dp, vertical = 12.dp), verticalAlignment = Alignment.CenterVertically) {
+                                Text(
+                                    modifier = Modifier.weight(1f),
+                                    text = stringResource(R.string.russian),
+                                    fontFamily = caros,
+                                    fontWeight = FontWeight.Normal,
+                                    fontSize = 16.sp,
+                                    color = MaterialTheme.colorScheme.onSurface
+                                )
+                                Image(
+                                    modifier = Modifier.width(40.dp).height(30.dp).clip(RoundedCornerShape(6.dp)).shadow(elevation = 16.dp, ambientColor = Color.LightGray, spotColor = Color.LightGray, shape = RoundedCornerShape(6.dp)),
+                                    painter = painterResource(R.drawable.ru),
+                                    contentDescription = null,
+                                    contentScale = ContentScale.Crop
+                                )
                             }
                         }
                     }

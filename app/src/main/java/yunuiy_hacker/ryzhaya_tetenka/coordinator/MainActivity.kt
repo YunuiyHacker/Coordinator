@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -48,7 +49,12 @@ class MainActivity : ComponentActivity() {
                     mutableStateOf(sharedPrefsHelper.isDarkTheme)
                 }
 
-                CoordinatorTheme(colorScheme = MaterialTheme.colorScheme.copy(primary = primary), darkTheme = isDarkTheme) {
+                AppCompatDelegate.setDefaultNightMode(if (isDarkTheme) AppCompatDelegate.MODE_NIGHT_YES else AppCompatDelegate.MODE_NIGHT_NO)
+
+                CoordinatorTheme(
+                    colorScheme = MaterialTheme.colorScheme.copy(primary = primary),
+                    darkTheme = isDarkTheme
+                ) {
                     NavGraph(navHostController = navHostController,
                         startDestination = if (userNameExists) Route.HomeScreen.route else Route.OnboardingScreen.route,
                         onChangeTheme = {

@@ -1,4 +1,4 @@
-package yunuiy_hacker.ryzhaya_tetenka.coordinator.util
+package yunuiy_hacker.ryzhaya_tetenka.coordinator.utils
 
 import android.app.Application
 import android.content.Context

@@ -46,9 +46,9 @@ import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.model.Task
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.home.model.TimeTypeEnum
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.ui.theme.caros
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.ui.theme.roboto
-import yunuiy_hacker.ryzhaya_tetenka.coordinator.util.Constants
-import yunuiy_hacker.ryzhaya_tetenka.coordinator.util.timeFormatter
-import yunuiy_hacker.ryzhaya_tetenka.coordinator.util.toTimeTypeEvent
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.utils.Constants
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.utils.timeFormatter
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.utils.toTimeTypeEvent
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable

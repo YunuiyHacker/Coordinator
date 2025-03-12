@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+import androidx.work.WorkManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
@@ -17,16 +18,17 @@ import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.mappers.toDomain
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.model.Category
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.model.Subtask
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.categories.CategoriesUseCase
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.notifications.NotificationsUseCase
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.subtasks.SubtasksUseCase
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.tasks.TasksUseCase
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.home.model.TimeTypeEnum
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.home.use_case.DefineTimeOfDayUseCase
-import yunuiy_hacker.ryzhaya_tetenka.coordinator.util.setCalendarTime
-import yunuiy_hacker.ryzhaya_tetenka.coordinator.util.setDateTime
-import yunuiy_hacker.ryzhaya_tetenka.coordinator.util.startAndEndThisWeek
-import yunuiy_hacker.ryzhaya_tetenka.coordinator.util.toTimeType
-import yunuiy_hacker.ryzhaya_tetenka.coordinator.util.toTimeTypeEvent
-import yunuiy_hacker.ryzhaya_tetenka.coordinator.util.zoneOffset
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.utils.setCalendarTime
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.utils.setDateTime
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.utils.startAndEndThisWeek
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.utils.toTimeType
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.utils.toTimeTypeEvent
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.utils.zoneOffset
 import java.util.Calendar
 import java.util.Date
 import java.util.GregorianCalendar
@@ -39,6 +41,7 @@ class HomeViewModel @Inject constructor(
     private val tasksUseCase: TasksUseCase,
     private val subtasksUseCase: SubtasksUseCase,
     private val categoriesUseCase: CategoriesUseCase,
+    private val notificationsUseCase: NotificationsUseCase,
     private val application: Application
 ) : ViewModel() {
     val state by mutableStateOf(HomeState())
@@ -294,11 +297,25 @@ class HomeViewModel @Inject constructor(
     private fun deleteAllSelectedTasks() {
         state.contentState.isLoading.value = true
 
+        val workManager = WorkManager.getInstance(application)
+
         GlobalScope.launch(Dispatchers.IO) {
             runBlocking {
                 for (i in 0..<state.deletionTasks.size) {
+                    val notification =
+                        notificationsUseCase.getNotificationByTaskId(state.deletionTasks[i].id)
+                            .toDomain()
+                    workManager.cancelAllWorkByTag(notification.tag)
+                    notificationsUseCase.deleteNotificationOperator.invoke(
+                        notificationsUseCase.getNotificationByTaskId.invoke(
+                            state.deletionTasks[i].id
+                        )
+                    )
+
                     tasksUseCase.deleteTaskOperator.invoke(state.deletionTasks[i].toData())
                     state.tasks.remove(state.deletionTasks[i])
+
+                    tasksUseCase.deleteTaskOperator.invoke(state.deletionTasks[i].toData())
                 }
 
                 state.isDeletionMode = false

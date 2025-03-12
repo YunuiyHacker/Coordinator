@@ -1,4 +1,4 @@
-package yunuiy_hacker.ryzhaya_tetenka.coordinator.util
+package yunuiy_hacker.ryzhaya_tetenka.coordinator.utils
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory

@@ -8,9 +8,9 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import yunuiy_hacker.ryzhaya_tetenka.coordinator.data.common.model.PeopleInTask
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.data.local.room.CategoryDao
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.data.local.room.CoordinatorDatabase
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.data.local.room.NotificationDao
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.data.local.room.PeopleDao
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.data.local.room.PeopleInTaskDao
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.data.local.room.PlaceDao
@@ -25,6 +25,15 @@ import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.categori
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.categories.InsertCategoriesOperator
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.categories.InsertCategoryOperator
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.categories.UpdateCategoryOperator
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.notifications.DeleteNotificationOperator
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.notifications.GetNotificationByIdOperator
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.notifications.GetNotificationByTagOperator
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.notifications.GetNotificationByTaskId
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.notifications.GetNotificationsOperator
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.notifications.InsertNotificationOperator
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.notifications.InsertNotificationsOperator
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.notifications.NotificationsUseCase
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.notifications.UpdateNotificationOperator
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.peoples.DeletePeopleOperator
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.peoples.GetPeopleByIdOperator
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.peoples.GetPeoplesOperator
@@ -76,7 +85,7 @@ import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.home.use_case.DefineTime
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.settings.use_case.ExportDataUseCase
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.settings.use_case.ImportDataUseCase
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.settings.use_case.SaveImageUseCase
-import yunuiy_hacker.ryzhaya_tetenka.coordinator.util.Constants.TASKS_DATABASE_NAME
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.utils.Constants.TASKS_DATABASE_NAME
 import javax.inject.Singleton
 
 @Module
@@ -282,6 +291,26 @@ object AppModule {
             insertPeopleInTaskOperator = InsertPeopleInTaskOperator(peopleInTaskDao),
             insertPeoplesInTasksOperator = InsertPeoplesInTasksOperator(peopleInTaskDao),
             updatePeopleInTaskOperator = UpdatePeopleInTaskOperator(peopleInTaskDao)
+        )
+    }
+
+    @Provides
+    @Singleton
+    fun provideNotificationDao(coordinatorDatabase: CoordinatorDatabase): NotificationDao =
+        coordinatorDatabase.notificationDao
+
+    @Provides
+    @Singleton
+    fun provideNotificationUseCase(notificationDao: NotificationDao): NotificationsUseCase {
+        return NotificationsUseCase(
+            deleteNotificationOperator = DeleteNotificationOperator(notificationDao),
+            getNotificationByIdOperator = GetNotificationByIdOperator(notificationDao),
+            getNotificationByTagOperator = GetNotificationByTagOperator(notificationDao),
+            getNotificationsOperator = GetNotificationsOperator(notificationDao),
+            getNotificationByTaskId = GetNotificationByTaskId(notificationDao),
+            insertNotificationOperator = InsertNotificationOperator(notificationDao),
+            insertNotificationsOperator = InsertNotificationsOperator(notificationDao),
+            updateNotificationOperator = UpdateNotificationOperator(notificationDao)
         )
     }
 }

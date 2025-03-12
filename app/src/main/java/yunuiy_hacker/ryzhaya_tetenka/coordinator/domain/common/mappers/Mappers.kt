@@ -2,6 +2,7 @@ package yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.mappers
 
 import androidx.compose.runtime.mutableStateOf
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.data.common.model.Category
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.data.common.model.Notification
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.data.common.model.People
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.data.common.model.PeopleInTask
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.data.common.model.PhoneCode
@@ -147,4 +148,14 @@ fun PhoneCode.toDomain(): yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.commo
 
 fun yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.model.PhoneCode.toData(): PhoneCode {
     return PhoneCode(id = id, ISOCode = ISOCode, phoneCode = phoneCode)
+}
+
+fun Notification.toDomain(): yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.model.Notification {
+    return yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.model.Notification(
+        id = id, taskId = taskId ?: 0, tag = tag ?: "", isDone = isDone ?: false
+    )
+}
+
+fun yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.model.Notification.toData(): Notification {
+    return Notification(id = id, taskId = taskId, tag = tag, isDone = isDone)
 }

@@ -1,8 +1,10 @@
 package yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.task
 
+import android.app.Application
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+import androidx.work.WorkManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
@@ -13,17 +15,16 @@ import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.mappers.toData
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.mappers.toDomain
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.model.People
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.model.Subtask
-import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.model.Task
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.notifications.NotificationsUseCase
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.peoples.PeoplesUseCase
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.peoples_in_tasks.PeoplesInTasksUseCase
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.places.PlacesUseCase
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.places_in_tasks.PlacesInTasksUseCase
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.subtasks.SubtasksUseCase
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.tasks.TasksUseCase
-import yunuiy_hacker.ryzhaya_tetenka.coordinator.util.startAndEndThisWeek
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.utils.startAndEndThisWeek
 import java.util.Calendar
 import java.util.GregorianCalendar
-import java.util.stream.Collectors.toList
 import javax.inject.Inject
 
 @HiltViewModel
@@ -33,7 +34,9 @@ class TaskViewModel @Inject constructor(
     private val placesInTasksUseCase: PlacesInTasksUseCase,
     private val subtasksUseCase: SubtasksUseCase,
     private val peoplesUseCase: PeoplesUseCase,
-    private val peoplesInTasksUseCase: PeoplesInTasksUseCase
+    private val peoplesInTasksUseCase: PeoplesInTasksUseCase,
+    private val notificationsUseCase: NotificationsUseCase,
+    val application: Application
 ) : ViewModel() {
     val state by mutableStateOf(TaskState())
 
@@ -105,9 +108,20 @@ class TaskViewModel @Inject constructor(
 
     @OptIn(DelicateCoroutinesApi::class)
     private fun deleteTask() {
+        val workManager = WorkManager.getInstance(application)
+
         GlobalScope.launch(Dispatchers.IO) {
             runBlocking {
                 tasksUseCase.deleteTaskOperator.invoke(state.task.toData())
+
+                val notification =
+                    notificationsUseCase.getNotificationByTaskId(state.task.id).toDomain()
+                workManager.cancelAllWorkByTag(notification.tag)
+                notificationsUseCase.deleteNotificationOperator.invoke(
+                    notificationsUseCase.getNotificationByTaskId.invoke(
+                        state.task.id
+                    )
+                )
 
                 state.showQuestionDialog = false
                 state.success = true

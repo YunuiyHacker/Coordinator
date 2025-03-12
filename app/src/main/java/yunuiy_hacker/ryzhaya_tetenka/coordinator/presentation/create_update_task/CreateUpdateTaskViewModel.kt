@@ -1,15 +1,13 @@
 package yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.create_update_task
 
-import android.Manifest
-import android.annotation.SuppressLint
 import android.app.Application
-import android.content.pm.PackageManager
 import android.widget.Toast
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.core.app.NotificationCompat
-import androidx.core.app.NotificationManagerCompat
 import androidx.lifecycle.ViewModel
+import androidx.work.Data
+import androidx.work.OneTimeWorkRequest
+import androidx.work.WorkManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
@@ -22,26 +20,32 @@ import yunuiy_hacker.ryzhaya_tetenka.coordinator.data.local.shared_prefs.SharedP
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.mappers.toData
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.mappers.toDomain
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.model.Category
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.model.Notification
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.model.PeopleInTask
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.model.Place
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.model.Subtask
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.model.Task
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.categories.CategoriesUseCase
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.notifications.NotificationsUseCase
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.peoples.PeoplesUseCase
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.peoples_in_tasks.PeoplesInTasksUseCase
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.places.PlacesUseCase
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.places_in_tasks.PlacesInTasksUseCase
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.subtasks.SubtasksUseCase
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.tasks.TasksUseCase
-import yunuiy_hacker.ryzhaya_tetenka.coordinator.util.Constants
-import yunuiy_hacker.ryzhaya_tetenka.coordinator.util.Constants.NOTIFICATION_ID
-import yunuiy_hacker.ryzhaya_tetenka.coordinator.util.setCalendarTime
-import yunuiy_hacker.ryzhaya_tetenka.coordinator.util.setDateTime
-import yunuiy_hacker.ryzhaya_tetenka.coordinator.util.startAndEndThisWeek
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.notification.NotificationWorker
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.utils.Constants
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.utils.setCalendarTime
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.utils.setDateTime
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.utils.startAndEndThisWeek
 import java.util.Calendar
 import java.util.Date
 import java.util.GregorianCalendar
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
+import kotlin.random.Random
+import kotlin.random.nextLong
+import kotlin.random.nextULong
 
 @HiltViewModel
 class CreateUpdateTaskViewModel @Inject constructor(
@@ -52,6 +56,7 @@ class CreateUpdateTaskViewModel @Inject constructor(
     private val placesInTasksUseCase: PlacesInTasksUseCase,
     private val peoplesUseCase: PeoplesUseCase,
     private val peoplesInTasksUseCase: PeoplesInTasksUseCase,
+    private val notificationsUseCase: NotificationsUseCase,
     private val sharedPrefsHelper: SharedPrefsHelper,
     val application: Application
 ) : ViewModel() {
@@ -91,8 +96,10 @@ class CreateUpdateTaskViewModel @Inject constructor(
                 state.showEndTimePickerDialog = false
             }
 
-            is CreateUpdateTaskEvent.ShowEndTimePickerDialogEvent -> state.showEndTimePickerDialog =
-                true
+            is CreateUpdateTaskEvent.ShowEndTimePickerDialogEvent -> {
+                state.selectNotifyDateOrTime = false
+                state.showEndTimePickerDialog = true
+            }
 
             is CreateUpdateTaskEvent.SelectEndTimePickerDialogEvent -> changeEndTime(event)
             is CreateUpdateTaskEvent.HideEndTimePickerDialogEvent -> state.showEndTimePickerDialog =
@@ -229,6 +236,11 @@ class CreateUpdateTaskViewModel @Inject constructor(
                     state.selectedEndHour = state.task.endHour
                     state.selectedEndMinute = state.task.endMinute
 
+                    state.remindLaterIsChecked = state.task.notify
+                    state.notifyDate = state.task.notifyDate
+                    state.notifyHour = state.task.notifyHour
+                    state.notifyMinute = state.task.notifyMinute
+
                     val c: Calendar = GregorianCalendar()
                     c.timeInMillis = state.date.time
                     state.weekDate = startAndEndThisWeek(c)
@@ -319,6 +331,7 @@ class CreateUpdateTaskViewModel @Inject constructor(
         state.selectedEndHour = event.hour
         state.selectedEndMinute = event.minute
 
+        state.selectNotifyDateOrTime = false
         state.showEndTimePickerDialog = false
     }
 
@@ -350,51 +363,84 @@ class CreateUpdateTaskViewModel @Inject constructor(
         )
         val dataTask = task.toData()
 
-        if (state.endTimeChecked) {
-            if ((state.selectedEndHour > state.selectedHour || (state.selectedEndHour == state.selectedHour && state.selectedEndMinute > state.selectedMinute))) {
+        val currentDate = Date()
+        currentDate.seconds = 0
+        val currentTimeInMillis = currentDate.time
+        val targetTimeInMillis = Date(task.notifyDate.time)
+        targetTimeInMillis.hours = task.notifyHour
+        targetTimeInMillis.minutes = task.notifyMinute
+        targetTimeInMillis.seconds = 0
 
+        val timeDiffInMillis = targetTimeInMillis.time - currentTimeInMillis
+
+        val taskEndTimeInMillis = Date(task.date.time)
+        taskEndTimeInMillis.hours = if (!task.withEndTime) task.hour else task.endHour
+        taskEndTimeInMillis.minutes = if (!task.withEndTime) task.minute else task.endMinute
+        taskEndTimeInMillis.seconds = 0
+        if (targetTimeInMillis.time > taskEndTimeInMillis.time && state.remindLaterIsChecked) {
+            state.contentState.exception.value =
+                Exception(application.getString(R.string.cannot_specify_reminder_time_later_than_task_deadline))
+            state.showMessageDialog = true
+        } else if (currentTimeInMillis > targetTimeInMillis.time && state.remindLaterIsChecked) {
+            state.contentState.exception.value =
+                Exception(application.getString(R.string.this_reminder_time_cannot_be_selected))
+            state.showMessageDialog = true
+        } else {
+            if (state.endTimeChecked) {
+                if ((state.selectedEndHour > state.selectedHour || (state.selectedEndHour == state.selectedHour && state.selectedEndMinute > state.selectedMinute))) {
+
+                    GlobalScope.launch(Dispatchers.IO) {
+                        if (state.taskId == 0) {
+                            val taskId: Long = tasksUseCase.insertTaskOperator.invoke(dataTask)
+                            createOrUpdateSubtasks(taskId)
+                            createOrUpdatePlace(taskId.toInt())
+                            createOrRemovePeoplesInTasks(taskId.toInt())
+                            if (state.remindLaterIsChecked) createNotification(
+                                taskId.toInt(), state.heading, state.content, timeDiffInMillis
+                            )
+
+                        } else {
+                            tasksUseCase.updateTaskOperator.invoke(dataTask)
+                            createOrUpdateSubtasks(task.id.toLong())
+                            createOrUpdatePlace(task.id)
+                            createOrRemovePeoplesInTasks(task.id)
+                            if (state.remindLaterIsChecked) updateNotification(
+                                task, timeDiffInMillis
+                            )
+                        }
+                        state.success = true
+                    }
+                    clearUnsavedData()
+                } else {
+                    state.contentState.exception.value = Exception(
+                        application.getString(R.string.end_time_can_not_be_before_start_time)
+                    )
+                    state.showMessageDialog = true
+                }
+            } else {
                 GlobalScope.launch(Dispatchers.IO) {
                     if (state.taskId == 0) {
                         val taskId: Long = tasksUseCase.insertTaskOperator.invoke(dataTask)
                         createOrUpdateSubtasks(taskId)
                         createOrUpdatePlace(taskId.toInt())
                         createOrRemovePeoplesInTasks(taskId.toInt())
-                        if (state.remindLaterIsChecked) createNotification(task)
+                        if (state.remindLaterIsChecked) createNotification(
+                            taskId.toInt(), state.heading, state.content, timeDiffInMillis
+                        )
                     } else {
                         tasksUseCase.updateTaskOperator.invoke(dataTask)
                         createOrUpdateSubtasks(task.id.toLong())
                         createOrUpdatePlace(task.id)
                         createOrRemovePeoplesInTasks(task.id)
-                        if (state.remindLaterIsChecked) updateNotification()
+                        if (state.remindLaterIsChecked) updateNotification(
+                            task,
+                            timeDiffInMillis
+                        )
                     }
                     state.success = true
                 }
                 clearUnsavedData()
-            } else {
-                state.contentState.exception.value = Exception(
-                    application.getString(R.string.end_time_can_not_be_before_start_time)
-                )
-                state.showMessageDialog = true
             }
-        } else {
-            GlobalScope.launch(Dispatchers.IO) {
-                if (state.taskId == 0) {
-                    val taskId: Long = tasksUseCase.insertTaskOperator.invoke(dataTask)
-                    createOrUpdateSubtasks(taskId)
-                    createOrUpdatePlace(taskId.toInt())
-                    createOrRemovePeoplesInTasks(taskId.toInt())
-                    if (state.remindLaterIsChecked) createNotification(task)
-                } else {
-                    tasksUseCase.updateTaskOperator.invoke(dataTask)
-                    createOrUpdateSubtasks(task.id.toLong())
-                    createOrUpdatePlace(task.id)
-                    createOrRemovePeoplesInTasks(task.id)
-                    if (state.remindLaterIsChecked) updateNotification()
-                }
-
-                state.success = true
-            }
-            clearUnsavedData()
         }
     }
 
@@ -538,23 +584,53 @@ class CreateUpdateTaskViewModel @Inject constructor(
         }
     }
 
-    @SuppressLint("MissingPermission")
-    private fun createNotification(task: Task) {
-        val notificationBuilder = NotificationCompat.Builder(application, NOTIFICATION_ID)
-            .setSmallIcon(R.drawable.ic_logo).setContentTitle(task.title)
-            .setContentText(task.content).setPriority(NotificationCompat.PRIORITY_DEFAULT)
-            .setAutoCancel(true)
+    private fun createNotification(
+        taskId: Int,
+        title: String,
+        content: String,
+        timeDiffInMillis: Long
+    ) {
+        val rValue = Random(System.currentTimeMillis()).nextLong().toString()
 
-        with(NotificationManagerCompat.from(application)) {
-            notify(NOTIFICATION_ID.toInt(), notificationBuilder.build())
+        val data = Data.Builder().putString("title", title).putString("content", content)
+        val notificationWork =
+            OneTimeWorkRequest.Builder(NotificationWorker::class.java).setInitialDelay(
+                timeDiffInMillis, TimeUnit.MILLISECONDS
+            ).setInputData(data.build()).addTag(rValue).build()
+        val workManager = WorkManager.getInstance(application)
+        workManager.enqueue(notificationWork)
+
+        GlobalScope.launch(Dispatchers.IO) {
+            runBlocking {
+                notificationsUseCase.insertNotificationOperator.invoke(
+                    Notification(
+                        taskId = taskId, tag = rValue.toString(), isDone = false
+                    ).toData()
+                )
+            }
         }
     }
 
-    private fun updateNotification() {
+    private fun updateNotification(task: Task, timeDiffInMillis: Long) {
+        val rValue = Random(System.currentTimeMillis()).nextLong().toString()
+        val workManager = WorkManager.getInstance(application)
 
-    }
+        GlobalScope.launch(Dispatchers.IO) {
+            runBlocking {
+                val notification = notificationsUseCase.getNotificationByTaskId(task.id).toDomain()
+                workManager.cancelAllWorkByTag(notification.tag)
 
-    private fun removeNotification() {
+                val data = Data.Builder().putString("title", task.title).putString("content", task.content)
+                val notificationWork =
+                    OneTimeWorkRequest.Builder(NotificationWorker::class.java).setInitialDelay(
+                        timeDiffInMillis, TimeUnit.MILLISECONDS
+                    ).setInputData(data.build()).addTag(rValue).build()
+                workManager.enqueue(notificationWork)
 
+                notificationsUseCase.updateNotificationOperator(
+                    notification.copy(tag = rValue).toData()
+                )
+            }
+        }
     }
 }

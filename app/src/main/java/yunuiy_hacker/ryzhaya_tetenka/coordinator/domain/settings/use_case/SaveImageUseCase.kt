@@ -3,8 +3,8 @@ package yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.settings.use_case
 import android.graphics.Bitmap
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import yunuiy_hacker.ryzhaya_tetenka.coordinator.util.ImageUtils
-import yunuiy_hacker.ryzhaya_tetenka.coordinator.util.getHashedRandomString
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.utils.ImageUtils
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.utils.getHashedRandomString
 import java.io.File
 import java.io.FileOutputStream
 import java.nio.file.Files

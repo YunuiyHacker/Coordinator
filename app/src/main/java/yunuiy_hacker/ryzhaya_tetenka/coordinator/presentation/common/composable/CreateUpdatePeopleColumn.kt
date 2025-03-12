@@ -73,8 +73,8 @@ import coil.request.ImageRequest
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.R
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.model.People
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.ui.theme.caros
-import yunuiy_hacker.ryzhaya_tetenka.coordinator.util.ImageUtils
-import yunuiy_hacker.ryzhaya_tetenka.coordinator.util.toStringFormat
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.utils.ImageUtils
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.utils.toStringFormat
 import java.util.Date
 import java.util.Locale
 

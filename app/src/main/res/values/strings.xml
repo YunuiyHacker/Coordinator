@@ -73,6 +73,8 @@
     <string name="remind_later">Напомнить позже</string>
     <string name="date">Дата</string>
     <string name="time">Время</string>
+    <string name="cannot_specify_reminder_time_later_than_task_deadline">Вы не можете указать время напоминания позже срока выполнения задачи</string>
+    <string name="this_reminder_time_cannot_be_selected">Нельзя выбрать это время напоминания. Это время уже прошло</string>
 
     <!--  TimePickerDialog  -->
     <string name="select">Выбрать</string>
@@ -128,6 +130,8 @@
     <string name="theme">Тема</string>
     <string name="light_theme">Светлая тема</string>
     <string name="dark_theme">Темная тема</string>
+    <string name="language">Язык</string>
+    <string name="interface_language">Язык интерфейса</string>
 
     <!--  CreateUpdatePlaceDialog  -->
     <string name="place_adding">Добавление места</string>
@@ -186,4 +190,40 @@
 
     <!--  NotificationPermissionInfoDialog  -->
     <string name="need_notification_permission">Чтобы отправлять уведомления приложению необходимо дать на это разрешение</string>
+
+    <!--  languages  -->
+    <!--  gb  -->
+    <string name="english">Английский</string>
+    <!--  fr  -->
+    <string name="french">Французский</string>
+    <!--  es  -->
+    <string name="spanish">Испанский</string>
+    <!--  sa, ae  -->
+    <string name="arabian">Арабский</string>
+    <!--  in  -->
+    <string name="hindi">Хинди</string>
+    <!--  cn  -->
+    <string name="chinese">Китайский</string>
+    <!--  bd  -->
+    <string name="bengali">Бенгальский</string>
+    <!--  pt  -->
+    <string name="portuguese">Португальский</string>
+    <!--  de  -->
+    <string name="german">Немецкий</string>
+    <!--  jp  -->
+    <string name="japanese">Японский</string>
+    <!--  kr  -->
+    <string name="south_korean">Южнокорейский</string>
+    <!--  tt  -->
+    <string name="tatar">Татарский</string>
+    <!--  kz  -->
+    <string name="kazakh">Казахский</string>
+    <!--  am  -->
+    <string name="armenian">Армянский</string>
+    <!--  ge  -->
+    <string name="georgian">Грузинский</string>
+    <!--  se  -->
+    <string name="swedish">Шведский</string>
+    <!--  ru  -->
+    <string name="russian">Русский</string>
 </resources>
