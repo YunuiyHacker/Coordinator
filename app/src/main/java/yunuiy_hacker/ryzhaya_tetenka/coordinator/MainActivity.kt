@@ -1,6 +1,7 @@
 package yunuiy_hacker.ryzhaya_tetenka.coordinator
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
@@ -22,6 +23,9 @@ import yunuiy_hacker.ryzhaya_tetenka.coordinator.data.local.shared_prefs.SharedP
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.nav_graph.NavGraph
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.nav_graph.Route
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.ui.theme.CoordinatorTheme
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.utils.getLanguages
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.utils.setLocale
+import java.util.Locale
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -45,11 +49,23 @@ class MainActivity : ComponentActivity() {
                         ) else Color(0xFF6b00b8)
                     )
                 }
+
+                //set theme
                 var isDarkTheme by remember {
                     mutableStateOf(sharedPrefsHelper.isDarkTheme)
                 }
 
                 AppCompatDelegate.setDefaultNightMode(if (isDarkTheme) AppCompatDelegate.MODE_NIGHT_YES else AppCompatDelegate.MODE_NIGHT_NO)
+
+                //set locale
+                val savedLanguage = sharedPrefsHelper.language
+                var language by remember {
+                    mutableStateOf(getLanguages(application).find {
+                        it.ISOCode.toLowerCase(Locale.ROOT)
+                            .equals(if (!savedLanguage.isNullOrEmpty()) savedLanguage else "ru")
+                    }!!)
+                }
+                setLocale(application as Context, language.ISOCode)
 
                 CoordinatorTheme(
                     colorScheme = MaterialTheme.colorScheme.copy(primary = primary),

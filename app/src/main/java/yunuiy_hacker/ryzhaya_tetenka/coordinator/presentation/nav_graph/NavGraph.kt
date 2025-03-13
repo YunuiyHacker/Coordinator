@@ -22,6 +22,7 @@ import yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.settings.SettingsS
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.settings.app_data.place.PlacesScreen
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.settings.app_data.people.PeoplesScreen
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.settings.dev.DeveloperScreen
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.settings.lang.LanguageScreen
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.task.TaskScreen
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.task.TaskViewModel
 import java.util.Date
@@ -69,7 +70,9 @@ fun NavGraph(
                 )
             )
         }) {
-            OnboardingScreen(navHostController)
+            OnboardingScreen(navHostController, onChangeDarkTheme = {
+                onChangeDarkTheme(it)
+            })
         }
         composable(route = Route.HomeScreen.route) {
             HomeScreen(navHostController)
@@ -91,7 +94,7 @@ fun NavGraph(
                     300, easing = LinearEasing
                 )
             ) + slideOutOfContainer(
-                towards = AnimatedContentTransitionScope.SlideDirection.End,
+                towards = AnimatedContentTransitionScope.SlideDirection.Start,
                 animationSpec = tween(
                     300, easing = LinearEasing
                 )
@@ -102,13 +105,15 @@ fun NavGraph(
                     300, easing = LinearEasing
                 )
             ) + slideIntoContainer(
-                towards = AnimatedContentTransitionScope.SlideDirection.Start,
+                towards = AnimatedContentTransitionScope.SlideDirection.End,
                 animationSpec = tween(
                     300, easing = LinearEasing
                 )
             )
         }) {
-            FillNameScreen(navHostController)
+            FillNameScreen(navHostController, onChangeDarkTheme = {
+                onChangeDarkTheme(it)
+            })
         }
         composable(
             route = "${Route.CreateUpdateTaskScreen.route}/{time_type_id}/{date_in_long}/{week_date_first_part_in_milliseconds}/{week_date_second_part_in_milliseconds}/{category_id}",
@@ -364,6 +369,30 @@ fun NavGraph(
             )
         }) {
             DeveloperScreen(navHostController = navHostController, viewModel = hiltViewModel())
+        }
+        composable(route = Route.LanguageScreen.route, enterTransition = {
+            fadeIn(
+                animationSpec = tween(
+                    300, easing = LinearEasing
+                )
+            ) + slideIntoContainer(
+                towards = AnimatedContentTransitionScope.SlideDirection.Start,
+                animationSpec = tween(
+                    300, easing = LinearEasing
+                )
+            )
+        }, exitTransition = {
+            fadeOut(
+                animationSpec = tween(
+                    300, easing = LinearEasing
+                )
+            ) + slideOutOfContainer(
+                towards = AnimatedContentTransitionScope.SlideDirection.End, animationSpec = tween(
+                    300, easing = LinearEasing
+                )
+            )
+        }) {
+            LanguageScreen(navHostController = navHostController, viewModel = hiltViewModel())
         }
     }
 }

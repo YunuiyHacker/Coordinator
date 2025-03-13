@@ -98,6 +98,16 @@ class SharedPrefsHelper(context: Context) {
         }
         get() = settings.getBoolean(IS_DARK_THEME, false)
 
+    var language
+        set(value) {
+            with(settings.edit()) {
+                if (value.isNullOrEmpty()) remove(LANGUAGE)
+                else putString(LANGUAGE, value)
+                apply()
+            }
+        }
+        get() = settings.getString(LANGUAGE, "")
+
     companion object {
         private const val TASKER_TITLE = "tasker"
         private const val PERSONAL_DATA_TITLE = "personal_data"
@@ -115,5 +125,6 @@ class SharedPrefsHelper(context: Context) {
         //settings
         private const val COLOR = "color"
         private const val IS_DARK_THEME = "theme"
+        private const val LANGUAGE = "language"
     }
 }

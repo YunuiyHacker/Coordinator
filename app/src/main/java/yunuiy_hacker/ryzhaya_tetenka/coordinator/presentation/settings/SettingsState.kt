@@ -5,6 +5,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.unit.dp
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.settings.model.Language
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.common.state.ContentState
 
 class SettingsState {
@@ -20,6 +21,8 @@ class SettingsState {
     var showQuestionDialog by mutableStateOf(false)
 
     var isDarkTheme by mutableStateOf(false)
+
+    var language by mutableStateOf(Language())
 
     var contentState by mutableStateOf(ContentState())
 }

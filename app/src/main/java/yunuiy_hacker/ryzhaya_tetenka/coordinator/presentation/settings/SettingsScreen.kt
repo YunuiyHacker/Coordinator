@@ -33,6 +33,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Switch
 import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
@@ -442,24 +443,53 @@ fun SettingsScreen(
                                 .fillMaxWidth()
                                 .clip(RoundedCornerShape(14.dp))
                                 .clickable {
-
+                                    navHostController.navigate(Route.LanguageScreen.route)
                                 }, verticalAlignment = Alignment.CenterVertically
                         ) {
-                            Row(modifier = Modifier.padding(horizontal = 24.dp, vertical = 12.dp), verticalAlignment = Alignment.CenterVertically) {
+                            Row(
+                                modifier = Modifier.padding(horizontal = 24.dp, vertical = 12.dp),
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
                                 Text(
                                     modifier = Modifier.weight(1f),
-                                    text = stringResource(R.string.russian),
+                                    text = state.language.title,
                                     fontFamily = caros,
                                     fontWeight = FontWeight.Normal,
                                     fontSize = 16.sp,
                                     color = MaterialTheme.colorScheme.onSurface
                                 )
-                                Image(
-                                    modifier = Modifier.width(40.dp).height(30.dp).clip(RoundedCornerShape(6.dp)).shadow(elevation = 16.dp, ambientColor = Color.LightGray, spotColor = Color.LightGray, shape = RoundedCornerShape(6.dp)),
-                                    painter = painterResource(R.drawable.ru),
-                                    contentDescription = null,
-                                    contentScale = ContentScale.Crop
-                                )
+                                Row(
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    state.language.icons.forEachIndexed { index, icon ->
+                                        Surface(
+                                            modifier = Modifier
+                                                .width(40.dp)
+                                                .height(30.dp),
+                                            contentColor = Color(0xFFFFFFFF),
+                                            shape = RoundedCornerShape(6.dp),
+                                            shadowElevation = 6.dp,
+                                        ) {
+                                            Box(
+                                                modifier = Modifier.fillMaxSize(),
+                                                contentAlignment = Alignment.Center
+                                            ) {
+                                                Image(
+                                                    modifier = Modifier
+                                                        .width(40.dp)
+                                                        .height(30.dp)
+                                                        .clip(RoundedCornerShape(6.dp)),
+                                                    painter = painterResource(icon),
+                                                    contentDescription = null,
+                                                    contentScale = ContentScale.Crop
+                                                )
+                                            }
+                                        }
+                                        if (state.language.icons.size > 1 && index > -1 && index < state.language.icons.size - 1) {
+                                            Spacer(modifier = Modifier.width(12.dp))
+                                        }
+                                    }
+                                }
                             }
                         }
                     }

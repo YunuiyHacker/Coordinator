@@ -1,28 +1,45 @@
 package yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.onboarding
 
 import android.app.Application
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.R
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.data.local.shared_prefs.SharedPrefsHelper
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.model.People
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.model.Place
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.model.Task
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.utils.getLanguages
+import java.util.Locale
 import javax.inject.Inject
 
 @HiltViewModel
-class OnboardingViewModel @Inject constructor(private val application: Application) : ViewModel() {
+class OnboardingViewModel @Inject constructor(
+    private val sharedPrefsHelper: SharedPrefsHelper,
+    private val application: Application
+) : ViewModel() {
     val state by mutableStateOf(OnboardingState())
 
     fun onEvent(event: OnboardingEvent) {
         when (event) {
             is OnboardingEvent.LoadDataEvent -> loadData()
+
+            is OnboardingEvent.ToggleThemeEvent -> toggleTheme()
         }
     }
 
-    fun loadData() {
+    private fun loadData() {
         state.contentState.isLoading.value = true
+
+        state.isDarkTheme = sharedPrefsHelper.isDarkTheme
+
+        val savedLanguage = sharedPrefsHelper.language
+        state.language = getLanguages(application).find {
+            it.ISOCode.toLowerCase(Locale.ROOT)
+                .equals(if (!savedLanguage.isNullOrEmpty()) savedLanguage else "ru")
+        }!!
 
         state.tasks.clear()
         state.peoples.clear()
@@ -64,5 +81,10 @@ class OnboardingViewModel @Inject constructor(private val application: Applicati
         )
 
         state.contentState.isLoading.value = false
+    }
+
+    private fun toggleTheme() {
+        state.isDarkTheme = !state.isDarkTheme
+        AppCompatDelegate.setDefaultNightMode(if (state.isDarkTheme) AppCompatDelegate.MODE_NIGHT_YES else AppCompatDelegate.MODE_NIGHT_NO)
     }
 }

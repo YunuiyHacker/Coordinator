@@ -1,16 +1,24 @@
 package yunuiy_hacker.ryzhaya_tetenka.coordinator.utils
 
 import android.app.Application
+import android.app.LocaleManager
 import android.content.Context
 import android.content.pm.PackageManager
+import android.content.res.Resources
 import android.net.Uri
+import android.os.Build
+import android.os.LocaleList
 import android.provider.OpenableColumns
 import android.util.DisplayMetrics
+import android.util.Log.v
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.core.os.LocaleListCompat
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.R
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.home.model.TimeType
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.home.model.TimeTypeEnum
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.settings.model.Language
 import java.io.InputStream
 import java.security.MessageDigest
 import java.text.SimpleDateFormat
@@ -20,6 +28,7 @@ import java.time.ZonedDateTime
 import java.util.Calendar
 import java.util.Date
 import java.util.Formatter
+import java.util.Locale
 import kotlin.random.Random
 
 fun TimeType.toTimeTypeEvent(): TimeTypeEnum {
@@ -191,4 +200,41 @@ fun getScreenSizeInDp(context: Context): Pair<Dp, Dp> {
         (displayMetrics.widthPixels / displayMetrics.density).dp,
         (displayMetrics.heightPixels / displayMetrics.density).dp
     )
+}
+
+fun getLanguages(context: Context): List<Language> {
+    return listOf(
+        Language("RU", context.getString(R.string.russian), icons = listOf(R.drawable.ru)),
+        Language("EN", context.getString(R.string.english), icons = listOf(R.drawable.gb)),
+        Language("FR", context.getString(R.string.french), icons = listOf(R.drawable.fr)),
+        Language("ES", context.getString(R.string.spanish), icons = listOf(R.drawable.es)),
+        Language(
+            "SA",
+            context.getString(R.string.arabian),
+            icons = listOf(R.drawable.sa, R.drawable.ae)
+        ),
+        Language("IN", context.getString(R.string.hindi), icons = listOf(R.drawable.`in`)),
+        Language("CN", context.getString(R.string.chinese), icons = listOf(R.drawable.cn)),
+        Language("BD", context.getString(R.string.bengali), icons = listOf(R.drawable.bd)),
+        Language("PT", context.getString(R.string.portuguese), icons = listOf(R.drawable.pt)),
+        Language("DE", context.getString(R.string.german), icons = listOf(R.drawable.de)),
+        Language("JP", context.getString(R.string.japanese), icons = listOf(R.drawable.jp)),
+        Language("KR", context.getString(R.string.south_korean), icons = listOf(R.drawable.kr)),
+        Language("TT", context.getString(R.string.tatar), icons = listOf(R.drawable.tt)),
+        Language("KZ", context.getString(R.string.kazakh), icons = listOf(R.drawable.kz)),
+        Language("AM", context.getString(R.string.armenian), icons = listOf(R.drawable.am)),
+        Language("GE", context.getString(R.string.georgian), icons = listOf(R.drawable.ge)),
+        Language("SE", context.getString(R.string.swedish), icons = listOf(R.drawable.se)),
+    )
+}
+
+fun setLocale(context: Context, locale: String) {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+        context.getSystemService(LocaleManager::class.java).applicationLocales =
+            LocaleList.forLanguageTags(locale)
+    } else {
+        AppCompatDelegate.setApplicationLocales(
+            LocaleListCompat.forLanguageTags(locale)
+        )
+    }
 }

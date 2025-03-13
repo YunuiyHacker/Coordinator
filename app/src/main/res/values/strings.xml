@@ -191,39 +191,42 @@
     <!--  NotificationPermissionInfoDialog  -->
     <string name="need_notification_permission">Чтобы отправлять уведомления приложению необходимо дать на это разрешение</string>
 
+    <!--  LanguageScreen  -->
+    <string name="language_change">Смена языка</string>
+
     <!--  languages  -->
     <!--  gb  -->
-    <string name="english">Английский</string>
+    <string name="english" translatable="false">English</string>
     <!--  fr  -->
-    <string name="french">Французский</string>
+    <string name="french" translatable="false">Français</string>
     <!--  es  -->
-    <string name="spanish">Испанский</string>
+    <string name="spanish" translatable="false">Español</string>
     <!--  sa, ae  -->
-    <string name="arabian">Арабский</string>
+    <string name="arabian" translatable="false">العربية</string>
     <!--  in  -->
-    <string name="hindi">Хинди</string>
+    <string name="hindi" translatable="false">अरेबियन</string>
     <!--  cn  -->
-    <string name="chinese">Китайский</string>
+    <string name="chinese" translatable="false">中文</string>
     <!--  bd  -->
-    <string name="bengali">Бенгальский</string>
+    <string name="bengali" translatable="false">বাংলা</string>
     <!--  pt  -->
-    <string name="portuguese">Португальский</string>
+    <string name="portuguese" translatable="false">Português</string>
     <!--  de  -->
-    <string name="german">Немецкий</string>
+    <string name="german" translatable="false">Deutsch</string>
     <!--  jp  -->
-    <string name="japanese">Японский</string>
+    <string name="japanese" translatable="false">日本語</string>
     <!--  kr  -->
-    <string name="south_korean">Южнокорейский</string>
+    <string name="south_korean" translatable="false">한국어</string>
     <!--  tt  -->
-    <string name="tatar">Татарский</string>
+    <string name="tatar" translatable="false">Татарча</string>
     <!--  kz  -->
-    <string name="kazakh">Казахский</string>
+    <string name="kazakh" translatable="false">Қазақша</string>
     <!--  am  -->
-    <string name="armenian">Армянский</string>
+    <string name="armenian" translatable="false">Հայկական</string>
     <!--  ge  -->
-    <string name="georgian">Грузинский</string>
+    <string name="georgian" translatable="false">ქართული</string>
     <!--  se  -->
-    <string name="swedish">Шведский</string>
+    <string name="swedish" translatable="false">Svensk</string>
     <!--  ru  -->
-    <string name="russian">Русский</string>
+    <string name="russian" translatable="false">Русский</string>
 </resources>

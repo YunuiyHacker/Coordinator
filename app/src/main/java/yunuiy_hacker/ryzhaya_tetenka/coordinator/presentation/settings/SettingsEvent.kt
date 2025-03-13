@@ -1,5 +1,7 @@
 package yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.settings
 
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.settings.model.Language
+
 sealed class SettingsEvent {
     data object LoadDataEvent : SettingsEvent()
 

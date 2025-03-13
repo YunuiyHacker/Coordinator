@@ -1,7 +1,5 @@
 package yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.settings.dev
 
-import android.R.attr.label
-import android.R.attr.text
 import android.app.Application
 import android.content.ClipData
 import android.content.ClipboardManager
@@ -9,7 +7,6 @@ import android.content.Context
 import android.widget.Toast
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.core.content.ContextCompat.getSystemService
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.R

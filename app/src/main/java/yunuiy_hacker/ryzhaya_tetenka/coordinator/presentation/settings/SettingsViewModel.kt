@@ -5,6 +5,8 @@ import android.os.Environment
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.ui.text.toLowerCase
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.DelicateCoroutinesApi
@@ -15,10 +17,12 @@ import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.R
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.data.local.shared_prefs.SharedPrefsHelper
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.settings.model.Language
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.settings.use_case.ExportDataUseCase
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.settings.use_case.ImportDataUseCase
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.utils.ImageUtils
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.utils.getFileName
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.utils.getLanguages
 import java.io.BufferedInputStream
 import java.io.BufferedOutputStream
 import java.io.BufferedWriter
@@ -31,6 +35,7 @@ import java.nio.file.FileSystemNotFoundException
 import java.nio.file.Files
 import java.nio.file.Paths
 import java.util.Date
+import java.util.Locale
 import java.util.zip.ZipEntry
 import java.util.zip.ZipOutputStream
 import javax.inject.Inject
@@ -96,6 +101,13 @@ class SettingsViewModel @Inject constructor(
             runBlocking {
                 state.userName = sharedPrefsHelper.name ?: ""
                 state.isDarkTheme = sharedPrefsHelper.isDarkTheme
+
+                val savedLanguage = sharedPrefsHelper.language
+                state.language =
+                    getLanguages(application).find {
+                        it.ISOCode.toLowerCase(Locale.ROOT)
+                            .equals(if (!savedLanguage.isNullOrEmpty()) savedLanguage else "ru")
+                    }!!
 
                 state.contentState.isLoading.value = false
             }
