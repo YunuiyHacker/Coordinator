@@ -1,5 +1,6 @@
 package yunuiy_hacker.ryzhaya_tetenka.coordinator.data.local.shared_prefs
 
+import android.R.attr.value
 import android.content.Context
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.home.model.TimeTypeEnum
 
@@ -108,6 +109,24 @@ class SharedPrefsHelper(context: Context) {
         }
         get() = settings.getString(LANGUAGE, "")
 
+    var showTaskPriority
+        set(value) {
+            with(settings.edit()) {
+                putBoolean(SHOW_TASK_PRIORITY, value)
+                apply()
+            }
+        }
+        get() = settings.getBoolean(SHOW_TASK_PRIORITY, false)
+
+    var showTasksStatistics
+        set(value) {
+            with(settings.edit()) {
+                putBoolean(SHOW_TASKS_STATISTICS, value)
+                apply()
+            }
+        }
+        get() = settings.getBoolean(SHOW_TASKS_STATISTICS, false)
+
     companion object {
         private const val TASKER_TITLE = "tasker"
         private const val PERSONAL_DATA_TITLE = "personal_data"
@@ -126,5 +145,7 @@ class SharedPrefsHelper(context: Context) {
         private const val COLOR = "color"
         private const val IS_DARK_THEME = "theme"
         private const val LANGUAGE = "language"
+        private const val SHOW_TASK_PRIORITY = "showTaskPriority"
+        private const val SHOW_TASKS_STATISTICS = "showTasksStatistics"
     }
 }

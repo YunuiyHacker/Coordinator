@@ -54,5 +54,19 @@ class HomeState {
 
     var showCategoryMenu by mutableStateOf(false)
 
+    var showTaskPriority by mutableStateOf(true)
+    var showTasksStatistics by mutableStateOf(true)
+
+    var urgentAndImportantTasks: MutableList<Task> = mutableListOf()
+    var notUrgentAndImportantTasks: MutableList<Task> = mutableListOf()
+    var urgentAndUnimportantTasks: MutableList<Task> = mutableListOf()
+    var notUrgentAndUnimportantTasks: MutableList<Task> = mutableListOf()
+    var notPriorityTasks: MutableList<Task> = mutableListOf()
+
+    var completedTasks by mutableStateOf(0)
+    var notCompletedTasks by mutableStateOf(0)
+    var allCompletedTasks by mutableStateOf(0)
+    var allNotCompletedTasks by mutableStateOf(0)
+
     var contentState by mutableStateOf(ContentState())
 }

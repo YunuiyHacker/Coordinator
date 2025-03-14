@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Coordinator</string>
+
+    <!-- Cumprimentos do utilizador -->
+    <string name="good_morning">Bom dia</string>
+    <string name="good_afternoon">Boa tarde</string>
+    <string name="good_evening">Boa noite</string>
+    <string name="good_night">Boa noite</string>
+
+    <!-- Tipos de tempo -->
+    <string name="day">Dia</string>
+    <string name="week">Semana</string>
+    <string name="month">Mês</string>
+    <string name="year">Ano</string>
+    <string name="life">Vida</string>
+
+    <!-- Ecrã de integração -->
+    <string name="letter_continue">Continuar</string>
+    <string name="skip">Saltar</string>
+    <string name="start">Iniciar</string>
+    <string name="onboarding_screen1_task1_title">Instalar Coordenador</string>
+    <string name="onboarding_screen1_task1_content">Instalar o Coordenador, criar tarefas</string>
+    <string name="onboarding_screen1_task2_title">Tarefas concluídas</string>
+    <string name="onboarding_screen1_task2_content">Executar tarefas criadas</string>
+    <string name="onboarding_screen1_title">Gerencie o seu dia</string>
+    <string name="onboarding_screen1_content">Cria tarefas todos os dias para fazer tudo e não se esquecer de nada</string>
+    <string name="onboarding_screen2_title">Adicionar localizações às tarefas</string>
+    <string name="onboarding_screen2_content">Isto tornará ainda mais conveniente para si fazer os seus negócios. Se precisar de ver um lugar no mapa, basta clicar no cartão do lugar</string>
+    <string name="home">Casa</string>
+    <string name="onboarding_screen3_title">Adicionar pessoas às tarefas</string>
+    <string name="onboarding_screen3_content">Para que não se esqueça com quem o vai fazer</string>
+
+    <!-- EcrãDePreenchimentoDeNome -->
+    <string name="what_is_your_name_title">Qual ​​é o seu nome?</string>
+    <string name="what_is_your_name_description">Por favor, forneça o seu nome, que utilizaremos para exibir e personalizar as suas tarefas</string>
+    <string name="your_name">O_seu nome</string>
+    <string name="get_start">Iniciar</string>
+
+    <!-- Ecrã inicial -->
+    <string name="tasks">Tarefas</string>
+    <string name="cancel_deletion">Cancelar eliminação</string>
+    <string name="yes">Sim</string>
+    <string name="deletion_mode">Modo de eliminação</string>
+    <string name="delete_all_selected">Apagar todos os selecionados</string>
+    <string name="really_want_to_delete_all_selected_tasks">Deseja mesmo eliminar todas as tarefas selecionadas?</string>
+    <string name="all_categories">Todas as categorias</string>
+    <string name="really_want_to_delete_category">Deseja mesmo eliminar esta categoria?</string>
+    <string name="empty_date">Todos nós precisamos de uma pausa em algum momento... Não existem tarefas para esta data</string>
+    <string name="urgent_and_important">Urgente e importante</string>
+    <string name="not_urgent_and_important">Não urgente e importante</string>
+    <string name="urgent_and_unimportant">Urgente e sem importância</string>
+    <string name="not_urgent_and_unimportant">Não urgente e não importante</string>
+    <string name="not_priority">Sem prioridade</string>
+    <string name="tasks_statistics">Estatísticas das tarefas</string>
+
+    <!-- Barra de pesquisa -->
+    <string name="try_to_find_task">Tente encontrar uma tarefa…</string>
+    <string name="search">Pesquisar</string>
+
+    <!-- CriarTelaDeTarefaDeAtualização -->
+    <string name="create_task">Criar uma tarefa</string>
+    <string name="edit_task">Editar tarefa</string>
+    <string name="heading">Título</string>
+    <string name="content">Descrição</string>
+    <string name="create">Criar</string>
+    <string name="type_of_time">Tipo de tempo</string>
+    <string name="save_changes">Guardar alterações</string>
+    <string name="end_time">Hora de fim</string>
+    <string name="end_time_can_not_be_before_start_time">O horário de fim não pode ser anterior ou igual ao horário de início</string>
+    <string name="category">Categoria</string>
+    <string name="without_category">Sem categoria</string>
+    <string name="add_subtask">Adicionar subtarefa</string>
+    <string name="location_not_selected">Localização não selecionada</string>
+    <string name="add_new_place">Adicionar novo local</string>
+    <string name="place">Lugar</string>
+    <string name="peoples_not_selected">Pessoas não seleccionadas</string>
+    <string name="this_people_already_will_selected">Esta pessoa já foi selecionada</string>
+    <string name="peoples_list_is_empty">A lista de pessoas está vazia por enquanto, pode adicioná-las nas definições</string>
+    <string name="remind_later">Lembra-me mais tarde</string>
+    <string name="date">Data</string>
+    <string name="time">Tempo</string>
+    <string name="cannot_specify_reminder_time_later_than_task_deadline">Não pode especificar um horário de lembrete posterior à data de entrega da tarefa</string>
+    <string name="this_reminder_time_cannot_be_selected">Este horário de lembrete não pode ser selecionado. Esse tempo já passou</string>
+    <string name="priority">Prioridade</string>
+
+    <!-- TimePickerDialog -->
+    <string name="select">Seleccionar</string>
+
+    <!-- Ecrã de Tarefas -->
+    <string name="task">Tarefa</string>
+    <string name="edit">Editar</string>
+    <string name="delete">Apagar</string>
+    <string name="deletion">Apagar</string>
+    <string name="really_want_to_delete_task">Tem a certeza que pretende eliminar esta tarefa?</string>
+    <string name="open_in_maps">Ver no mapa</string>
+    <string name="really_want_open_in_maps">Quer mesmo ver o local no mapa?</string>
+    <string name="not_supported_apps">Não conseguimos encontrar uma aplicação adequada no seu dispositivo</string>
+
+    <!-- Deslize para apagar o fundo -->
+    <string name="deleted">Eliminado</string>
+
+    <!-- QuestionDialog -->
+    <string name="no">Não</string>
+
+    <!-- Adicionar caixa de diálogo EditarCategoria -->
+    <string name="category_adding">Adicionar uma categoria</string>
+    <string name="category_editing">Edição de categoria</string>
+    <string name="cancel">Cancelar</string>
+    <string name="add">Adicionar</string>
+    <string name="save">Guardar</string>
+
+    <!-- SubtaskRow -->
+    <string name="subtask_title">Título da subtarefa</string>
+
+    <!-- Ecrã de definições -->
+    <string name="settings">Definições</string>
+    <string name="personal_data">Dados pessoais</string>
+    <string name="import_export_data">Importar/exportar dados</string>
+    <string name="import_data">Importar dados</string>
+    <string name="export_data">Exportar dados</string>
+    <string name="success_export">Exportação de dados concluída com sucesso. Exportar ficheiro guardado em downloads</string>
+    <string name="really_want_to_import_data">Deseja mesmo importar os dados? Os dados importados serão adicionados aos existentes</string>
+    <string name="import_exception">Erro ao importar ficheiro. O ficheiro pode estar corrompido ou não existir</string>
+    <string name="success_import">Importação de dados concluída com sucesso</string>
+    <string name="app_data">Dados da aplicação</string>
+    <string name="places">Lugares</string>
+    <string name="peoples">Pessoas</string>
+    <string name="add_new_people">Adicionar nova pessoa</string>
+    <string name="additionally">Adicionalmente</string>
+    <string name="info_about_developer">Informações sobre o programador</string>
+    <string name="letter_for">para</string>
+    <string name="by">de</string>
+    <string name="access_denied">Acesso ao ficheiro negado</string>
+    <string name="undefined_error">Erro desconhecido</string>
+    <string name="incorrect_file_format">Formato de ficheiro incorrecto</string>
+    <string name="styling">Estilo</string>
+    <string name="theme">Tema</string>
+    <string name="light_theme">Tema claro</string>
+    <string name="dark_theme">Tema escuro</string>
+    <string name="language">Língua</string>
+    <string name="interface_language">Linguagem da interface</string>
+    <string name="interface_letter">Interface</string>
+    <string name="interface_configuring">Configuração da interface</string>
+
+    <!-- CreateUpdatePlaceDialog -->
+    <string name="place_adding">Adicionar um lugar</string>
+    <string name="place_editing">Edição de local</string>
+    <string name="title">Título</string>
+    <string name="longitude">Longitude</string>
+    <string name="latitude">Latitude</string>
+    <string name="paste_coordinates_from_google_or_yandex_maps">Colar coordenadas do Google Maps/Yandex Maps</string>
+    <string name="no_matching_data_found">Não foram encontrados dados correspondentes</string>
+
+    <!-- Ecrã de posicionamento -->
+    <string name="really_want_to_delete_place">Quer mesmo eliminar este local?</string>
+    <string name="editing">Edição</string>
+    <string name="really_want_to_edit_place">Quer mesmo editar este local?</string>
+
+    <!-- CriarAtualizarColunaPessoas -->
+    <string name="people_adding">A adicionar uma pessoa</string>
+    <string name="people_editing">Editar uma pessoa</string>
+    <string name="surname">Apelido</string>
+    <string name="name">Nome</string>
+    <string name="lastname">Patronímico</string>
+    <string name="sex">Género</string>
+    <string name="male">Masculino</string>
+    <string name="female">Feminino</string>
+    <string name="date_of_birth">Data de nascimento</string>
+    <string name="display_name">Nome de visualização</string>
+    <string name="phone_number">Número de telefone</string>
+    <string name="email">E-mail</string>
+    <string name="address">Morada</string>
+    <string name="not_selected">Não selecionado</string>
+    <string name="really_want_to_delete_people">Quer mesmo eliminar esta pessoa?</string>
+    <string name="select_post_app">Selecione uma aplicação de e-mail</string>
+    <string name="post_app_not_defined">Nenhuma aplicação de e-mail encontrada no dispositivo</string>
+    <string name="error_occurred_when_opening_the_phone">Ocorreu um erro ao abrir o telefone</string>
+
+    <!-- Ecrã do programador -->
+    <string name="developer">Developer</string>
+    <string name="developer_full_name">Nurkaev Alfir Kharisovich</string>
+    <string name="developer_surname">Nurkaev</string>
+    <string name="developer_name">Alfir</string>
+    <string name="developer_lastname">Harisovich</string>
+    <string name="support_developer">Apoiar o programador</string>
+    <string name="developer_info_part_1">Olá, caro utilizador. O meu nome é </string>
+    <string name="developer_info_part_2">Sou um jovem developer Android de Perm. Nesta área desde 2021, no início foi difícil, percebia muita coisa com dificuldade, mas sabia que aquilo era meu, e as dificuldades só me impulsionaram a aprender cada vez mais, o que acabou por me levar a estes resultados.</string>
+    <string name="developer_info_part_3">Esta é a minha primeira aplicação lançada oficialmente na app store. Claro que não vou ficar por aqui, ainda há espaço para crescer e aprender.</string>
+    <string name="developer_info_part_4">Isto é apenas o início</string>
+    <string name="developer_info_part_5">Se gosta do meu trabalho, quer colaborar comigo - todos os links acima, terei todo o gosto em ajudá-lo</string>
+    <string name="developer_reference">Pare de pressionar, acalme-se</string>
+    <string name="developer_phone_formatted" traduzível="false">7(922)32–32–042</string>
+    <string name="developer_phone" traduzível="false">79223232042</string>
+    <string name="support_developer_text_part1">Pode apoiar-me transferindo fundos para um número de telefone. Talvez, ao fazê-lo, apoie o início de uma nova história.</string>
+    <string name="support_developer_text_part2">Ou talvez não</string>
+    <string name="copy">Copiar</string>
+    <string name="copied">Copiado</string>
+
+    <!-- NotificationPermissionInfoDialog -->
+    <string name="need_notification_permission">Para enviar notificações, a aplicação deve receber permissão para o fazer</string>
+
+    <!-- Ecrã de idioma -->
+    <string name="language_change">Alterar idioma</string>
+
+    <!-- InterfaceConfigurandoEcrã -->
+    <string name="show_task_priority">Mostrar prioridades para as tarefas</string>
+    <string name="show_tasks_statistics">Mostrar estatísticas da tarefa</string>
+
+    <!-- ColunaDeEstatísticasDaTarefa -->
+    <string name="completed">Concluído</string>
+    <string name="not_completed">Não concluído</string>
+    <string name="displaying_statistics_for_all_tasks">Apresentando estatísticas para todas as tarefas</string>
+</resources>

@@ -5,11 +5,11 @@ import yunuiy_hacker.ryzhaya_tetenka.coordinator.data.common.model.Category
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.data.common.model.Notification
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.data.common.model.People
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.data.common.model.PeopleInTask
-import yunuiy_hacker.ryzhaya_tetenka.coordinator.data.common.model.PhoneCode
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.data.common.model.Place
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.data.common.model.PlaceInTask
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.data.common.model.Subtask
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.data.common.model.Task
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.utils.getPriorityByCode
 import java.util.Date
 
 fun Task.toDomain(): yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.model.Task {
@@ -29,7 +29,8 @@ fun Task.toDomain(): yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.mod
         notify = notify ?: false,
         notifyDate = Date(notifyDateInMilliseconds ?: 0L),
         notifyHour = notifyHour ?: 0,
-        notifyMinute = notifyMinute ?: 0
+        notifyMinute = notifyMinute ?: 0,
+        priority = getPriorityByCode(priorityCode ?: 0)
     )
 }
 
@@ -50,7 +51,8 @@ fun yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.model.Task.toData():
         notify = notify,
         notifyDateInMilliseconds = notifyDate.time,
         notifyHour = notifyHour,
-        notifyMinute = notifyMinute
+        notifyMinute = notifyMinute,
+        priorityCode = priority.code
     )
 }
 
@@ -138,16 +140,6 @@ fun PeopleInTask.toDomain(): yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.co
 
 fun yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.model.PeopleInTask.toData(): PeopleInTask {
     return PeopleInTask(id = id, peopleId = peopleId, taskId = taskId)
-}
-
-fun PhoneCode.toDomain(): yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.model.PhoneCode {
-    return yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.model.PhoneCode(
-        id = id, ISOCode = ISOCode ?: "", phoneCode = phoneCode ?: 0
-    )
-}
-
-fun yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.model.PhoneCode.toData(): PhoneCode {
-    return PhoneCode(id = id, ISOCode = ISOCode, phoneCode = phoneCode)
 }
 
 fun Notification.toDomain(): yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.model.Notification {

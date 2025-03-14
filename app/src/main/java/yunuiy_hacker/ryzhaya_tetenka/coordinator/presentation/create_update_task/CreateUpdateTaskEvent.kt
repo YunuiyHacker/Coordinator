@@ -1,5 +1,6 @@
 package yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.create_update_task
 
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.data.common.model.Priority
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.model.Category
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.model.People
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.model.Place
@@ -65,6 +66,10 @@ sealed class CreateUpdateTaskEvent {
 
     data object ShowNotificationPermissionInfoDialogEvent : CreateUpdateTaskEvent()
     data object HideNotificationPermissionInfoDialogEvent : CreateUpdateTaskEvent()
+
+    data object ShowPrioritySelectorMenuEvent : CreateUpdateTaskEvent()
+    data class SelectPriorityMenuEvent(val priority: Priority) : CreateUpdateTaskEvent()
+    data object HidePrioritySelectorMenuEvent : CreateUpdateTaskEvent()
 
     data object OnBackPressEvent : CreateUpdateTaskEvent()
 

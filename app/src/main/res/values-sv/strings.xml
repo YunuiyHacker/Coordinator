@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Coordinator</string>
+
+    <!-- Användarhälsningar -->
+    <string name="good_morning">God morgon</string>
+    <string name="good_afternoon">God eftermiddag</string>
+    <string name="good_evening">God kväll</string>
+    <string name="good_night">God natt</string>
+
+    <!-- Tidstyper -->
+    <string name="day">Dag</string>
+    <string name="week">Vecka</string>
+    <string name="month">Månad</string>
+    <string name="year">År</string>
+    <string name="life">Livet</string>
+
+    <!-- OnboardingScreen -->
+    <string name="letter_continue">Fortsätt</string>
+    <string name="skip">Hoppa över</string>
+    <string name="start">Starta</string>
+    <string name="onboarding_screen1_task1_title">Installera samordnare</string>
+    <string name="onboarding_screen1_task1_content">Installera koordinator, skapa uppgifter</string>
+    <string name="onboarding_screen1_task2_title">Slutför uppgifter</string>
+    <string name="onboarding_screen1_task2_content">Kör skapade uppgifter</string>
+    <string name="onboarding_screen1_title">Hantera din dag</string>
+    <string name="onboarding_screen1_content">Skapa uppgifter varje dag för att få allt gjort och inte glömma någonting</string>
+    <string name="onboarding_screen2_title">Lägg till platser i uppgifter</string>
+    <string name="onboarding_screen2_content">Detta kommer att göra det ännu bekvämare för dig att göra dina affärer. Om du behöver se en plats på kartan klickar du bara på platskortet</string>
+    <string name="home">Hem</string>
+    <string name="onboarding_screen3_title">Lägg till personer i uppgifter</string>
+    <string name="onboarding_screen3_content">Så du inte glömmer vem du ska göra dem med</string>
+
+    <!-- FillNameScreen -->
+    <string name="what_is_your_name_title">Vad heter du?</string>
+    <string name="what_is_your_name_description">Ange ditt namn, som vi kommer att använda för att visa och anpassa dina uppgifter</string>
+    <string name="your_name">Ditt namn</string>
+    <string name="get_start">Starta</string>
+
+    <!-- Hemskärm -->
+    <string name="tasks">Uppgifter</string>
+    <string name="cancel_deletion">Avbryt borttagning</string>
+    <string name="yes">Ja</string>
+    <string name="deletion_mode">Ta bort läge</string>
+    <string name="delete_all_selected">Ta bort alla markerade</string>
+    <string name="really_want_to_delete_all_selected_tasks">Vill du verkligen ta bort alla markerade uppgifter?</string>
+    <string name="all_categories">Alla kategorier</string>
+    <string name="really_want_to_delete_category">Vill du verkligen ta bort den här kategorin?</string>
+    <string name="empty_date">Vi behöver alla en paus någon gång... Det finns inga uppgifter för detta datum</string>
+    <string name="urgent_and_important">Brådskande och viktigt</string>
+    <string name="not_urgent_and_important">Inte brådskande och viktigt</string>
+    <string name="urgent_and_unimportant">Brådskande och oviktigt</string>
+    <string name="not_urgent_and_unimportant">Inte brådskande och inte viktigt</string>
+    <string name="not_priority">Ingen prioritet</string>
+    <string name="tasks_statistics">Uppgiftsstatistik</string>
+
+    <!-- Sökfält -->
+    <string name="try_to_find_task">Försök hitta en uppgift...</string>
+    <string name="search">Sök</string>
+
+    <!-- CreateUpdateTaskScreen -->
+    <string name="create_task">Skapa en uppgift</string>
+    <string name="edit_task">Redigera uppgift</string>
+    <string name="heading">Rubrik</string>
+    <string name="content">Beskrivning</string>
+    <string name="create">Skapa</string>
+    <string name="type_of_time">Tidstyp</string>
+    <string name="save_changes">Spara ändringar</string>
+    <string name="end_time">Sluttid</string>
+    <string name="end_time_can_not_be_before_start_time">Sluttiden kan inte vara före eller samma som starttiden</string>
+    <string name="category">Kategori</string>
+    <string name="without_category">Utan kategori</string>
+    <string name="add_subtask">Lägg till underuppgift</string>
+    <string name="location_not_selected">Platsen har inte valts</string>
+    <string name="add_new_place">Lägg till ny plats</string>
+    <string name="place">Plats</string>
+    <string name="peoples_not_selected">Personer inte valda</string>
+    <string name="this_people_already_will_selected">Den här personen har redan valts ut</string>
+    <string name="peoples_list_is_empty">Personlistan är tom för närvarande, du kan lägga till dem i inställningarna</string>
+    <string name="remind_later">Påminn mig senare</string>
+    <string name="date">Datum</string>
+    <string name="time">Tid</string>
+    <string name="cannot_specify_reminder_time_later_than_task_deadline">Du kan inte ange en påminnelsestid senare än uppgiftens förfallodatum</string>
+    <string name="this_reminder_time_cannot_be_selected">Denna påminnelsetid kan inte väljas. Den tiden har redan passerat</string>
+    <string name="priority">Prioritet</string>
+
+    <!-- TimePickerDialog -->
+    <string name="select">Välj</string>
+
+    <!-- TaskScreen -->
+    <string name="task">Uppgift</string>
+    <string name="edit">Redigera</string>
+    <string name="delete">Ta bort</string>
+    <string name="deletion">Ta bort</string>
+    <string name="really_want_to_delete_task">Är du säker på att du vill ta bort den här uppgiften?</string>
+    <string name="open_in_maps">Visa på kartan</string>
+    <string name="really_want_open_in_maps">Vill du verkligen se platsen på kartan?</string>
+    <string name="not_supported_apps">Vi kunde inte hitta en lämplig app på din enhet</string>
+
+    <!-- SwipeToDeleteBackground -->
+    <string name="deleted">Raderad</string>
+
+    <!-- QuestionDialog -->
+    <string name="no">Nej</string>
+
+    <!-- AddEditCategoryDialog -->
+    <string name="category_adding">Lägga till en kategori</string>
+    <string name="category_editing">Redigeringskategori</string>
+    <string name="cancel">Avbryt</string>
+    <string name="add">Lägg till</string>
+    <string name="save">Spara</string>
+
+    <!-- SubtaskRow -->
+    <string name="subtask_title">Deluppgiftstitel</string>
+
+    <!-- Settings Screen -->
+    <string name="settings">Inställningar</string>
+    <string name="personal_data">Personliga uppgifter</string>
+    <string name="import_export_data">Importera/exportera data</string>
+    <string name="import_data">Importera data</string>
+    <string name="export_data">Exportera data</string>
+    <string name="success_export">Dataexporten har slutförts. Exportera fil sparad i nedladdningar</string>
+    <string name="really_want_to_import_data">Vill du verkligen importera data? De importerade uppgifterna kommer att läggas till de befintliga</string>
+    <string name="import_exception">Fel vid import av fil. Filen kan vara skadad eller existerar inte</string>
+    <string name="success_import">Dataimporten har slutförts</string>
+    <string name="app_data">Appdata</string>
+    <string name="places">Platser</string>
+    <string name="peoples">Människor</string>
+    <string name="add_new_people">Lägg till ny person</string>
+    <string name="additionally">Dessutom</string>
+    <string name="info_about_developer">Information om utvecklaren</string>
+    <string name="letter_for">för</string>
+    <string name="by">från</string>
+    <string name="access_denied">Åtkomst till fil nekad</string>
+    <string name="undefined_error">Okänt fel</string>
+    <string name="incorrect_file_format">Felaktigt filformat</string>
+    <string name="styling">Styling</string>
+    <string name="theme">Tema</string>
+    <string name="light_theme">Lätt tema</string>
+    <string name="dark_theme">Mörkt tema</string>
+    <string name="language">Språk</string>
+    <string name="interface_language">Gränssnittsspråk</string>
+    <string name="interface_letter">Gränssnitt</string>
+    <string name="interface_configuring">Konfigurera gränssnittet</string>
+
+    <!-- CreateUpdatePlaceDialog -->
+    <string name="place_adding">Lägga till en plats</string>
+    <string name="place_editing">Platsredigering</string>
+    <string name="title">Titel</string>
+    <string name="longitude">Längdgrad</string>
+    <string name="latitude">Latitude</string>
+    <string name="paste_coordinates_from_google_or_yandex_maps">Klistra in koordinater från Google Maps/Yandex Maps</string>
+    <string name="no_matching_data_found">Inga matchande data hittades</string>
+
+    <!-- PlaceScreen -->
+    <string name="really_want_to_delete_place">Vill du verkligen ta bort den här platsen?</string>
+    <string name="editing">Redigering</string>
+    <string name="really_want_to_edit_place">Vill du verkligen redigera den här platsen?</string>
+
+    <!-- CreateUpdatePeopleColumn -->
+    <string name="people_adding">Lägga till en person</string>
+    <string name="people_editing">Redigera en person</string>
+    <string name="surname">Efternamn</string>
+    <string name="name">Namn</string>
+    <string name="lastname">Patronym</string>
+    <string name="sex">Kön</string>
+    <string name="male">Man</string>
+    <string name="female">Kvinna</string>
+    <string name="date_of_birth">Födelsedatum</string>
+    <string name="display_name">Visningsnamn</string>
+    <string name="phone_number">Telefonnummer</string>
+    <string name="email">E-post</string>
+    <string name="address">Adress</string>
+    <string name="not_selected">Inte valt</string>
+    <string name="really_want_to_delete_people">Vill du verkligen ta bort den här personen?</string>
+    <string name="select_post_app">Välj en e-postapp</string>
+    <string name="post_app_not_defined">Inga e-postappar hittades på enheten</string>
+    <string name="error_occurred_when_opening_the_phone">Ett fel uppstod när telefonen öppnades</string>
+
+    <!-- DeveloperScreen -->
+    <string name="developer">Utvecklare</string>
+    <string name="developer_nickname" translatable="false">yunuiy_hacker</string>
+    <string name="developer_full_name">Nurkaev Alfir Kharisovich</string>
+    <string name="developer_surname">Nurkaev</string>
+    <string name="developer_name">Alfir</string>
+    <string name="developer_lastname">Harisovich</string>
+    <string name="support_developer">Stöd utvecklaren</string>
+    <string name="developer_info_part_1">Hej kära användare. Jag heter </string>
+    <string name="developer_info_part_2">Jag är en ung Android-utvecklare från Perm. Inom detta område sedan 2021, i början var det svårt, jag förstod mycket med svårighet, men jag visste att detta var mitt, och svårigheterna gav mig bara bränsle till att lära mig mer och mer, vilket så småningom ledde mig till sådana resultat.</string>
+    <string name="developer_info_part_3">Detta är min första app som släpps officiellt i appbutiken. Jag tänker naturligtvis inte sluta där, det finns fortfarande utrymme att växa och lära.</string>
+    <string name="developer_info_part_4">Detta är bara början</string>
+    <string name="developer_info_part_5">Om du gillar mitt arbete vill du samarbeta med mig - alla länkar ovan, jag hjälper dig gärna</string>
+    <string name="developer_reference">Sluta trycka, lugna dig</string>
+    <string name="support_developer_text_part1">Du kan stödja mig genom att överföra pengar till ett telefonnummer. Genom att göra det kanske du stödjer början på en ny berättelse.</string>
+    <string name="support_developer_text_part2">Eller kanske inte</string>
+    <string name="copy">Kopiera</string>
+    <string name="copied">Kopierat</string>
+
+    <!-- NotificationPermissionInfoDialog -->
+    <string name="need_notification_permission">För att skicka meddelanden måste applikationen ges tillstånd att göra det</string>
+
+    <!-- LanguageScreen -->
+    <string name="language_change">Ändra språk</string>
+
+    <!-- InterfaceConfiguringScreen -->
+    <string name="show_task_priority">Visa prioriteringar för uppgifter</string>
+    <string name="show_tasks_statistics">Visa uppgiftsstatistik</string>
+
+    <!-- TaskStatistics Column -->
+    <string name="completed">Slutförd</string>
+    <string name="not_completed">Inte slutförd</string>
+    <string name="displaying_statistics_for_all_tasks">Visar statistik för alla uppgifter</string>
+</resources>

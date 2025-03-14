@@ -12,10 +12,12 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.R
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.data.common.model.Priority
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.data.local.shared_prefs.SharedPrefsHelper
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.mappers.toData
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.mappers.toDomain
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.model.Category
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.model.Notification
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.model.Subtask
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.categories.CategoriesUseCase
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.notifications.NotificationsUseCase
@@ -173,8 +175,14 @@ class HomeViewModel @Inject constructor(
         state.contentState.isLoading.value = true
         GlobalScope.launch(Dispatchers.IO) {
             runBlocking {
+                state.defaultAllCategoriesValue =
+                    Category(id = 0, title = application.getString(R.string.all_categories))
                 loadTasks()
                 loadCategories()
+                state.showTaskPriority = sharedPrefsHelper.showTaskPriority
+                state.showTasksStatistics = sharedPrefsHelper.showTasksStatistics
+
+                defineCompletedTasks()
 
                 state.contentState.isLoading.value = false
             }
@@ -196,10 +204,25 @@ class HomeViewModel @Inject constructor(
         ).map { task -> task.toDomain() }.toMutableList()
 
         state.tasks.forEachIndexed { index, task ->
-            state.tasks[index].subtasks =
-                subtasksUseCase.getSubtasksByTaskIdOperator(task.id)
-                    .map { subtask -> subtask.toDomain() }
+            state.tasks[index].subtasks = subtasksUseCase.getSubtasksByTaskIdOperator(task.id)
+                .map { subtask -> subtask.toDomain() }.toMutableList()
+        }
+
+        if (state.showTaskPriority) {
+            state.urgentAndImportantTasks =
+                state.tasks.filter { it -> it.priority == Priority.URGENT_AND_IMPORTANT }
                     .toMutableList()
+            state.notUrgentAndImportantTasks =
+                state.tasks.filter { it -> it.priority == Priority.NOT_URGENT_AND_IMPORTANT }
+                    .toMutableList()
+            state.urgentAndUnimportantTasks =
+                state.tasks.filter { it -> it.priority == Priority.URGENT_AND_UNIMPORTANT }
+                    .toMutableList()
+            state.notUrgentAndUnimportantTasks =
+                state.tasks.filter { it -> it.priority == Priority.NOT_URGENT_AND_UNIMPORTANT }
+                    .toMutableList()
+            state.notPriorityTasks =
+                state.tasks.filter { it -> it.priority == Priority.NOT_PRIORITY }.toMutableList()
         }
     }
 
@@ -304,19 +327,30 @@ class HomeViewModel @Inject constructor(
                 for (i in 0..<state.deletionTasks.size) {
                     val notification =
                         notificationsUseCase.getNotificationByTaskId(state.deletionTasks[i].id)
-                            .toDomain()
-                    workManager.cancelAllWorkByTag(notification.tag)
-                    notificationsUseCase.deleteNotificationOperator.invoke(
-                        notificationsUseCase.getNotificationByTaskId.invoke(
-                            state.deletionTasks[i].id
+                    var notificationDomain: Notification = Notification()
+                    if (notification != null) {
+                        notificationDomain = notification.toDomain()
+                        workManager.cancelAllWorkByTag(notificationDomain.tag)
+                        notificationsUseCase.deleteNotificationOperator.invoke(
+                            notification
                         )
-                    )
+                    }
 
                     tasksUseCase.deleteTaskOperator.invoke(state.deletionTasks[i].toData())
                     state.tasks.remove(state.deletionTasks[i])
 
+                    if (state.showTaskPriority) {
+                        state.urgentAndImportantTasks.removeIf { it -> state.deletionTasks[i].id == it.id }
+                        state.urgentAndUnimportantTasks.removeIf { it -> state.deletionTasks[i].id == it.id }
+                        state.notUrgentAndImportantTasks.removeIf { it -> state.deletionTasks[i].id == it.id }
+                        state.notUrgentAndUnimportantTasks.removeIf { it -> state.deletionTasks[i].id == it.id }
+                        state.notPriorityTasks.removeIf { it -> state.deletionTasks[i].id == it.id }
+                    }
+
                     tasksUseCase.deleteTaskOperator.invoke(state.deletionTasks[i].toData())
                 }
+
+                defineCompletedTasks()
 
                 state.isDeletionMode = false
                 state.showQuestionDialog = false
@@ -372,10 +406,10 @@ class HomeViewModel @Inject constructor(
         GlobalScope.launch(Dispatchers.IO) {
             tasksUseCase.updateTaskOperator.invoke(
                 event.task.copy(
-                    checked =
-                    event.task.checked
+                    checked = event.task.checked
                 ).toData()
             )
+            defineCompletedTasks()
         }
         event.task.checked = !event.task.checked
     }
@@ -456,5 +490,12 @@ class HomeViewModel @Inject constructor(
             c.add(Calendar.YEAR, +1)
             state.yearsList.add(Date(c.timeInMillis))
         }
+    }
+
+    private fun defineCompletedTasks() {
+        state.allCompletedTasks = tasksUseCase.getAllCompletedTasksCount()
+        state.allNotCompletedTasks = tasksUseCase.getAllNotCompletedTasksCount()
+        state.completedTasks = state.tasks.count { it -> it.checked }
+        state.notCompletedTasks = state.tasks.count { it -> !it.checked }
     }
 }

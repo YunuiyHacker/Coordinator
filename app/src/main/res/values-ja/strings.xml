@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Coordinator</string>
+
+    <!-- ユーザーの挨拶 -->
+    <string name="good_morning">おはようございます</string>
+    <string name="good_afternoon">こんにちは</string>
+    <string name="good_evening">こんばんは</string>
+    <string name="good_night">おやすみなさい</string>
+
+    <!-- 時間の種類 -->
+    <string name="day">日</string>
+    <string name="week">週</string>
+    <string name="month">月</string>
+    <string name="year">年</string>
+    <string name="life">ライフ</string>
+
+    <!-- オンボーディング画面 -->
+    <string name="letter_continue">続行</string>
+    <string name="skip">スキップ</string>
+    <string name="start">開始</string>
+    <string name="onboarding_screen1_task1_title">インストールコーディネーター</string>
+    <string name="onboarding_screen1_task1_content">コーディネーターをインストールし、タスクを作成します</string>
+    <string name="onboarding_screen1_task2_title">タスクを完了する</string>
+    <string name="onboarding_screen1_task2_content">作成されたタスクを実行する</string>
+    <string name="onboarding_screen1_title">一日を管理する</string>
+    <string name="onboarding_screen1_content">毎日タスクを作成して、すべてを完了し、何も忘れないようにします</string>
+    <string name="onboarding_screen2_title">タスクに場所を追加する</string>
+    <string name="onboarding_screen2_content">これにより、ビジネスを行うのがさらに便利になります。地図上で場所を確認する必要がある場合は、場所カードをクリックしてください</string>
+    <string name="home">ホーム</string>
+    <string name="onboarding_screen3_title">タスクに人を追加する</string>
+    <string name="onboarding_screen3_content">誰と一緒に行うのかを忘れないようにするため</string>
+
+    <!-- FillNameScreen -->
+    <string name="what_is_your_name_title">あなたのお名前は何ですか?</string>
+    <string name="what_is_your_name_description">あなたの名前を入力してください。あなたの名前は、あなたのタスクを表示およびパーソナライズするために使用されます</string>
+    <string name="your_name">あなたの名前</string>
+    <string name="get_start">開始</string>
+
+    <!-- ホーム画面 -->
+    <string name="tasks">タスク</string>
+    <string name="cancel_deletion">削除をキャンセル</string>
+    <string name="yes">はい</string>
+    <string name="deletion_mode">削除モード</string>
+    <string name="delete_all_selected">選択したものをすべて削除</string>
+    <string name="really_want_to_delete_all_selected_tasks">選択したタスクをすべて本当に削除しますか?</string>
+    <string name="all_categories">すべてのカテゴリ</string>
+    <string name="really_want_to_delete_category">このカテゴリを本当に削除しますか?</string>
+    <string name="empty_date">誰でもたまには休憩が必要です... この日付にはタスクがありません</string>
+    <string name="urgent_and_important">緊急かつ重要</string>
+    <string name="not_urgent_and_important">緊急でも重要でもない</string>
+    <string name="urgent_and_unimportant">緊急だが重要ではない</string>
+    <string name="not_urgent_and_unimportant">緊急でも重要でもない</string>
+    <string name="not_priority">優先度なし</string>
+    <string name="tasks_statistics">タスク統計</string>
+
+    <!-- 検索バー -->
+    <string name="try_to_find_task">タスクを検索してみます…</string>
+    <string name="search">検索</string>
+
+    <!-- 更新タスク画面を作成します -->
+    <string name="create_task">タスクを作成する</string>
+    <string name="edit_task">タスクを編集</string>
+    <string name="heading">見出し</string>
+    <string name="content">説明</string>
+    <string name="create">作成</string>
+    <string name="type_of_time">時間の種類</string>
+    <string name="save_changes">変更を保存</string>
+    <string name="end_time">終了時刻</string>
+    <string name="end_time_can_not_be_before_start_time">終了時間は開始時間より前または同じにすることはできません</string>
+    <string name="category">カテゴリ</string>
+    <string name="without_category">カテゴリなし</string>
+    <string name="add_subtask">サブタスクを追加</string>
+    <string name="location_not_selected">場所が選択されていません</string>
+    <string name="add_new_place">新しい場所を追加</string>
+    <string name="place">場所</string>
+    <string name="peoples_not_selected">選択されなかった人々</string>
+    <string name="this_people_already_will_selected">この人物はすでに選択されています</string>
+    <string name="peoples_list_is_empty">現在、人リストは空です。設定で追加できます。</string>
+    <string name="remind_later">後で通知する</string>
+    <string name="date">日付</string>
+    <string name="time">時間</string>
+    <string name="cannot_specify_reminder_time_later_than_task_deadline">タスクの期限より後のリマインダー時間を指定することはできません</string>
+    <string name="this_reminder_time_cannot_be_selected">このリマインダー時間は選択できません。その時期はすでに過ぎ去った</string>
+    <string name="priority">優先度</string>
+
+    <!-- タイムピッカーダイアログ -->
+    <string name="select">選択</string>
+
+    <!-- タスクスクリーン -->
+    <string name="task">タスク</string>
+    <string name="edit">編集</string>
+    <string name="delete">削除</string>
+    <string name="deletion">削除</string>
+    <string name="really_want_to_delete_task">このタスクを削除してもよろしいですか?</string>
+    <string name="open_in_maps">地図で見る</string>
+    <string name="really_want_open_in_maps">本当にその場所を地図上で確認しますか?</string>
+    <string name="not_supported_apps">お使いのデバイスに適したアプリが見つかりませんでした</string>
+
+    <!-- スワイプして背景を削除 -->
+    <string name="deleted">削除済み</string>
+
+    <!-- 質問ダイアログ -->
+    <string name="no">いいえ</string>
+
+    <!-- 編集カテゴリダイアログを追加します -->
+    <string name="category_adding">カテゴリーの追加</string>
+    <string name="category_editing">カテゴリを編集しています</string>
+    <string name="cancel">キャンセル</string>
+    <string name="add">追加</string>
+    <string name="save">保存</string>
+
+    <!-- サブタスク行 -->
+    <string name="subtask_title">サブタスクのタイトル</string>
+
+    <!-- 設定画面 -->
+    <string name="settings">設定</string>
+    <string name="personal_data">個人データ</string>
+    <string name="import_export_data">データのインポート/エクスポート</string>
+    <string name="import_data">データをインポート</string>
+    <string name="export_data">データをエクスポート</string>
+    <string name="success_export">データのエクスポートが正常に完了しました。ダウンロードに保存されたエクスポートファイル</string>
+    <string name="really_want_to_import_data">本当にデータをインポートしますか?インポートされたデータは既存のデータに追加されます</string>
+    <string name="import_exception">ファイルのインポート中にエラーが発生しました。ファイルが破損しているか存在しない可能性があります</string>
+    <string name="success_import">データのインポートが正常に完了しました</string>
+    <string name="app_data">アプリケーションデータ</string>
+    <string name="places">場所</string>
+    <string name="peoples">人々</string>
+    <string name="add_new_people">新しい人を追加</string>
+    <string name="additionally">さらに</string>
+    <string name="info_about_developer">開発者に関する情報</string>
+    <string name="letter_for">の</string>
+    <string name="by">から</string>
+    <string name="access_denied">ファイルへのアクセスが拒否されました</string>
+    <string name="undefined_error">不明なエラー</string>
+    <string name="incorrect_file_format">ファイル形式が正しくありません</string>
+    <string name="styling">スタイル設定</string>
+    <string name="theme">テーマ</string>
+    <string name="light_theme">ライトテーマ</string>
+    <string name="dark_theme">ダークテーマ</string>
+    <string name="language">言語</string>
+    <string name="interface_language">インターフェース言語</string>
+    <string name="interface_letter">インターフェース</string>
+    <string name="interface_configuring">インターフェースの設定</string>
+
+    <!-- 更新場所ダイアログを作成します -->
+    <string name="place_adding">場所の追加</string>
+    <string name="place_editing">場所の編集</string>
+    <string name="title">タイトル</string>
+    <string name="longitude">経度</string>
+    <string name="latitude">緯度</string>
+    <string name="paste_coordinates_from_google_or_yandex_maps">Google マップ/Yandex マップから座標を貼り付けます</string>
+    <string name="no_matching_data_found">​​一致するデータが見つかりません</string>
+
+    <!-- スクリーンを配置 -->
+    <string name="really_want_to_delete_place">この場所を本当に削除しますか?</string>
+    <string name="editing">編集中</string>
+    <string name="really_want_to_edit_place">この場所を本当に編集しますか?</string>
+
+    <!-- 更新人列を作成します -->
+    <string name="people_adding">人物の追加</string>
+    <string name="people_editing">人物を編集する</string>
+    <string name="surname">姓</string>
+    <string name="name">名前</string>
+    <string name="lastname">父称</string>
+    <string name="sex">性別</string>
+    <string name="male">男性</string>
+    <string name="female">女性</string>
+    <string name="date_of_birth">生年月日</string>
+    <string name="display_name">表示名</string>
+    <string name="phone_number">電話番号</string>
+    <string name="email">メールアドレス</string>
+    <string name="address">住所</string>
+    <string name="not_selected">選択されていません</string>
+    <string name="really_want_to_delete_people">この人を本当に削除しますか?</string>
+    <string name="select_post_app">メールアプリを選択</string>
+    <string name="post_app_not_defined">デバイスにメール アプリが見つかりません</string>
+    <string name="error_occurred_when_opening_the_phone">電話を開いているときにエラーが発生しました</string>
+
+    <!-- 開発者スクリーン -->
+    <string name="developer">開発者</string>
+    <string name="developer_full_name">ヌルカエフ・アルフィル・カリソビッチ</string>
+    <string name="developer_surname">ヌルカエフ</string>
+    <string name="developer_name">アルフィール</string>
+    <string name="developer_lastname">ハリソビッチ</string>
+    <string name="support_developer">開発者をサポートする</string>
+    <string name="developer_info_part_1">こんにちは、ユーザー様。私の名前は</string>です
+    <string name="developer_info_part_2">私はペルミ出身の若い Android 開発者です。 2021年からこの分野に携わっていますが、最初は難しく、苦労しながら多くのことを理解しましたが、これは自分のことだとわかっていました。そして、困難は私にもっともっと学ぶ意欲を与え、最終的にこのような結果につながりました。</string>
+    <string name="developer_info_part_3">これは、App Store で正式にリリースされた最初のアプリです。もちろん、そこで止まるつもりはありません。まだ成長し、学ぶ余地があります。</string>
+    <string name="developer_info_part_4">これはほんの始まりに過ぎません</string>
+    <string name="developer_info_part_5">私の作品が気に入って、私とコラボレーションしたい場合は、上記のすべてのリンクから、喜んでお手伝いします</string>
+    <string name="developer_reference">押すのをやめて、落ち着いてください</string>
+    <string name="support_developer_text_part1">私の電話番号に送金していただくことでサポートしていただけます。そうすることで、新しい物語の始まりを応援できるかもしれません。</string>
+    <string name="support_developer_text_part2">そうではないかもしれない</string>
+    <string name="copy">コピー</string>
+    <string name="copied">コピーしました</string>
+
+    <!-- 通知権限情報ダイアログ -->
+    <string name="need_notification_permission">通知を送信するには、アプリケーションに許可を与える必要があります</string>
+
+    <!-- 言語スクリーン -->
+    <string name="language_change">言語を変更する</string>
+
+    <!-- インターフェース設定画面 -->
+    <string name="show_task_priority">タスクの優先度を表示する</string>
+    <string name="show_tasks_statistics">タスクの統計情報を表示</string>
+
+    <!-- タスク統計列 -->
+    <string name="completed">完了しました</string>
+    <string name="not_completed">完了していません</string>
+    <string name="displaying_statistics_for_all_tasks">すべてのタスクの統計を表示しています</string>
+</resources>

@@ -1,6 +1,7 @@
 package yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.create_update_task
 
 import android.Manifest
+import android.widget.Toast
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
@@ -66,6 +67,7 @@ import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
@@ -100,6 +102,7 @@ import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.R
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.model.Place
@@ -108,8 +111,8 @@ import yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.common.composable.
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.common.composable.CreateUpdatePlaceDialog
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.common.composable.CreateUpdateSubtaskRow
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.common.composable.MessageDialog
-import yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.common.composable.PermissionInfoDialog
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.common.composable.PeopleRow
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.common.composable.PermissionInfoDialog
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.common.composable.PlaceRow
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.common.composable.TimePickerDialog
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.common.composable.TimeRow
@@ -440,6 +443,83 @@ fun CreateUpdateTaskScreen(
                                 endHour = state.selectedEndHour,
                                 endMinute = state.selectedEndMinute
                             )
+                            Spacer(modifier = Modifier.height(12.dp))
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(horizontal = 24.dp),
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Text(
+                                    text = stringResource(R.string.priority),
+                                    color = MaterialTheme.colorScheme.onSurface,
+                                    fontFamily = caros
+                                )
+                                Spacer(modifier = Modifier.width(4.dp))
+                                Text(modifier = Modifier
+                                    .clickable(
+                                        interactionSource = interactionSource, indication = null
+                                    ) {
+                                        viewModel.onEvent(CreateUpdateTaskEvent.ShowPrioritySelectorMenuEvent)
+                                    }
+                                    .animateContentSize(),
+                                    text = stringResource(state.priorities.find { priority ->
+                                        priority.code == state.selectedPriority.collectAsState().value.code
+                                    }?.resId ?: R.string.not_selected),
+                                    color = MaterialTheme.colorScheme.primary,
+                                    fontFamily = caros,
+                                    fontWeight = FontWeight.Medium
+                                )
+                                MaterialTheme(
+                                    colorScheme = MaterialTheme.colorScheme.copy(surface = MaterialTheme.colorScheme.surfaceVariant),
+                                    shapes = MaterialTheme.shapes.copy(extraSmall = ShapeDefaults.Medium)
+                                ) {
+                                    DropdownMenu(
+                                        modifier = Modifier
+                                            .background(MaterialTheme.colorScheme.surfaceVariant)
+                                            .clip(RoundedCornerShape(12.dp))
+                                            .border(
+                                                width = 0.3.dp,
+                                                color = Color.DarkGray,
+                                                shape = RoundedCornerShape(12.dp)
+                                            ),
+                                        expanded = state.showPrioritySelectorMenu,
+                                        onDismissRequest = {
+                                            viewModel.onEvent(CreateUpdateTaskEvent.HidePrioritySelectorMenuEvent)
+                                        },
+                                        offset = DpOffset(x = 90.dp, y = 0.dp)
+                                    ) {
+                                        state.priorities.forEach { priority ->
+                                            key(priority.code) {
+                                                DropdownMenuItem(modifier = Modifier
+                                                    .clip(
+                                                        RoundedCornerShape(
+                                                            10.dp
+                                                        )
+                                                    )
+                                                    .border(
+                                                        width = 0.dp,
+                                                        color = Color.Unspecified,
+                                                        shape = RoundedCornerShape(10.dp)
+                                                    ), text = {
+                                                    Text(
+                                                        text = stringResource(priority.resId),
+                                                        color = MaterialTheme.colorScheme.onSurface,
+                                                        fontFamily = caros,
+                                                        fontWeight = FontWeight.Normal
+                                                    )
+                                                }, onClick = {
+                                                    viewModel.onEvent(
+                                                        CreateUpdateTaskEvent.SelectPriorityMenuEvent(
+                                                            priority
+                                                        )
+                                                    )
+                                                })
+                                            }
+                                        }
+                                    }
+                                }
+                            }
                             Spacer(modifier = Modifier.height(8.dp))
                         }
                         BasicTextField(modifier = Modifier

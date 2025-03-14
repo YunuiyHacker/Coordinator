@@ -73,6 +73,8 @@ import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.subtasks
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.subtasks.UpdateSubtaskOperator
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.subtasks.UpdateSubtasksOperator
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.tasks.DeleteTaskOperator
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.tasks.GetAllCompletedTasksCount
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.tasks.GetAllNotCompletedTasksCount
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.tasks.GetTaskByIdOperator
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.tasks.GetTasksByLikeQueryOperator
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.tasks.GetTasksByTimeTypeIdDateAndCategoryIdOperator
@@ -129,7 +131,9 @@ object AppModule {
             getTasksOperator = GetTasksOperator(taskDao),
             insertTaskOperator = InsertTaskOperator(taskDao),
             insertTasksOperator = InsertTasksOperator(taskDao),
-            updateTaskOperator = UpdateTaskOperator(taskDao)
+            updateTaskOperator = UpdateTaskOperator(taskDao),
+            getAllCompletedTasksCount = GetAllCompletedTasksCount(taskDao),
+            getAllNotCompletedTasksCount = GetAllNotCompletedTasksCount(taskDao)
         )
     }
 

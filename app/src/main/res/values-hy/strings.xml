@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Coordinator</string>
+
+    <!-- Օգտագործողի ողջույններ -->
+    <string name="good_morning">Բարի լույս</string>
+    <string name="good_afternoon">Բարի կեսօր</string>
+    <string name="good_evening">Բարի երեկո</string>
+    <string name="good_night">Բարի գիշեր</string>
+
+    <!-- Ժամանակի տեսակները -->
+    <string name="day">Օր</string>
+    <string name="week">Շաբաթ</string>
+    <string name="month">Ամիս</string>
+    <string name="year">Տարի</string>
+    <string name="life">Կյանք</string>
+
+    <!-- OnboardingScreen -->
+    <string name="letter_continue">Շարունակել</string>
+    <string name="skip">Բաց թողնել</string>
+    <string name="start">Սկսել</string>
+    <string name="onboarding_screen1_task1_title">Տեղադրեք համակարգողը</string>
+    <string name="onboarding_screen1_task1_content">Տեղադրեք Coordinator, ստեղծեք առաջադրանքներ</string>
+    <string name="onboarding_screen1_task2_title">Լրացրեք առաջադրանքները</string>
+    <string name="onboarding_screen1_task2_content">Գործարկել ստեղծված առաջադրանքները</string>
+    <string name="onboarding_screen1_title">Կառավարեք ձեր օրը</string>
+    <string name="onboarding_screen1_content">Ստեղծեք առաջադրանքներ ամեն օր` ամեն ինչ կատարելու և ոչինչ չմոռանալու համար</string>
+    <string name="onboarding_screen2_title">Ավելացրեք տեղադրություններ առաջադրանքներին</string>
+    <string name="onboarding_screen2_content">Սա ձեզ ավելի հարմար կդարձնի ձեր բիզնեսը: Եթե ​​Ձեզ անհրաժեշտ է քարտեզի վրա տեղ տեսնել, պարզապես սեղմեք տեղ քարտի վրա</string>
+    <string name="home">Տուն</string>
+    <string name="onboarding_screen3_title">Ավելացրեք մարդկանց առաջադրանքներում</string>
+    <string name="onboarding_screen3_content">Այնպես որ դուք չեք մոռանում, թե ում հետ եք դրանք անելու</string>
+
+    <!-- FillNameScreen -->
+    <string name="what_is_your_name_title">Ի՞նչ է քո անունը:</string>
+    <string name="what_is_your_name_description">Խնդրում ենք տրամադրել ձեր անունը, որը մենք կօգտագործենք ձեր առաջադրանքները ցուցադրելու և անհատականացնելու համար</string>
+    <string name="your_name">Ձեր անունը</string>
+    <string name="get_start">Սկսել</string>
+
+    <!-- Գլխավոր Էկրան -->
+    <string name="tasks">Առաջադրանքներ</string>
+    <string name="cancel_deletion">Չեղարկել ջնջումը</string>
+    <string name="yes">Այո</string>
+    <string name="deletion_mode">Ջնջման ռեժիմ</string>
+    <string name="delete_all_selected">Ջնջել բոլոր ընտրվածները</string>
+    <string name="really_want_to_delete_all_selected_tasks">Իսկապե՞ս ցանկանում եք ջնջել ընտրված բոլոր առաջադրանքները:</string>
+    <string name="all_categories">Բոլոր կատեգորիաները</string>
+    <string name="really_want_to_delete_category">Իսկապե՞ս ցանկանում եք ջնջել այս կատեգորիան:</string>
+    <string name="empty_date">Մեզ բոլորիս երբեմն պետք է ընդմիջում... Այս ամսաթվի համար առաջադրանքներ չկան</string>
+    <string name="urgent_and_important">Շտապ և կարևոր</string>
+    <string name="not_urgent_and_important">Ոչ հրատապ և կարևոր</string>
+    <string name="urgent_and_unimportant">Շտապ և անկարևոր</string>
+    <string name="not_urgent_and_unimportant">Ոչ հրատապ և ոչ կարևոր</string>
+    <string name="not_priority">Առանց առաջնահերթության</string>
+    <string name="tasks_statistics">Առաջադրանքների վիճակագրություն</string>
+
+    <!-- SearchBar -->
+    <string name="try_to_find_task">Փորձեք գտնել առաջադրանք…</string>
+    <string name="search">Որոնում</string>
+
+    <!-- CreateUpdateTaskScreen -->
+    <string name="create_task">Ստեղծեք առաջադրանք</string>
+    <string name="edit_task">Խմբագրել առաջադրանքը</string>
+    <string name="heading">Վերնագիր</string>
+    <string name="content">Նկարագրություն</string>
+    <string name="create">Ստեղծել</string>
+    <string name="type_of_time">Ժամանակի տեսակը</string>
+    <string name="save_changes">Պահպանել փոփոխությունները</string>
+    <string name="end_time">Ավարտի ժամը</string>
+    <string name="end_time_can_not_be_before_start_time">Ավարտի ժամը չի կարող լինել սկզբի ժամանակից առաջ կամ նույնը</string>
+    <string name="category">Կատեգորիա</string>
+    <string name="without_category">Առանց կատեգորիայի</string>
+    <string name="add_subtask">Ավելացնել ենթաառաջադրանք</string>
+    <string name="location_not_selected">Տեղը ընտրված չէ</string>
+    <string name="add_new_place">Ավելացնել նոր վայր</string>
+    <string name="place">Տեղ</string>
+    <string name="peoples_not_selected">Չընտրված մարդիկ</string>
+    <string name="this_people_already_will_selected">Այս մարդն արդեն ընտրված է</string>
+    <string name="peoples_list_is_empty">Մարդկանց ցուցակն առայժմ դատարկ է, դուք կարող եք նրանց ավելացնել կարգավորումներում</string>
+    <string name="remind_later">Հիշեցրեք ինձ ավելի ուշ</string>
+    <string name="date">Ամսաթիվ</string>
+    <string name="time">Ժամանակ</string>
+    <string name="cannot_specify_reminder_time_later_than_task_deadline">Դուք չեք կարող նշել առաջադրանքի կատարման ժամկետից ուշ հիշեցման ժամանակ</string>
+    <string name="this_reminder_time_cannot_be_selected">Այս հիշեցման ժամանակը հնարավոր չէ ընտրել: Այդ ժամանակն արդեն անցել է</string>
+    <string name="priority">Առաջնահերթություն</string>
+
+    <!-- TimePickerDialog -->
+    <string name="select">Ընտրել</string>
+
+    <!-- TaskScreen -->
+    <string name="task">Առաջադրանք</string>
+    <string name="edit">Խմբագրել</string>
+    <string name="delete">Ջնջել</string>
+    <string name="deletion">Ջնջել</string>
+    <string name="really_want_to_delete_task">Իսկապե՞ս ուզում եք ջնջել այս առաջադրանքը:</string>
+    <string name="open_in_maps">Դիտել քարտեզի վրա</string>
+    <string name="really_want_open_in_maps">Իսկապե՞ս ցանկանում եք տեսնել այդ վայրը քարտեզի վրա:</string>
+    <string name="not_supported_apps">Մենք չկարողացանք համապատասխան հավելված գտնել ձեր սարքում</string>
+
+    <!-- SwipeToDeleteBackground -->
+    <string name="deleted">Ջնջված է</string>
+
+    <!-- QuestionDialog -->
+    <string name="no">Ոչ</string>
+
+    <!-- AddEditCategoryDialog -->
+    <string name="category_adding">Կատեգորիայի ավելացում</string>
+    <string name="category_editing">Խմբագրման կատեգորիա</string>
+    <string name="cancel">Չեղարկել</string>
+    <string name="add">Ավելացնել</string>
+    <string name="save">Պահպանել</string>
+
+    <!-- SubtaskRow -->
+    <string name="subtask_title">Ենթաառաջադրանքի վերնագիր</string>
+
+    <!-- SettingsScreen -->
+    <string name="settings">Կարգավորումներ</string>
+    <string name="personal_data">Անձնական տվյալներ</string>
+    <string name="import_export_data">Տվյալների ներմուծում/արտահանում</string>
+    <string name="import_data">Տվյալների ներմուծում</string>
+    <string name="export_data">Տվյալների արտահանում</string>
+    <string name="success_export">Տվյալների արտահանումը հաջողությամբ ավարտվեց: Արտահանել ներբեռնումների մեջ պահված ֆայլը</string>
+    <string name="really_want_to_import_data">Իսկապե՞ս ցանկանում եք ներմուծել տվյալները: Ներմուծված տվյալները կավելացվեն առկա տվյալներին</string>
+    <string name="import_exception">Ֆայլի ներմուծման սխալ: Ֆայլը կարող է վնասված լինել կամ գոյություն չունի</string>
+    <string name="success_import">Տվյալների ներմուծումը հաջողությամբ ավարտվեց</string>
+    <string name="app_data">Հավելվածի տվյալներ</string>
+    <string name="places">Տեղեր</string>
+    <string name="peoples">Մարդիկ</string>
+    <string name="add_new_people">Ավելացնել նոր մարդ</string>
+    <string name="additionally">Լրացուցիչ</string>
+    <string name="info_about_developer">Տեղեկություններ մշակողի մասին</string>
+    <string name="letter_for">համար</string>
+    <string name="by">ը</string>-ից
+    <string name="access_denied">Մուտքը ֆայլին մերժված է</string>
+    <string name="undefined_error">Անհայտ սխալ</string>
+    <string name="incorrect_file_format">Ֆայլի սխալ ձևաչափ</string>
+    <string name="styling">Ոճավորում</string>
+    <string name="theme">Թեմա</string>
+    <string name="light_theme">Թեթև թեմա</string>
+    <string name="dark_theme">Մութ թեմա</string>
+    <string name="language">Լեզու</string>
+    <string name="interface_language">Ինտերֆեյսի լեզու</string>
+    <string name="interface_letter">Ինտերֆեյս</string>
+    <string name="interface_configuring">Ինտերֆեյսի կարգավորում</string>
+
+    <!-- CreateUpdatePlaceDialog -->
+    <string name="place_adding">Տեղի ավելացում</string>
+    <string name="place_editing">Տեղի խմբագրում</string>
+    <string name="title">Վերնագիր</string>
+    <string name="longitude">Երկայնություն</string>
+    <string name="latitude">Լայնություն</string>
+    <string name="paste_coordinates_from_google_or_yandex_maps">Տեղադրեք կոորդինատները Google Քարտեզներից/Yandex Քարտեզներից</string>
+    <string name="no_matching_data_found">Համապատասխան տվյալներ չեն գտնվել</string>
+
+    <!-- PlaceScreen -->
+    <string name="really_want_to_delete_place">Իսկապե՞ս ցանկանում եք ջնջել այս վայրը:</string>
+    <string name="editing">Խմբագրում</string>
+    <string name="really_want_to_edit_place">Իսկապե՞ս ցանկանում եք խմբագրել այս վայրը:</string>
+
+    <!-- CreateUpdatePeopleColumn -->
+    <string name="people_adding">Ավելացնելով մարդ</string>
+    <string name="people_editing">Մարդու խմբագրում</string>
+    <string name="surname">Ազգանուն</string>
+    <string name="name">Անուն</string>
+    <string name="lastname">Հայրանուն</string>
+    <string name="sex">Սեռը</string>
+    <string name="male">Տղամարդ</string>
+    <string name="female">Իգական</string>
+    <string name="date_of_birth">Ծննդյան ամսաթիվ</string>
+    <string name="display_name">Ցուցադրել անունը</string>
+    <string name="phone_number">Հեռախոսահամար</string>
+    <string name="email">Էլ. փոստ</string>
+    <string name="address">Հասցե</string>
+    <string name="not_selected">Ընտրված չէ</string>
+    <string name="really_want_to_delete_people">Իսկապե՞ս ցանկանում եք ջնջել այս անձին:</string>
+    <string name="select_post_app">Ընտրեք փոստային հավելված</string>
+    <string name="post_app_not_defined">Սարքում փոստային հավելվածներ չեն գտնվել</string>
+    <string name="error_occurred_when_opening_the_phone">Սխալ է տեղի ունեցել հեռախոսը բացելիս</string>
+
+    <!-- DeveloperScreen -->
+    <string name="developer">Մշակող</string>
+    <string name="developer_nickname" translatable="false">yunuiy_hacker</string>
+    <string name="developer_full_name">Նուրկաև Ալֆիր Խարիսովիչ</string>
+    <string name="developer_surname">Նուրկաև</string>
+    <string name="developer_name">Ալֆիր</string>
+    <string name="developer_lastname">Հարիսովիչ</string>
+    <string name="support_developer">Աջակցեք մշակողին</string>
+    <string name="developer_info_part_1">Բարև հարգելի օգտատեր։ Իմ անունն է</string>
+    <string name="developer_info_part_2">Ես Android-ի երիտասարդ ծրագրավորող եմ Պերմից: Այս ոլորտում 2021 թվականից ի վեր, սկզբում դժվար էր, ես դժվարությամբ շատ բան էի հասկանում, բայց գիտեի, որ դա իմն է, և դժվարությունները միայն ստիպեցին ինձ սովորել ավելի ու ավելի շատ բաներ, որոնք ի վերջո ինձ բերեցին նման արդյունքների:</string>
+    <string name="developer_info_part_3">Սա իմ առաջին հավելվածն է, որը պաշտոնապես թողարկվել է հավելվածների խանութում: Իհարկե, ես չեմ պատրաստվում դրանով կանգ առնել, դեռ աճելու և սովորելու տեղ կա:</string>
+    <string name="developer_info_part_4">Սա դեռ սկիզբն է</string>
+    <string name="developer_info_part_5">Եթե ձեզ դուր է գալիս իմ աշխատանքը, ցանկանում եք համագործակցել ինձ հետ. վերը նշված բոլոր հղումները, ես ուրախ կլինեմ օգնել ձեզ</string>
+    <string name="developer_reference">Դադարեցրեք սեղմելը, հանգստացեք</string>
+    <string name="developer_phone_formatted" translatable="false">7(922)32–32–042</string>
+    <string name="developer_phone" translatable="false">79223232042</string>
+    <string name="support_developer_text_part1">Դուք կարող եք ինձ աջակցել՝ գումար փոխանցելով հեռախոսահամարին: Հավանաբար, դրանով դուք կաջակցեք նոր պատմության սկիզբը:</string>
+    <string name="support_developer_text_part2">Կամ գուցե ոչ</string>
+    <string name="copy">Պատճենել</string>
+    <string name="copied">Պատճենվել է</string>
+
+    <!-- NotificationPermissionInfoDialog -->
+    <string name="need_notification_permission">Ծանուցումներ ուղարկելու համար հավելվածին պետք է դա անելու թույլտվություն տրվի</string>
+
+    <!-- LanguageScreen -->
+    <string name="language_change">Փոխել լեզուն</string>
+
+    <!-- InterfaceConfiguringScreen -->
+    <string name="show_task_priority">Ցույց տալ առաջադրանքների առաջնահերթությունները</string>
+    <string name="show_tasks_statistics">Ցուցադրել առաջադրանքի վիճակագրությունը</string>
+
+    <!-- TaskStatisticsColumn -->
+    <string name="completed">Ավարտված է</string>
+    <string name="not_completed">Ավարտված չէ</string>
+    <string name="displaying_statistics_for_all_tasks">Ցուցադրվում է վիճակագրություն բոլոր առաջադրանքների համար</string>
+
+</resources>

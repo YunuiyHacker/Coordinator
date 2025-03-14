@@ -1,8 +1,11 @@
 package yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.create_update_task
 
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import kotlinx.coroutines.flow.MutableStateFlow
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.data.common.model.Priority
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.model.Category
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.model.People
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.model.Place
@@ -66,6 +69,9 @@ class CreateUpdateTaskState {
     var notifyMinute by mutableStateOf(0)
 
     var showNotificationPermissionInfoDialog by mutableStateOf(false)
+    var priorities: MutableList<Priority> = mutableListOf()
+    var selectedPriority = MutableStateFlow<Priority>(Priority.NOT_PRIORITY)
+    var showPrioritySelectorMenu by mutableStateOf(false)
 
     val contentState by mutableStateOf(ContentState())
 

@@ -16,6 +16,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.core.os.LocaleListCompat
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.R
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.data.common.model.Priority
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.home.model.TimeType
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.home.model.TimeTypeEnum
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.settings.model.Language
@@ -209,22 +210,22 @@ fun getLanguages(context: Context): List<Language> {
         Language("FR", context.getString(R.string.french), icons = listOf(R.drawable.fr)),
         Language("ES", context.getString(R.string.spanish), icons = listOf(R.drawable.es)),
         Language(
-            "SA",
+            "AR",
             context.getString(R.string.arabian),
             icons = listOf(R.drawable.sa, R.drawable.ae)
         ),
-        Language("IN", context.getString(R.string.hindi), icons = listOf(R.drawable.`in`)),
-        Language("CN", context.getString(R.string.chinese), icons = listOf(R.drawable.cn)),
-        Language("BD", context.getString(R.string.bengali), icons = listOf(R.drawable.bd)),
+        Language("HI", context.getString(R.string.hindi), icons = listOf(R.drawable.`in`)),
+        Language("ZH", context.getString(R.string.chinese), icons = listOf(R.drawable.cn)),
+        Language("BN", context.getString(R.string.bengali), icons = listOf(R.drawable.bd)),
         Language("PT", context.getString(R.string.portuguese), icons = listOf(R.drawable.pt)),
         Language("DE", context.getString(R.string.german), icons = listOf(R.drawable.de)),
-        Language("JP", context.getString(R.string.japanese), icons = listOf(R.drawable.jp)),
-        Language("KR", context.getString(R.string.south_korean), icons = listOf(R.drawable.kr)),
+        Language("JA", context.getString(R.string.japanese), icons = listOf(R.drawable.jp)),
+        Language("KO", context.getString(R.string.south_korean), icons = listOf(R.drawable.kr)),
         Language("TT", context.getString(R.string.tatar), icons = listOf(R.drawable.tt)),
-        Language("KZ", context.getString(R.string.kazakh), icons = listOf(R.drawable.kz)),
-        Language("AM", context.getString(R.string.armenian), icons = listOf(R.drawable.am)),
-        Language("GE", context.getString(R.string.georgian), icons = listOf(R.drawable.ge)),
-        Language("SE", context.getString(R.string.swedish), icons = listOf(R.drawable.se)),
+        Language("KK", context.getString(R.string.kazakh), icons = listOf(R.drawable.kz)),
+        Language("HY", context.getString(R.string.armenian), icons = listOf(R.drawable.am)),
+        Language("KA", context.getString(R.string.georgian), icons = listOf(R.drawable.ge)),
+        Language("SV", context.getString(R.string.swedish), icons = listOf(R.drawable.se)),
     )
 }
 
@@ -236,5 +237,15 @@ fun setLocale(context: Context, locale: String) {
         AppCompatDelegate.setApplicationLocales(
             LocaleListCompat.forLanguageTags(locale)
         )
+    }
+}
+
+fun getPriorityByCode(priorityCode: Int): Priority {
+    return when (priorityCode) {
+        1 -> Priority.URGENT_AND_IMPORTANT
+        2 -> Priority.NOT_URGENT_AND_IMPORTANT
+        3 -> Priority.URGENT_AND_UNIMPORTANT
+        4 -> Priority.NOT_URGENT_AND_UNIMPORTANT
+        else -> Priority.NOT_PRIORITY
     }
 }

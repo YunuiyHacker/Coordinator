@@ -1,5 +1,6 @@
 package yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.model
 
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.data.common.model.Priority
 import java.util.Date
 
 data class Task(
@@ -19,5 +20,6 @@ data class Task(
     val notify: Boolean = false,
     val notifyDate: Date = Date(),
     val notifyHour: Int = 0,
-    val notifyMinute: Int = 0
+    val notifyMinute: Int = 0,
+    val priority: Priority = Priority.NOT_PRIORITY
 )

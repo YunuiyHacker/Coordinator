@@ -22,6 +22,7 @@ import yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.settings.SettingsS
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.settings.app_data.place.PlacesScreen
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.settings.app_data.people.PeoplesScreen
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.settings.dev.DeveloperScreen
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.settings.interface_configuring.InterfaceConfiguringScreen
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.settings.lang.LanguageScreen
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.task.TaskScreen
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.task.TaskViewModel
@@ -29,7 +30,8 @@ import java.util.Date
 
 @Composable
 fun NavGraph(
-    navHostController: NavHostController, startDestination: String = Route.HomeScreen.route,
+    navHostController: NavHostController,
+    startDestination: String = Route.HomeScreen.route,
     onChangeTheme: (primary: Color) -> Unit,
     onChangeDarkTheme: (isDarkTheme: Boolean) -> Unit
 ) {
@@ -42,8 +44,7 @@ fun NavGraph(
                     300, easing = LinearEasing
                 )
             ) + slideIntoContainer(
-                towards = AnimatedContentTransitionScope.SlideDirection.End,
-                animationSpec = tween(
+                towards = AnimatedContentTransitionScope.SlideDirection.End, animationSpec = tween(
                     300, easing = LinearEasing
                 )
             )
@@ -64,8 +65,7 @@ fun NavGraph(
                     300, easing = LinearEasing
                 )
             ) + slideIntoContainer(
-                towards = AnimatedContentTransitionScope.SlideDirection.End,
-                animationSpec = tween(
+                towards = AnimatedContentTransitionScope.SlideDirection.End, animationSpec = tween(
                     300, easing = LinearEasing
                 )
             )
@@ -105,8 +105,7 @@ fun NavGraph(
                     300, easing = LinearEasing
                 )
             ) + slideIntoContainer(
-                towards = AnimatedContentTransitionScope.SlideDirection.End,
-                animationSpec = tween(
+                towards = AnimatedContentTransitionScope.SlideDirection.End, animationSpec = tween(
                     300, easing = LinearEasing
                 )
             )
@@ -288,8 +287,7 @@ fun NavGraph(
                 )
             )
         }) {
-            SettingsScreen(
-                navHostController = navHostController,
+            SettingsScreen(navHostController = navHostController,
                 viewModel = hiltViewModel(),
                 onChangeTheme = {
                     onChangeTheme(it)
@@ -393,6 +391,32 @@ fun NavGraph(
             )
         }) {
             LanguageScreen(navHostController = navHostController, viewModel = hiltViewModel())
+        }
+        composable(route = Route.InterfaceConfiguringScreen.route, enterTransition = {
+            fadeIn(
+                animationSpec = tween(
+                    300, easing = LinearEasing
+                )
+            ) + slideIntoContainer(
+                towards = AnimatedContentTransitionScope.SlideDirection.Start,
+                animationSpec = tween(
+                    300, easing = LinearEasing
+                )
+            )
+        }, exitTransition = {
+            fadeOut(
+                animationSpec = tween(
+                    300, easing = LinearEasing
+                )
+            ) + slideOutOfContainer(
+                towards = AnimatedContentTransitionScope.SlideDirection.End, animationSpec = tween(
+                    300, easing = LinearEasing
+                )
+            )
+        }) {
+            InterfaceConfiguringScreen(
+                navHostController = navHostController, viewModel = hiltViewModel()
+            )
         }
     }
 }

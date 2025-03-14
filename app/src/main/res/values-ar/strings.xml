@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Coordinator</string>
+
+    <!-- Приветствия пользователя -->
+    <string name="good_morning">صباح الخير</string>
+    <string name="good_afternoon">مساء الخير</string>
+    <string name="good_evening">مساء الخير</string>
+    <string name="good_night">ليلة سعيدة</string>
+
+    <!-- Типы времени -->
+    <string name="day">يوم</string>
+    <string name="week">أسبوع</string>
+    <string name="month">شهر</string>
+    <string name="year">سنة</string>
+    <string name="life">حياة</string>
+
+    <!-- OnboardingScreen -->
+    <string name="letter_continue">متابعة</string>
+    <string name="skip">تخطي</string>
+    <string name="start">بدء</string>
+    <string name="onboarding_screen1_task1_title">تثبيت Coordinator</string>
+    <string name="onboarding_screen1_task1_content">تثبيت Coordinator، إنشاء مهام</string>
+    <string name="onboarding_screen1_task2_title">تنفيذ المهام</string>
+    <string name="onboarding_screen1_task2_content">تنفيذ المهام التي تم إنشاؤها</string>
+    <string name="onboarding_screen1_title">إدارة يومك</string>
+    <string name="onboarding_screen1_content">أنشئ مهامًا يوميًا لإنجاز كل شيء وعدم نسيان أي شيء</string>
+    <string name="onboarding_screen2_title">إضافة أماكن إلى المهام</string>
+    <string name="onboarding_screen2_content">بهذه الطريقة ستشعر براحة أكبر في إدارة أعمالك. إذا كنت تريد رؤية مكان على الخريطة، ما عليك سوى النقر على بطاقة المكان</string>
+    <string name="home">المنزل</string>
+    <string name="onboarding_screen3_title">إضافة أشخاص إلى المهام</string>
+    <string name="onboarding_screen3_content">حتى لا تنسى مع من ستنفذها</string>
+
+    <!-- FillNameScreen -->
+    <string name="what_is_your_name_title">ما هو اسمك؟</string>
+    <string name="what_is_your_name_description">يرجى تقديم اسمك الذي سنستخدمه لعرض وتخصيص مهامك</string>
+    <string name="your_name">اسمك</string>
+    <string name="get_start">بدء</string>
+
+    <!-- HomeScreen -->
+    <string name="tasks">المهام</string>
+    <string name="cancel_deletion">إلغاء الحذف</string>
+    <string name="yes">نعم</string>
+    <string name="deletion_mode">وضع الحذف</string>
+    <string name="delete_all_selected">حذف كل المحدد</string>
+    <string name="really_want_to_delete_all_selected_tasks">هل تريد حقًا حذف جميع المهام المحددة؟</string>
+    <string name="all_categories">جميع الفئات</string>
+    <string name="really_want_to_delete_category">هل تريد حقًا حذف هذه الفئة؟</string>
+    <string name="empty_date">كلنا نحتاج إلى الراحة أحيانًا... لا توجد مهام في هذا التاريخ</string>
+    <string name="urgent_and_important">عاجل ومهم</string>
+    <string name="not_urgent_and_important">غير عاجل ومهم</string>
+    <string name="urgent_and_unimportant">عاجل وغير مهم</string>
+    <string name="not_urgent_and_unimportant">غير عاجل وغير مهم</string>
+    <string name="not_priority">بدون أولوية</string>
+    <string name="tasks_statistics">إحصائيات المهام</string>
+
+    <!-- SearchBar -->
+    <string name="try_to_find_task">حاول العثور على المهمة...</string>
+    <string name="search">بحث</string>
+
+    <!-- CreateUpdateTaskScreen -->
+    <string name="create_task">إنشاء مهمة</string>
+    <string name="edit_task">تعديل المهمة</string>
+    <string name="heading">العنوان</string>
+    <string name="content">الوصف</string>
+    <string name="create">إنشاء</string>
+    <string name="type_of_time">نوع الوقت</string>
+    <string name="save_changes">حفظ التغييرات</string>
+    <string name="end_time">وقت الانتهاء</string>
+    <string name="end_time_can_not_be_before_start_time">وقت الانتهاء لا يمكن أن يكون قبل وقت البدء أو مساويًا له</string>
+    <string name="category">الفئة</string>
+    <string name="without_category">بدون فئة</string>
+    <string name="add_subtask">إضافة مهمة فرعية</string>
+    <string name="location_not_selected">لم يتم تحديد الموقع</string>
+    <string name="add_new_place">إضافة مكان جديد</string>
+    <string name="place">المكان</string>
+    <string name="peoples_not_selected">لم يتم تحديد الأعضاء</string>
+    <string name="this_people_already_will_selected">هذا الشخص محدد بالفعل</string>
+    <string name="peoples_list_is_empty">قائمة الأشخاص فارغة، يمكنك إضافتهم في الإعدادات</string>
+    <string name="remind_later">تذكير لاحق</string>
+    <string name="date">التاريخ</string>
+    <string name="time">الوقت</string>
+    <string name="cannot_specify_reminder_time_later_than_task_deadline">لا يمكنك تحديد وقت تذكير بعد موعد انتهاء المهمة</string>
+    <string name="this_reminder_time_cannot_be_selected">لا يمكن تحديد وقت التذكير هذا. هذا الوقت قد مضى</string>
+    <string name="priority">الأولوية</string>
+
+    <!-- TimePickerDialog -->
+    <string name="select">تحديد</string>
+
+    <!-- TaskScreen -->
+    <string name="task">المهمة</string>
+    <string name="edit">تعديل</string>
+    <string name="delete">حذف</string>
+    <string name="deletion">حذف</string>
+    <string name="really_want_to_delete_task">هل تريد حقًا حذف هذه المهمة؟</string>
+    <string name="open_in_maps">عرض على الخريطة</string>
+    <string name="really_want_open_in_maps">هل تريد حقًا عرض المكان على الخريطة؟</string>
+    <string name="not_supported_apps">لم يتم العثور على تطبيق مناسب على جهازك</string>
+
+    <!-- SwipeToDeleteBackground -->
+    <string name="deleted">تم الحذف</string>
+
+    <!-- QuestionDialog -->
+    <string name="no">لا</string>
+
+    <!-- AddEditCategoryDialog -->
+    <string name="category_adding">إضافة فئة</string>
+    <string name="category_editing">تعديل الفئة</string>
+    <string name="cancel">إلغاء</string>
+    <string name="add">إضافة</string>
+    <string name="save">حفظ</string>
+
+    <!-- SubtaskRow -->
+    <string name="subtask_title">عنوان المهمة الفرعية</string>
+
+    <!-- SettingsScreen -->
+    <string name="settings">الإعدادات</string>
+    <string name="personal_data">البيانات الشخصية</string>
+    <string name="import_export_data">استيراد/تصدير البيانات</string>
+    <string name="import_data">استيراد البيانات</string>
+    <string name="export_data">تصدير البيانات</string>
+    <string name="success_export">تم تصدير البيانات بنجاح. تم حفظ ملف التصدير في التنزيلات</string>
+    <string name="really_want_to_import_data">هل تريد حقًا استيراد البيانات؟ سيتم إضافة البيانات المستوردة إلى البيانات الموجودة</string>
+    <string name="import_exception">حدث خطأ أثناء استيراد الملف. قد يكون الملف تالفًا أو غير موجود</string>
+    <string name="success_import">تم الاستيراد بنجاح</string>
+    <string name="app_data">بيانات التطبيق</string>
+    <string name="places">الأماكن</string>
+    <string name="peoples">الأشخاص</string>
+    <string name="add_new_people">إضافة شخص جديد</string>
+    <string name="additionally">إضافي</string>
+    <string name="info_about_developer">معلومات عن المطور</string>
+    <string name="letter_for">لـ</string>
+    <string name="by">من</string>
+    <string name="access_denied">تم رفض الوصول إلى الملف</string>
+    <string name="undefined_error">خطأ غير معروف</string>
+    <string name="incorrect_file_format">تنسيق ملف غير صحيح</string>
+    <string name="styling">التصميم</string>
+    <string name="theme">السمة</string>
+    <string name="light_theme">السمة الفاتحة</string>
+    <string name="dark_theme">السمة الداكنة</string>
+    <string name="language">اللغة</string>
+    <string name="interface_language">لغة الواجهة</string>
+    <string name="interface_letter">الواجهة</string>
+    <string name="interface_configuring">تكوين الواجهة</string>
+
+    <!-- CreateUpdatePlaceDialog -->
+    <string name="place_adding">إضافة مكان</string>
+    <string name="place_editing">تعديل المكان</string>
+    <string name="title">العنوان</string>
+    <string name="longitude">خط الطول</string>
+    <string name="latitude">خط العرض</string>
+    <string name="paste_coordinates_from_google_or_yandex_maps">لصق الإحداثيات من خرائط Google/Yandex</string>
+    <string name="no_matching_data_found">لم يتم العثور على بيانات مطابقة</string>
+
+    <!-- PlaceScreen -->
+    <string name="really_want_to_delete_place">هل تريد حقًا حذف هذا المكان؟</string>
+    <string name="editing">التعديل</string>
+    <string name="really_want_to_edit_place">هل تريد حقًا تعديل هذا المكان؟</string>
+
+    <!-- CreateUpdatePeopleColumn -->
+    <string name="people_adding">إضافة شخص</string>
+    <string name="people_editing">تعديل الشخص</string>
+    <string name="surname">الاسم الأخير</string>
+    <string name="name">الاسم</string>
+    <string name="lastname">الاسم الأوسط</string>
+    <string name="sex">الجنس</string>
+    <string name="male">ذكر</string>
+    <string name="female">أنثى</string>
+    <string name="date_of_birth">تاريخ الميلاد</string>
+    <string name="display_name">الاسم المعروض</string>
+    <string name="phone_number">رقم الهاتف</string>
+    <string name="email">البريد الإلكتروني</string>
+    <string name="address">العنوان</string>
+    <string name="not_selected">غير محدد</string>
+    <string name="really_want_to_delete_people">هل تريد حقًا حذف هذا الشخص؟</string>
+    <string name="select_post_app">اختر تطبيق البريد</string>
+    <string name="post_app_not_defined">لم يتم العثور على تطبيقات بريد على الجهاز</string>
+    <string name="error_occurred_when_opening_the_phone">حدث خطأ أثناء فتح رقم الهاتف</string>
+
+    <!-- DeveloperScreen -->
+    <string name="developer">المطور</string>
+    <string name="developer_full_name">نوركايف ألفير خاريسوفيتش</string>
+    <string name="developer_surname">نوركايف</string>
+    <string name="developer_name">ألفير</string>
+    <string name="developer_lastname">خاريسوفيتش</string>
+    <string name="support_developer">دعم المطور</string>
+    <string name="developer_info_part_1">مرحبًا، عزيزي المستخدم. اسمي</string>
+    <string name="developer_info_part_2">، أنا مطور أندرويد شاب من بيرم. أعمل في هذا المجال منذ عام 2021، في البداية كان الأمر صعبًا، كنت أفهم الكثير بصعوبة، لكنني كنت أعلم أن هذا هو طريقي، والصعوبات دفعتني لتعلم المزيد والمزيد، مما أدى في النهاية إلى هذه النتائج.</string>
+    <string name="developer_info_part_3">هذا هو تطبيقي الأول الذي تم إصداره رسميًا في متجر التطبيقات. بالطبع، لن أتوقف هنا، لا يزال هناك الكثير لأتعلمه وأطوره.</string>
+    <string name="developer_info_part_4">هذه مجرد البداية</string>
+    <string name="developer_info_part_5">إذا أعجبك عملي، وتريد التعاون معي - جميع الروابط أعلاه، سأكون سعيدًا بمساعدتك</string>
+    <string name="developer_reference">توقف عن النقر، استرخِ</string>
+    <string name="support_developer_text_part1">يمكنك دعمي عن طريق تحويل الأموال عبر رقم الهاتف. ربما بهذه الطريقة، ستساهم في بداية قصة جديدة.</string>
+    <string name="support_developer_text_part2">أو ربما لا</string>
+    <string name="copy">نسخ</string>
+    <string name="copied">تم النسخ</string>
+
+    <!-- NotificationPermissionInfoDialog -->
+    <string name="need_notification_permission">لإرسال الإشعارات، يجب منح التطبيق الإذن بذلك</string>
+
+    <!-- LanguageScreen -->
+    <string name="language_change">تغيير اللغة</string>
+
+    <!-- InterfaceConfiguringScreen -->
+    <string name="show_task_priority">إظهار الأولويات للمهام</string>
+    <string name="show_tasks_statistics">إظهار إحصائيات المهام</string>
+
+    <!-- TaskStatisticsColumn -->
+    <string name="completed">مكتمل</string>
+    <string name="not_completed">غير مكتمل</string>
+    <string name="displaying_statistics_for_all_tasks">يتم عرض الإحصائيات لجميع المهام</string>
+</resources>

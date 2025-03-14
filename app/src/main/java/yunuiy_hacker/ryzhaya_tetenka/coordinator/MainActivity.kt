@@ -19,6 +19,7 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.WindowCompat
 import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.data.common.model.Priority
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.data.local.shared_prefs.SharedPrefsHelper
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.nav_graph.NavGraph
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.nav_graph.Route

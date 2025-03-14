@@ -65,6 +65,8 @@ import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -100,6 +102,7 @@ import yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.common.composable.
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.common.composable.TaskItem
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.home.composable.SearchBar
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.home.composable.SwipeLazyColumn
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.home.composable.TasksStatisticsColumn
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.home.composable.TimeTypeSelectRow
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.home.composable.TopTimeOfDayText
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.nav_graph.Route
@@ -126,6 +129,12 @@ fun HomeScreen(navHostController: NavHostController, viewModel: HomeViewModel = 
     LaunchedEffect(Unit) {
         viewModel.onEvent(HomeEvent.LoadDataEvent)
     }
+
+    var urgentAndImportantVisibility by remember { mutableStateOf(true) }
+    var notUrgentAndImportantVisibility by remember { mutableStateOf(true) }
+    var urgentAndUnimportantVisibility by remember { mutableStateOf(true) }
+    var notUrgentAndUnimportantVisibility by remember { mutableStateOf(true) }
+    var notPriority by remember { mutableStateOf(true) }
 
     viewModel.state.let { state ->
         val state = remember { state }
@@ -642,26 +651,52 @@ fun HomeScreen(navHostController: NavHostController, viewModel: HomeViewModel = 
                         }
                     }
                 }
-                Spacer(modifier = Modifier.height(16.dp))
-                Text(
-                    modifier = Modifier.padding(horizontal = 24.dp),
-                    text = stringResource(R.string.tasks),
-                    fontFamily = caros,
-                    fontWeight = FontWeight.Medium,
-                    fontSize = 20.sp,
-                    color = MaterialTheme.colorScheme.onSurface
-                )
-                Spacer(modifier = Modifier.height(16.dp))
-                if (!state.contentState.isLoading.value) AnimatedVisibility(
-                    modifier = Modifier.fillMaxSize(), visible = !state.contentState.isLoading.value
+                if (state.showTasksStatistics) {
+                    AnimatedVisibility(!state.isDeletionMode, exit = fadeOut(), enter = fadeIn()) {
+                        Column {
+                            Spacer(modifier = Modifier.height(16.dp))
+                            Text(
+                                modifier = Modifier.padding(horizontal = 24.dp),
+                                text = stringResource(R.string.tasks_statistics),
+                                fontFamily = caros,
+                                fontWeight = FontWeight.Medium,
+                                fontSize = 20.sp,
+                                color = MaterialTheme.colorScheme.onSurface
+                            )
+                            Spacer(modifier = Modifier.height(16.dp))
+                            TasksStatisticsColumn(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(horizontal = 24.dp),
+                                allCompletedTasks = state.allCompletedTasks,
+                                allNotCompletedTasks = state.allNotCompletedTasks,
+                                completedTasks = state.completedTasks,
+                                notCompletedTasks = state.notCompletedTasks
+                            )
+                        }
+                }
+            }
+            Spacer(modifier = Modifier.height(16.dp))
+            Text(
+                modifier = Modifier.padding(horizontal = 24.dp),
+                text = stringResource(R.string.tasks),
+                fontFamily = caros,
+                fontWeight = FontWeight.Medium,
+                fontSize = 20.sp,
+                color = MaterialTheme.colorScheme.onSurface
+            )
+            Spacer(modifier = Modifier.height(if (state.showTaskPriority) 4.dp else 16.dp))
+            if (!state.contentState.isLoading.value) AnimatedVisibility(
+                modifier = Modifier.fillMaxSize(), visible = !state.contentState.isLoading.value
+            ) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .animateContentSize(),
+                    verticalArrangement = Arrangement.Center
                 ) {
-                    Column(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .animateContentSize(),
-                        verticalArrangement = Arrangement.Center
-                    ) {
-                        if (state.tasks.isNotEmpty()) {
+                    if (state.tasks.isNotEmpty()) {
+                        if (!state.showTaskPriority) {
                             state.tasks.forEach { task ->
                                 key(task.id) {
                                     TaskItem(
@@ -716,123 +751,659 @@ fun HomeScreen(navHostController: NavHostController, viewModel: HomeViewModel = 
                                 }
                             }
                         } else {
-                            Column(
-                                modifier = Modifier
-                                    .fillMaxWidth(0.5f)
-                                    .align(Alignment.CenterHorizontally),
-                                horizontalAlignment = Alignment.CenterHorizontally
-                            ) {
-                                Spacer(modifier = Modifier.height(48.dp))
-                                Text(
-                                    text = stringResource(R.string.empty_date),
-                                    fontFamily = caros,
-                                    fontWeight = FontWeight.Normal,
-                                    fontSize = 14.sp,
-                                    color = MaterialTheme.colorScheme.onSurface,
-                                    textAlign = TextAlign.Center
-                                )
+                            //urgent_and_important
+                            if (state.urgentAndImportantTasks.isNotEmpty()) {
+                                Column(modifier = Modifier.animateContentSize()) {
+                                    Row(
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .padding(
+                                                horizontal = 24.dp,
+                                                vertical = 8.dp
+                                            ),
+                                        verticalAlignment = Alignment.CenterVertically
+                                    ) {
+                                        Text(
+                                            modifier = Modifier.clickable(
+                                                interactionSource = interactionSource,
+                                                indication = null
+                                            ) {
+                                                urgentAndImportantVisibility =
+                                                    !urgentAndImportantVisibility
+                                            },
+                                            text = stringResource(R.string.urgent_and_important),
+                                            fontFamily = caros,
+                                            fontWeight = FontWeight.Medium,
+                                            fontSize = 16.sp,
+                                            color = MaterialTheme.colorScheme.primary,
+                                            textAlign = TextAlign.Center
+                                        )
+                                        Spacer(modifier = Modifier.width(8.dp))
+                                        Box(modifier = Modifier.clickable(
+                                            interactionSource = interactionSource,
+                                            indication = null
+                                        ) {
+                                            urgentAndImportantVisibility =
+                                                !urgentAndImportantVisibility
+                                        }) {
+                                            Icon(
+                                                imageVector = if (urgentAndImportantVisibility) Icons.Rounded.ArrowDropUp else Icons.Rounded.ArrowDropDown,
+                                                contentDescription = null,
+                                                tint = MaterialTheme.colorScheme.onSurface.copy(
+                                                    alpha = 0.5f
+                                                )
+                                            )
+                                        }
+                                    }
+                                    if (urgentAndImportantVisibility) {
+                                        state.urgentAndImportantTasks.forEach { task ->
+                                            key(task.id) {
+                                                TaskItem(
+                                                    modifier = Modifier
+                                                        .fillMaxWidth()
+                                                        .padding(horizontal = 24.dp),
+                                                    task = task,
+                                                    onCheckedChange = {
+                                                        viewModel.onEvent(
+                                                            HomeEvent.TaskItemCheckboxToggleEvent(
+                                                                task
+                                                            )
+                                                        )
+                                                    },
+                                                    onClick = {
+                                                        navHostController.navigate("${Route.TaskScreen.route}/${task.id}")
+                                                    },
+                                                    onLongClick = {
+                                                        viewModel.onEvent(HomeEvent.OnDeletionModeEvent)
+                                                        if (state.deletionTasks.contains(task)) viewModel.onEvent(
+                                                            HomeEvent.RemoveSelectedTaskEvent(
+                                                                task
+                                                            )
+                                                        )
+                                                        else viewModel.onEvent(
+                                                            HomeEvent.AddSelectedTaskEvent(
+                                                                task
+                                                            )
+                                                        )
+                                                    },
+                                                    isDeletionMode = state.isDeletionMode,
+                                                    onDeleteCheckedChange = {
+                                                        if (state.deletionTasks.contains(task)) viewModel.onEvent(
+                                                            HomeEvent.RemoveSelectedTaskEvent(
+                                                                task
+                                                            )
+                                                        )
+                                                        else viewModel.onEvent(
+                                                            HomeEvent.AddSelectedTaskEvent(
+                                                                task
+                                                            )
+                                                        )
+                                                    },
+                                                    isDeleteChecked = state.deletionTasks.contains(
+                                                        task
+                                                    ),
+                                                    onCheckedSubtask = {
+                                                        viewModel.onEvent(
+                                                            HomeEvent.SubtaskItemCheckboxToggleEvent(
+                                                                it
+                                                            )
+                                                        )
+                                                    }
+                                                )
+                                                if (task.id != state.urgentAndImportantTasks.last().id) {
+                                                    Spacer(modifier = Modifier.height(16.dp))
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            //not_urgent_and_important
+                            if (state.notUrgentAndImportantTasks.isNotEmpty()) {
+                                Column(modifier = Modifier.animateContentSize()) {
+                                    Row(
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .padding(
+                                                horizontal = 24.dp,
+                                                vertical = 8.dp
+                                            ),
+                                        verticalAlignment = Alignment.CenterVertically
+                                    ) {
+                                        Text(
+                                            modifier = Modifier.clickable(
+                                                interactionSource = interactionSource,
+                                                indication = null
+                                            ) {
+                                                notUrgentAndImportantVisibility =
+                                                    !notUrgentAndImportantVisibility
+                                            },
+                                            text = stringResource(R.string.not_urgent_and_important),
+                                            fontFamily = caros,
+                                            fontWeight = FontWeight.Medium,
+                                            fontSize = 16.sp,
+                                            color = MaterialTheme.colorScheme.primary,
+                                            textAlign = TextAlign.Center
+                                        )
+                                        Spacer(modifier = Modifier.width(8.dp))
+                                        Box(modifier = Modifier.clickable(
+                                            interactionSource = interactionSource,
+                                            indication = null
+                                        ) {
+                                            notUrgentAndImportantVisibility =
+                                                !notUrgentAndImportantVisibility
+                                        }) {
+                                            Icon(
+                                                imageVector = if (notUrgentAndImportantVisibility) Icons.Rounded.ArrowDropUp else Icons.Rounded.ArrowDropDown,
+                                                contentDescription = null,
+                                                tint = MaterialTheme.colorScheme.onSurface.copy(
+                                                    alpha = 0.5f
+                                                )
+                                            )
+                                        }
+                                    }
+                                    if (notUrgentAndImportantVisibility) {
+                                        state.notUrgentAndImportantTasks.forEach { task ->
+                                            key(task.id) {
+                                                TaskItem(
+                                                    modifier = Modifier
+                                                        .fillMaxWidth()
+                                                        .padding(horizontal = 24.dp),
+                                                    task = task,
+                                                    onCheckedChange = {
+                                                        viewModel.onEvent(
+                                                            HomeEvent.TaskItemCheckboxToggleEvent(
+                                                                task
+                                                            )
+                                                        )
+                                                    },
+                                                    onClick = {
+                                                        navHostController.navigate("${Route.TaskScreen.route}/${task.id}")
+                                                    },
+                                                    onLongClick = {
+                                                        viewModel.onEvent(HomeEvent.OnDeletionModeEvent)
+                                                        if (state.deletionTasks.contains(task)) viewModel.onEvent(
+                                                            HomeEvent.RemoveSelectedTaskEvent(
+                                                                task
+                                                            )
+                                                        )
+                                                        else viewModel.onEvent(
+                                                            HomeEvent.AddSelectedTaskEvent(
+                                                                task
+                                                            )
+                                                        )
+                                                    },
+                                                    isDeletionMode = state.isDeletionMode,
+                                                    onDeleteCheckedChange = {
+                                                        if (state.deletionTasks.contains(task)) viewModel.onEvent(
+                                                            HomeEvent.RemoveSelectedTaskEvent(
+                                                                task
+                                                            )
+                                                        )
+                                                        else viewModel.onEvent(
+                                                            HomeEvent.AddSelectedTaskEvent(
+                                                                task
+                                                            )
+                                                        )
+                                                    },
+                                                    isDeleteChecked = state.deletionTasks.contains(
+                                                        task
+                                                    ),
+                                                    onCheckedSubtask = {
+                                                        viewModel.onEvent(
+                                                            HomeEvent.SubtaskItemCheckboxToggleEvent(
+                                                                it
+                                                            )
+                                                        )
+                                                    }
+                                                )
+                                                if (task.id != state.notUrgentAndImportantTasks.last().id) {
+                                                    Spacer(modifier = Modifier.height(16.dp))
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            //urgent_and_unimportant
+                            if (state.urgentAndUnimportantTasks.isNotEmpty()) {
+                                Column(modifier = Modifier.animateContentSize()) {
+                                    Row(
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .padding(
+                                                horizontal = 24.dp,
+                                                vertical = 8.dp
+                                            ),
+                                        verticalAlignment = Alignment.CenterVertically
+                                    ) {
+                                        Text(
+                                            modifier = Modifier.clickable(
+                                                interactionSource = interactionSource,
+                                                indication = null
+                                            ) {
+                                                urgentAndUnimportantVisibility =
+                                                    !urgentAndUnimportantVisibility
+                                            },
+                                            text = stringResource(R.string.urgent_and_unimportant),
+                                            fontFamily = caros,
+                                            fontWeight = FontWeight.Medium,
+                                            fontSize = 16.sp,
+                                            color = MaterialTheme.colorScheme.primary,
+                                            textAlign = TextAlign.Center
+                                        )
+                                        Spacer(modifier = Modifier.width(8.dp))
+                                        Box(modifier = Modifier.clickable(
+                                            interactionSource = interactionSource,
+                                            indication = null
+                                        ) {
+                                            urgentAndUnimportantVisibility =
+                                                !urgentAndUnimportantVisibility
+                                        }) {
+                                            Icon(
+                                                imageVector = if (urgentAndUnimportantVisibility) Icons.Rounded.ArrowDropUp else Icons.Rounded.ArrowDropDown,
+                                                contentDescription = null,
+                                                tint = MaterialTheme.colorScheme.onSurface.copy(
+                                                    alpha = 0.5f
+                                                )
+                                            )
+                                        }
+                                    }
+                                    if (urgentAndUnimportantVisibility) {
+                                        state.urgentAndUnimportantTasks.forEach { task ->
+                                            key(task.id) {
+                                                TaskItem(
+                                                    modifier = Modifier
+                                                        .fillMaxWidth()
+                                                        .padding(horizontal = 24.dp),
+                                                    task = task,
+                                                    onCheckedChange = {
+                                                        viewModel.onEvent(
+                                                            HomeEvent.TaskItemCheckboxToggleEvent(
+                                                                task
+                                                            )
+                                                        )
+                                                    },
+                                                    onClick = {
+                                                        navHostController.navigate("${Route.TaskScreen.route}/${task.id}")
+                                                    },
+                                                    onLongClick = {
+                                                        viewModel.onEvent(HomeEvent.OnDeletionModeEvent)
+                                                        if (state.deletionTasks.contains(task)) viewModel.onEvent(
+                                                            HomeEvent.RemoveSelectedTaskEvent(
+                                                                task
+                                                            )
+                                                        )
+                                                        else viewModel.onEvent(
+                                                            HomeEvent.AddSelectedTaskEvent(
+                                                                task
+                                                            )
+                                                        )
+                                                    },
+                                                    isDeletionMode = state.isDeletionMode,
+                                                    onDeleteCheckedChange = {
+                                                        if (state.deletionTasks.contains(task)) viewModel.onEvent(
+                                                            HomeEvent.RemoveSelectedTaskEvent(
+                                                                task
+                                                            )
+                                                        )
+                                                        else viewModel.onEvent(
+                                                            HomeEvent.AddSelectedTaskEvent(
+                                                                task
+                                                            )
+                                                        )
+                                                    },
+                                                    isDeleteChecked = state.deletionTasks.contains(
+                                                        task
+                                                    ),
+                                                    onCheckedSubtask = {
+                                                        viewModel.onEvent(
+                                                            HomeEvent.SubtaskItemCheckboxToggleEvent(
+                                                                it
+                                                            )
+                                                        )
+                                                    }
+                                                )
+                                                if (task.id != state.urgentAndUnimportantTasks.last().id) {
+                                                    Spacer(modifier = Modifier.height(16.dp))
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            //not_urgent_and_unimportant
+                            if (state.notUrgentAndUnimportantTasks.isNotEmpty()) {
+                                Column(modifier = Modifier.animateContentSize()) {
+                                    Row(
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .padding(
+                                                horizontal = 24.dp,
+                                                vertical = 8.dp
+                                            ),
+                                        verticalAlignment = Alignment.CenterVertically
+                                    ) {
+                                        Text(
+                                            modifier = Modifier.clickable(
+                                                interactionSource = interactionSource,
+                                                indication = null
+                                            ) {
+                                                notUrgentAndUnimportantVisibility =
+                                                    !notUrgentAndUnimportantVisibility
+                                            },
+                                            text = stringResource(R.string.not_urgent_and_unimportant),
+                                            fontFamily = caros,
+                                            fontWeight = FontWeight.Medium,
+                                            fontSize = 16.sp,
+                                            color = MaterialTheme.colorScheme.primary,
+                                            textAlign = TextAlign.Center
+                                        )
+                                        Spacer(modifier = Modifier.width(8.dp))
+                                        Box(modifier = Modifier.clickable(
+                                            interactionSource = interactionSource,
+                                            indication = null
+                                        ) {
+                                            notUrgentAndUnimportantVisibility =
+                                                !notUrgentAndUnimportantVisibility
+                                        }) {
+                                            Icon(
+                                                imageVector = if (notUrgentAndUnimportantVisibility) Icons.Rounded.ArrowDropUp else Icons.Rounded.ArrowDropDown,
+                                                contentDescription = null,
+                                                tint = MaterialTheme.colorScheme.onSurface.copy(
+                                                    alpha = 0.5f
+                                                )
+                                            )
+                                        }
+                                    }
+                                    if (notUrgentAndUnimportantVisibility) {
+                                        state.notUrgentAndUnimportantTasks.forEach { task ->
+                                            key(task.id) {
+                                                TaskItem(
+                                                    modifier = Modifier
+                                                        .fillMaxWidth()
+                                                        .padding(horizontal = 24.dp),
+                                                    task = task,
+                                                    onCheckedChange = {
+                                                        viewModel.onEvent(
+                                                            HomeEvent.TaskItemCheckboxToggleEvent(
+                                                                task
+                                                            )
+                                                        )
+                                                    },
+                                                    onClick = {
+                                                        navHostController.navigate("${Route.TaskScreen.route}/${task.id}")
+                                                    },
+                                                    onLongClick = {
+                                                        viewModel.onEvent(HomeEvent.OnDeletionModeEvent)
+                                                        if (state.deletionTasks.contains(task)) viewModel.onEvent(
+                                                            HomeEvent.RemoveSelectedTaskEvent(
+                                                                task
+                                                            )
+                                                        )
+                                                        else viewModel.onEvent(
+                                                            HomeEvent.AddSelectedTaskEvent(
+                                                                task
+                                                            )
+                                                        )
+                                                    },
+                                                    isDeletionMode = state.isDeletionMode,
+                                                    onDeleteCheckedChange = {
+                                                        if (state.deletionTasks.contains(task)) viewModel.onEvent(
+                                                            HomeEvent.RemoveSelectedTaskEvent(
+                                                                task
+                                                            )
+                                                        )
+                                                        else viewModel.onEvent(
+                                                            HomeEvent.AddSelectedTaskEvent(
+                                                                task
+                                                            )
+                                                        )
+                                                    },
+                                                    isDeleteChecked = state.deletionTasks.contains(
+                                                        task
+                                                    ),
+                                                    onCheckedSubtask = {
+                                                        viewModel.onEvent(
+                                                            HomeEvent.SubtaskItemCheckboxToggleEvent(
+                                                                it
+                                                            )
+                                                        )
+                                                    }
+                                                )
+                                                if (task.id != state.notUrgentAndUnimportantTasks.last().id) {
+                                                    Spacer(modifier = Modifier.height(16.dp))
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            //not_priority
+                            if (state.notPriorityTasks.isNotEmpty()) {
+                                Column(modifier = Modifier.animateContentSize()) {
+                                    Row(
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .padding(
+                                                horizontal = 24.dp,
+                                                vertical = 8.dp
+                                            ),
+                                        verticalAlignment = Alignment.CenterVertically
+                                    ) {
+                                        Text(
+                                            modifier = Modifier.clickable(
+                                                interactionSource = interactionSource,
+                                                indication = null
+                                            ) {
+                                                notPriority =
+                                                    !notPriority
+                                            },
+                                            text = stringResource(R.string.not_priority),
+                                            fontFamily = caros,
+                                            fontWeight = FontWeight.Medium,
+                                            fontSize = 16.sp,
+                                            color = MaterialTheme.colorScheme.primary,
+                                            textAlign = TextAlign.Center
+                                        )
+                                        Spacer(modifier = Modifier.width(8.dp))
+                                        Box(modifier = Modifier.clickable(
+                                            interactionSource = interactionSource,
+                                            indication = null
+                                        ) {
+                                            notPriority =
+                                                !notPriority
+                                        }) {
+                                            Icon(
+                                                imageVector = if (notPriority) Icons.Rounded.ArrowDropUp else Icons.Rounded.ArrowDropDown,
+                                                contentDescription = null,
+                                                tint = MaterialTheme.colorScheme.onSurface.copy(
+                                                    alpha = 0.5f
+                                                )
+                                            )
+                                        }
+                                    }
+                                    if (notPriority) {
+                                        state.notPriorityTasks.forEach { task ->
+                                            key(task.id) {
+                                                TaskItem(
+                                                    modifier = Modifier
+                                                        .fillMaxWidth()
+                                                        .padding(horizontal = 24.dp),
+                                                    task = task,
+                                                    onCheckedChange = {
+                                                        viewModel.onEvent(
+                                                            HomeEvent.TaskItemCheckboxToggleEvent(
+                                                                task
+                                                            )
+                                                        )
+                                                    },
+                                                    onClick = {
+                                                        navHostController.navigate("${Route.TaskScreen.route}/${task.id}")
+                                                    },
+                                                    onLongClick = {
+                                                        viewModel.onEvent(HomeEvent.OnDeletionModeEvent)
+                                                        if (state.deletionTasks.contains(task)) viewModel.onEvent(
+                                                            HomeEvent.RemoveSelectedTaskEvent(
+                                                                task
+                                                            )
+                                                        )
+                                                        else viewModel.onEvent(
+                                                            HomeEvent.AddSelectedTaskEvent(
+                                                                task
+                                                            )
+                                                        )
+                                                    },
+                                                    isDeletionMode = state.isDeletionMode,
+                                                    onDeleteCheckedChange = {
+                                                        if (state.deletionTasks.contains(task)) viewModel.onEvent(
+                                                            HomeEvent.RemoveSelectedTaskEvent(
+                                                                task
+                                                            )
+                                                        )
+                                                        else viewModel.onEvent(
+                                                            HomeEvent.AddSelectedTaskEvent(
+                                                                task
+                                                            )
+                                                        )
+                                                    },
+                                                    isDeleteChecked = state.deletionTasks.contains(
+                                                        task
+                                                    ),
+                                                    onCheckedSubtask = {
+                                                        viewModel.onEvent(
+                                                            HomeEvent.SubtaskItemCheckboxToggleEvent(
+                                                                it
+                                                            )
+                                                        )
+                                                    }
+                                                )
+                                                if (task.id != state.notPriorityTasks.last().id) {
+                                                    Spacer(modifier = Modifier.height(16.dp))
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
                             }
                         }
-                        Spacer(modifier = Modifier.height(84.dp))
-                    }
-                }
-                else {
-                    AnimatedVisibility(
-                        modifier = Modifier.align(Alignment.CenterHorizontally),
-                        visible = state.contentState.isLoading.value
-                    ) {
-                        LoadingIndicator(modifier = Modifier.align(Alignment.CenterHorizontally))
-                    }
-                }
-            }
-        }
-
-        if (state.showDatePickerDialog) {
-            DatePickerDialog(
-                modifier = Modifier.heightIn(max = 700.dp),
-                onDismissRequest = {
-                    viewModel.onEvent(HomeEvent.HideDatePickerDialogEvent)
-                },
-                confirmButton = {},
-                colors = DatePickerDefaults.colors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
-                shape = RoundedCornerShape(20.dp)
-            ) {
-                Column {
-                    DatePicker(state = datePickerState)
-                    Button(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 24.dp), onClick = {
-                            viewModel.onEvent(
-                                HomeEvent.SelectDatePickerDialogEvent(
-                                    datePickerState.selectedDateMillis ?: 0
-                                )
+                    } else {
+                        Column(
+                            modifier = Modifier
+                                .fillMaxWidth(0.5f)
+                                .align(Alignment.CenterHorizontally),
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+                            Spacer(modifier = Modifier.height(48.dp))
+                            Text(
+                                text = stringResource(R.string.empty_date),
+                                fontFamily = caros,
+                                fontWeight = FontWeight.Normal,
+                                fontSize = 14.sp,
+                                color = MaterialTheme.colorScheme.onSurface,
+                                textAlign = TextAlign.Center
                             )
-                        }, shape = RoundedCornerShape(12.dp),
-                        colors = ButtonDefaults.buttonColors(contentColor = Color.White)
-                    ) {
-                        Text(
-                            text = stringResource(R.string.select),
-                            color = Color.White,
-                            fontFamily = caros,
-                            fontWeight = FontWeight.Medium
-                        )
+                        }
                     }
+                    Spacer(modifier = Modifier.height(84.dp))
                 }
-            }
-        }
-
-        if (state.showQuestionDialog) {
-            QuestionDialog(title = state.questionTitle,
-                text = state.questionText,
-                onDismissRequest = {
-                    viewModel.onEvent(HomeEvent.HideQuestionDialogEvent)
-                },
-                onConfirmRequest = {
-                    if (state.isDeletionMode) viewModel.onEvent(HomeEvent.DeleteAllSelectedTasksEvent)
-                    else viewModel.onEvent(HomeEvent.DeleteCategoryEvent)
-                })
-        }
-
-        if (state.showAddEditCategoryDialog) {
-            AddEditCategoryDialog(
-                onDismissRequest = {
-                    viewModel.onEvent(HomeEvent.HideAddCategoryDialogEvent)
-                },
-                onAddClick = {
-                    if (state.isEditMode) viewModel.onEvent(
-                        HomeEvent.SaveEditedCategoryEvent(
-                            state.editionDeletionCategory.copy(
-                                title = it
-                            )
-                        )
-                    )
-                    else viewModel.onEvent(HomeEvent.CreateCategoryEvent(it))
-                },
-                category = if (state.isEditMode) state.editionDeletionCategory else null,
-                isEditMode = state.isEditMode
-            )
-        }
-
-        BackHandler {
-            if (state.isDeletionMode) {
-                viewModel.onEvent(HomeEvent.OffDeletionModeEvent)
-            }
-        }
-
-        val lifecycleOwner = LocalLifecycleOwner.current
-        DisposableEffect(lifecycleOwner) {
-            val observer = LifecycleEventObserver { _, event ->
-                if (event == Lifecycle.Event.ON_RESUME || event == Lifecycle.Event.ON_START) {
-                    state.userName = viewModel.sharedPrefsHelper.name ?: ""
+            } else {
+                AnimatedVisibility(
+                    modifier = Modifier.align(Alignment.CenterHorizontally),
+                    visible = state.contentState.isLoading.value
+                ) {
+                    LoadingIndicator(modifier = Modifier.align(Alignment.CenterHorizontally))
                 }
-            }
-
-            lifecycleOwner.lifecycle.addObserver(observer)
-
-            onDispose {
-                lifecycleOwner.lifecycle.removeObserver(observer)
             }
         }
     }
+
+    if (state.showDatePickerDialog) {
+        DatePickerDialog(
+            modifier = Modifier.heightIn(max = 700.dp),
+            onDismissRequest = {
+                viewModel.onEvent(HomeEvent.HideDatePickerDialogEvent)
+            },
+            confirmButton = {},
+            colors = DatePickerDefaults.colors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
+            shape = RoundedCornerShape(20.dp)
+        ) {
+            Column {
+                DatePicker(state = datePickerState)
+                Button(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 24.dp), onClick = {
+                        viewModel.onEvent(
+                            HomeEvent.SelectDatePickerDialogEvent(
+                                datePickerState.selectedDateMillis ?: 0
+                            )
+                        )
+                    }, shape = RoundedCornerShape(12.dp),
+                    colors = ButtonDefaults.buttonColors(contentColor = Color.White)
+                ) {
+                    Text(
+                        text = stringResource(R.string.select),
+                        color = Color.White,
+                        fontFamily = caros,
+                        fontWeight = FontWeight.Medium
+                    )
+                }
+            }
+        }
+    }
+
+    if (state.showQuestionDialog) {
+        QuestionDialog(title = state.questionTitle,
+            text = state.questionText,
+            onDismissRequest = {
+                viewModel.onEvent(HomeEvent.HideQuestionDialogEvent)
+            },
+            onConfirmRequest = {
+                if (state.isDeletionMode) viewModel.onEvent(HomeEvent.DeleteAllSelectedTasksEvent)
+                else viewModel.onEvent(HomeEvent.DeleteCategoryEvent)
+            })
+    }
+
+    if (state.showAddEditCategoryDialog) {
+        AddEditCategoryDialog(
+            onDismissRequest = {
+                viewModel.onEvent(HomeEvent.HideAddCategoryDialogEvent)
+            },
+            onAddClick = {
+                if (state.isEditMode) viewModel.onEvent(
+                    HomeEvent.SaveEditedCategoryEvent(
+                        state.editionDeletionCategory.copy(
+                            title = it
+                        )
+                    )
+                )
+                else viewModel.onEvent(HomeEvent.CreateCategoryEvent(it))
+            },
+            category = if (state.isEditMode) state.editionDeletionCategory else null,
+            isEditMode = state.isEditMode
+        )
+    }
+
+    BackHandler {
+        if (state.isDeletionMode) {
+            viewModel.onEvent(HomeEvent.OffDeletionModeEvent)
+        }
+    }
+
+    val lifecycleOwner = LocalLifecycleOwner.current
+    DisposableEffect(lifecycleOwner) {
+        val observer = LifecycleEventObserver { _, event ->
+            if (event == Lifecycle.Event.ON_RESUME || event == Lifecycle.Event.ON_START) {
+                state.userName = viewModel.sharedPrefsHelper.name ?: ""
+            }
+        }
+
+        lifecycleOwner.lifecycle.addObserver(observer)
+
+        onDispose {
+            lifecycleOwner.lifecycle.removeObserver(observer)
+        }
+    }
+}
 }

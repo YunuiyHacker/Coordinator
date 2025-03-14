@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Coordinator</string>
+
+    <!-- 使用者問候 -->
+    <string name="good_morning">早安</string>
+    <string name="good_afternoon">下午好</string>
+    <string name="good_evening">晚上好</string>
+    <string name="good_night">晚安</string>
+
+    <!-- 時間類型 -->
+    <string name="day">天</string>
+    <string name="week">週</string>
+    <string name="month">月份</string>
+    <string name="year">年份</string>
+    <string name="life">生活</string>
+
+    <!-- 入職畫面 -->
+    <string name="letter_continue">繼續</string>
+    <string name="skip">跳過</string>
+    <string name="start">開始</string>
+    <string name="onboarding_screen1_task1_title">安裝協調器</string>
+    <string name="onboarding_screen1_task1_content">安裝 Coordinator，建立任務</string>
+    <string name="onboarding_screen1_task2_title">完成任務</string>
+    <string name="onboarding_screen1_task2_content">執行已建立的任務</string>
+    <string name="onboarding_screen1_title">管理你的一天</string>
+    <string name="onboarding_screen1_content">每天建立任務以完成所有事情並且不會忘記任何事情</string>
+    <string name="onboarding_screen2_title">將位置加入任務</string>
+    <string name="onboarding_screen2_content">這將使您開展業務更加方便。如果您需要在地圖上查看某個地點，只需點擊地點卡即可</string>
+    <string name="home">首頁</string>
+    <string name="onboarding_screen3_title">將人員加入任務</string>
+    <string name="onboarding_screen3_content">這樣你就不會忘記和誰一起做這些事</string>
+
+    <!-- 填入名稱畫面 -->
+    <string name="what_is_your_name_title">你叫什麼名字？</string>
+    <string name="what_is_your_name_description">請提供您的姓名，我們將使用該姓名顯示和個人化您的任務</string>
+    <string name="your_name">您的姓名</string>
+    <string name="get_start">開始</string>
+
+    <!-- 主畫面 -->
+    <string name="tasks">任務</string>
+    <string name="cancel_deletion">取消刪除</string>
+    <string name="yes">是</string>
+    <string name="deletion_mode">刪除模式</string>
+    <string name="delete_all_selected">刪除全部選定內容</string>
+    <string name="really_want_to_delete_all_selected_tasks">您確實要刪除所有選定的任務嗎？</string>
+    <string name="all_categories">所有類別</string>
+    <string name="really_want_to_delete_category">您確實要刪除此類別嗎？</string>
+    <string name="empty_date">我們有時都需要休息一下...此日期沒有任務</string>
+    <string name="urgent_and_important">緊急且重要</string>
+    <string name="not_urgent_and_important">不緊急但重要</string>
+    <string name="urgent_and_unimportant">緊急且不重要</string>
+    <string name="not_urgent_and_unimportant">不緊急也不重要</string>
+    <string name="not_priority">無優先權</string>
+    <string name="tasks_statistics">任務統計</string>
+
+    <!-- 搜尋欄 -->
+    <string name="try_to_find_task">嘗試找一項任務…</string>
+    <string name="search">搜尋</string>
+
+    <!-- 建立更新任務畫面 -->
+    <string name="create_task">建立任務</string>
+    <string name="edit_task">編輯任務</string>
+    <string name="heading">標題</string>
+    <string name="content">描述</string>
+    <string name="create">建立</string>
+    <string name="type_of_time">時間類型</string>
+    <string name="save_changes">儲存更改</string>
+    <string name="end_time">結束時間</string>
+    <string name="end_time_can_not_be_before_start_time">結束時間不能早於或等於開始時間</string>
+    <string name="category">類別</string>
+    <string name="without_category">無類別</string>
+    <string name="add_subtask">新增子任務</string>
+    <string name="location_not_selected">未選擇位置</string>
+    <string name="add_new_place">新增地點</string>
+    <string name="place">地點</string>
+    <string name="peoples_not_selected">未選擇人員</string>
+    <string name="this_people_already_will_selected">此人已被選取</string>
+    <string name="peoples_list_is_empty">人員清單目前為空，您可以在設定中新增他們</string>
+    <string name="remind_later">稍後再提醒我</string>
+    <string name="date">日期</string>
+    <string name="time">時間</string>
+    <string name="cannot_specify_reminder_time_later_than_task_deadline">您無法指定晚於任務截止日期的提醒時間</string>
+    <string name="this_reminder_time_cannot_be_selected">無法選擇此提醒時間。那時候已經過去了</string>
+    <string name="priority">優先權</string>
+
+    <!-- 時間選擇對話框 -->
+    <string name="select">選擇</string>
+
+    <!-- 任務畫面 -->
+    <string name="task">任務</string>
+    <string name="edit">編輯</string>
+    <string name="delete">刪除</string>
+    <string name="deletion">刪除</string>
+    <string name="really_want_to_delete_task">您確定要刪除此任務嗎？</string>
+    <string name="open_in_maps">在地圖上查看</string>
+    <string name="really_want_open_in_maps">您確實想在地圖上查看該地點嗎？</string>
+    <string name="not_supported_apps">我們無法在您的裝置上找到合適的應用程式</string>
+
+    <!-- SwipeToDeleteBackground -->
+    <string name="deleted">已刪除</string>
+
+    <!-- 問題對話框 -->
+    <string name="no">否</string>
+
+    <!-- 新增編輯類別對話框 -->
+    <string name="category_adding">新增類別</string>
+    <string name="category_editing">編輯類別</string>
+    <string name="cancel">取消</string>
+    <string name="add">加</string>
+    <string name="save">儲存</string>
+
+    <!-- 子任務行 -->
+    <string name="subtask_title">子任務標題</string>
+
+    <!-- 設定畫面 -->
+    <string name="settings">設定</string>
+    <string name="personal_data">個人資料</string>
+    <string name="import_export_data">導入/匯出資料</string>
+    <string name="import_data">導入資料</string>
+    <string name="export_data">匯出資料</string>
+    <string name="success_export">資料匯出成功完成。匯出下載中儲存的檔案</string>
+    <string name="really_want_to_import_data">您確實要匯入資料嗎？導入的資料將會加入現有的資料</string>
+    <string name="import_exception">導入檔案時發生錯誤。該檔案可能已損壞或不存在</string>
+    <string name="success_import">資料導入成功完成</string>
+    <string name="app_data">應用程式資料</string>
+    <string name="places">地點</string>
+    <string name="peoples">人民</string>
+    <string name="add_new_people">新增新人</string>
+    <string name="additionally">另外</string>
+    <string name="info_about_developer">關於開發者的資訊</string>
+    <string name="letter_for">為</string>
+    <string name="by">來自</string>
+    <string name="access_denied">存取檔案被拒絕</string>
+    <string name="undefined_error">未知錯誤</string>
+    <string name="incorrect_file_format">檔案格式不正確</string>
+    <string name="styling">造型</string>
+    <string name="theme">主題</string>
+    <string name="light_theme">淺色主題</string>
+    <string name="dark_theme">深色主題</string>
+    <string name="language">語言</string>
+    <string name="interface_language">介面語言</string>
+    <string name="interface_letter">介面</string>
+    <string name="interface_configuring">配置介面</string>
+
+    <!-- 建立更新地點對話框 -->
+    <string name="place_adding">新增地點</string>
+    <string name="place_editing">地點編輯</string>
+    <string name="title">標題</string>
+    <string name="longitude">經度</string>
+    <string name="latitude">緯度</string>
+    <string name="paste_coordinates_from_google_or_yandex_maps">從 Google 地圖/Yandex 地圖貼上座標</string>
+    <string name="no_matching_data_found">​​找不到符合的資料</string>
+
+    <!-- 放置螢幕 -->
+    <string name="really_want_to_delete_place">您確實要刪除此地點嗎？</string>
+    <string name="editing">編輯</string>
+    <string name="really_want_to_edit_place">您確實要編輯此地點嗎？</string>
+
+    <!-- 建立更新人員列 -->
+    <string name="people_adding">加一個人</string>
+    <string name="people_editing">編輯一個人</string>
+    <string name="surname">姓氏</string>
+    <string name="name">名稱</string>
+    <string name="lastname">父名</string>
+    <string name="sex">性別</string>
+    <string name="male">男性</string>
+    <string name="female">女性</string>
+    <string name="date_of_birth">出生日期</string>
+    <string name="display_name">顯示名稱</string>
+    <string name="phone_number">電話號碼</string>
+    <string name="email">電子郵件</string>
+    <string name="address">地址</string>
+    <string name="not_selected">未選擇</string>
+    <string name="really_want_to_delete_people">您確實要刪除此人嗎？</string>
+    <string name="select_post_app">選擇郵件應用程式</string>
+    <string name="post_app_not_defined">裝置上找不到郵件應用程式</string>
+    <string name="error_occurred_when_opening_the_phone">開啟手機時發生錯誤</string>
+
+    <!-- 開發者畫面 -->
+    <string name="developer">開發人員</string>
+    <string name="developer_nickname" translatable="false">yunuiy_hacker</string>
+    <string name="developer_full_name">努爾卡耶夫·阿爾菲爾·哈里索維奇</string>
+    <string name="developer_surname">努爾卡耶夫</string>
+    <string name="developer_name">Alfir</string>
+    <string name="developer_lastname">哈里索維奇</string>
+    <string name="support_developer">支援開發者</string>
+    <string name="developer_info_part_1">您好，親愛的使用者。我的名字是 </string>
+    <string name="developer_info_part_2">，我是一位來自彼爾姆的年輕 Android 開發人員。從2021年開始從事這個領域，一開始很困難，我費力地理解了很多東西，但我知道這是我的，困難只會促使我不斷學習，最終讓我取得了這樣的成績。</string>
+    <string name="developer_info_part_3">這是我的第一個在應用程式商店正式發布的應用程式。當然，我不會就此止步，還有成長與學習的空間。</string>
+    <string name="developer_info_part_4">這只是開始</string>
+    <string name="developer_info_part_5">如果您喜歡我的作品，想要與我合作 - 以上所有鏈接，我很樂意為您提供幫助</string>
+    <string name="developer_reference">停止按壓，冷靜</string>
+    <string name="support_developer_text_part1">您可以透過轉帳至電話號碼來支援我。也許，你這樣做，就會支持一個新故事的開始。</string>
+    <string name="support_developer_text_part2">或許不是</string>
+    <string name="copy">複製</string>
+    <string name="copied">已複製</string>
+
+    <!-- 通知權限資訊對話框 -->
+    <string name="need_notification_permission">要傳送通知，應用程式必須取得這樣做的權限</string>
+
+    <!-- 語言螢幕 -->
+    <string name="language_change">更改語言</string>
+
+    <!-- 介面設定畫面 -->
+    <string name="show_task_priority">顯示任務的優先權</string>
+    <string name="show_tasks_statistics">顯示任務統計資料</string>
+
+    <!-- 任務統計列 -->
+    <string name="completed">已完成</string>
+    <string name="not_completed">未完成</string>
+    <string name="displaying_statistics_for_all_tasks">顯示所有任務的統計資料</string>
+</resources>

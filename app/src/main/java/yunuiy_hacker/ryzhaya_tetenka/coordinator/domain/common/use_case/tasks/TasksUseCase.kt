@@ -8,5 +8,7 @@ data class TasksUseCase(
     val getTasksOperator: GetTasksOperator,
     val insertTaskOperator: InsertTaskOperator,
     val insertTasksOperator: InsertTasksOperator,
-    val updateTaskOperator: UpdateTaskOperator
+    val updateTaskOperator: UpdateTaskOperator,
+    val getAllCompletedTasksCount: GetAllCompletedTasksCount,
+    val getAllNotCompletedTasksCount: GetAllNotCompletedTasksCount
 )

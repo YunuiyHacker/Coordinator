@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Coordinator</string>
+
+    <!-- Пайдаланушы сәлемі -->
+    <string name="good_morning">Қайырлы таң</string>
+    <string name="good_afternoon">Қайырлы күн</string>
+    <string name="good_evening">Қайырлы кеш</string>
+    <string name="good_night">Қайырлы түн</string>
+
+    <!-- Уақыт түрлері -->
+    <string name="day">Күн</string>
+    <string name="week">Апта</string>
+    <string name="month">Ай</string>
+    <string name="year">Жыл</string>
+    <string name="life">Өмір</string>
+
+    <!-- OnboardingScreen -->
+    <string name="letter_continue">Жалғастыру</string>
+    <string name="skip">Өткізу</string>
+    <string name="start">Бастау</string>
+    <string name="onboarding_screen1_task1_title">Орнату үйлестірушісі</string>
+    <string name="onboarding_screen1_task1_content">Координаторды орнату, тапсырмаларды жасау</string>
+    <string name="onboarding_screen1_task2_title">Тапсырмаларды аяқтаңыз</string>
+    <string name="onboarding_screen1_task2_content">Жасалған тапсырмаларды іске қосу</string>
+    <string name="onboarding_screen1_title">Күніңізді басқару</string>
+    <string name="onboarding_screen1_content">Бәрін аяқтау және ештеңені ұмытпау үшін күн сайын тапсырмалар жасаңыз</string>
+    <string name="onboarding_screen2_title">Тапсырмаларға орындар қосу</string>
+    <string name="onboarding_screen2_content">Бұл сіздің бизнесіңізді жүргізуді одан да ыңғайлы етеді. Картадан орынды көргіңіз келсе, орын картасын</string>
+    басыңыз
+    <string name="home">Үй</string>
+    <string name="onboarding_screen3_title">Тапсырмаларға адамдарды қосу</string>
+    <string name="onboarding_screen3_content">Оларды кіммен жасайтыныңызды ұмытпайсыз</string>
+
+    <!-- FillNameScreen -->
+    <string name="what_is_your_name_title">Сіздің атыңыз кім?</string>
+    <string name="what_is_your_name_description">Тапсырмаларыңызды көрсету және жекелендіру үшін пайдаланатын атыңызды көрсетіңіз</string>
+    <string name="your_name">Сіздің атыңыз</string>
+    <string name="get_start">Бастау</string>
+
+    <!-- Басты экран -->
+    <string name="tasks">Тапсырмалар</string>
+    <string name="cancel_deletion">Жоюдан бас тарту</string>
+    <string name="yes">Иә</string>
+    <string name="deletion_mode">Жою режимі</string>
+    <string name="delete_all_selected">Барлық таңдалған жою</string>
+    <string name="really_want_to_delete_all_selected_tasks">Таңдалған барлық тапсырмаларды шынымен жойғыңыз келе ме?</string>
+    <string name="all_categories">Барлық санаттар</string>
+    <string name="really_want_to_delete_category">Осы санатты шынымен жойғыңыз келе ме?</string>
+    <string name="empty_date">Бәрімізде үзіліс қажет... Бұл күнге тапсырма жоқ</string>
+    <string name="urgent_and_important">Шұғыл және маңызды</string>
+    <string name="not_urgent_and_important">Шұғыл емес және маңызды</string>
+    <string name="urgent_and_unimportant">Шұғыл және маңызды емес</string>
+    <string name="not_urgent_and_unimportant">Шұғыл емес және маңызды емес</string>
+    <string name="not_priority">Басымдылық жоқ</string>
+    <string name="tasks_statistics">Тапсырма статистикасы</string>
+
+    <!-- SearchBar -->
+    <string name="try_to_find_task">Тапсырманы тауып көріңіз...</string>
+    <string name="search">Іздеу</string>
+
+    <!-- CreateUpdateTaskScreen -->
+    <string name="create_task">Тапсырма жасау</string>
+    <string name="edit_task">Тапсырманы өңдеу</string>
+    <string name="heading">Тақырып</string>
+    <string name="content">Сипаттамасы</string>
+    <string name="create">Жасау</string>
+    <string name="type_of_time">Уақыт түрі</string>
+    <string name="save_changes">Өзгерістерді сақтау</string>
+    <string name="end_time">Аяқтау уақыты</string>
+    <string name="end_time_can_not_be_before_start_time">Аяқтау уақыты басталу уақытынан бұрын немесе бірдей болуы мүмкін емес</string>
+    <string name="category">Санат</string>
+    <string name="without_category">Санатсыз</string>
+    <string name="add_subtask">Қосымша тапсырма қосу</string>
+    <string name="location_not_selected">Орын таңдалмады</string>
+    <string name="add_new_place">Жаңа орын қосу</string>
+    <string name="place">Орын</string>
+    <string name="peoples_not_selected">Адамдар таңдалмаған</string>
+    <string name="this_people_already_will_selected">Бұл адам әлдеқашан таңдалған</string>
+    <string name="peoples_list_is_empty">Адамдар тізімі әзірге бос, оларды параметрлерге қосуға болады</string>
+    <string name="remind_later">Кейінірек еске салу</string>
+    <string name="date">Күні</string>
+    <string name="time">Уақыт</string>
+    <string name="cannot_specify_reminder_time_later_than_task_deadline">Еске салғыш уақытын тапсырманың орындалу мерзімінен кеш белгілей алмайсыз</string>
+    <string name="this_reminder_time_cannot_be_selected">Бұл еске салғыш уақытын таңдау мүмкін емес. Бұл уақыт өтіп кетті</string>
+    <string name="priority">Басымдылық</string>
+
+    <!-- TimePickerDialog -->
+    <string name="select">Таңдау</string>
+
+    <!-- Тапсырмалар экраны -->
+    <string name="task">Тапсырма</string>
+    <string name="edit">Өңдеу</string>
+    <string name="delete">Жою</string>
+    <string name="deletion">Жою</string>
+    <string name="really_want_to_delete_task">Бұл тапсырманы шынымен жойғыңыз келе ме?</string>
+    <string name="open_in_maps">Картадан көру</string>
+    <string name="really_want_open_in_maps">Картадағы орынды көргіңіз келе ме?</string>
+    <string name="not_supported_apps">Құрылғыңыздан сәйкес қолданба таба алмадық</string>
+
+    <!-- SwipeToDeleteBackground -->
+    <string name="deleted">Жойылды</string>
+
+    <!-- QuestionDialog -->
+    <string name="no">Жоқ</string>
+
+    <!-- AddEditCategoryDialog -->
+    <string name="category_adding">Санат қосу</string>
+    <string name="category_editing">Санатты өңдеу</string>
+    <string name="cancel">Болдырмау</string>
+    <string name="add">Қосу</string>
+    <string name="save">Сақтау</string>
+
+    <!-- SubtaskRow -->
+    <string name="subtask_title">Қосымша тапсырма тақырыбы</string>
+
+    <!-- Параметрлер экраны -->
+    <string name="settings">Параметрлер</string>
+    <string name="personal_data">Жеке деректер</string>
+    <string name="import_export_data">Деректерді импорттау/экспорттау</string>
+    <string name="import_data">Деректерді импорттау</string>
+    <string name="export_data">Деректерді экспорттау</string>
+    <string name="success_export">Деректерді экспорттау сәтті аяқталды. Жүктеулер</string>
+    ішінде сақталған файлды экспорттау
+    <string name="really_want_to_import_data">Деректерді шынымен импорттағыңыз келе ме? Импортталған деректер бұрыннан барларға қосылады</string>
+    <string name="import_exception">Файлды импорттау қатесі. Файл бүлінген болуы мүмкін немесе жоқ</string>
+    <string name="success_import">Деректерді импорттау сәтті аяқталды</string>
+    <string name="app_data">Қолданба деректері</string>
+    <string name="places">Орындар</string>
+    <string name="peoples">Адамдар</string>
+    <string name="add_new_people">Жаңа адам қосу</string>
+    <string name="additionally">Қосымша</string>
+    <string name="info_about_developer">Әзірлеуші туралы ақпарат</string>
+    <string name="letter_for">үшін</string>
+    <string name="by">кітаптан</string>
+    <string name="access_denied">Файлға кіруге тыйым салынды</string>
+    <string name="undefined_error">Белгісіз қате</string>
+    <string name="incorrect_file_format">Қате файл пішімі</string>
+    <string name="styling">Стильдеу</string>
+    <string name="theme">Тақырып</string>
+    <string name="light_theme">Жеңіл тақырып</string>
+    <string name="dark_theme">Қараңғы тақырып</string>
+    <string name="language">Тіл</string>
+    <string name="interface_language">Интерфейс тілі</string>
+    <string name="interface_letter">Интерфейс</string>
+    <string name="interface_configuring">Интерфейсті конфигурациялау</string>
+
+    <!-- CreateUpdatePlaceDialog -->
+    <string name="place_adding">Орын қосу</string>
+    <string name="place_editing">Орынды өңдеу</string>
+    <string name="title">Тақырып</string>
+    <string name="longitude">Бойлық</string>
+    <string name="latitude">Ендік</string>
+    <string name="paste_coordinates_from_google_or_yandex_maps">Google Maps/Yandex Maps қолданбасынан координаттарды қою</string>
+    <string name="no_matching_data_found">Сәйкес деректер табылмады</string>
+
+    <!-- PlaceScreen -->
+    <string name="really_want_to_delete_place">Осы орынды шынымен жойғыңыз келе ме?</string>
+    <string name="editing">Өңдеу</string>
+    <string name="really_want_to_edit_place">Осы орынды шынымен өңдегіңіз келе ме?</string>
+
+    <!-- CreateUpdatePeopleColumn -->
+    <string name="people_adding">Тұлға қосу</string>
+    <string name="people_editing">Тұлғаны өңдеу</string>
+    <string name="surname">Тегі</string>
+    <string name="name">Аты</string>
+    <string name="lastname">Әкесінің аты</string>
+    <string name="sex">Жынысы</string>
+    <string name="male">Ер</string>
+    <string name="female">Әйел</string>
+    <string name="date_of_birth">Туған күні</string>
+    <string name="display_name">Көрсетілетін атау</string>
+    <string name="phone_number">Телефон нөмірі</string>
+    <string name="email">Электрондық пошта</string>
+    <string name="address">Мекенжай</string>
+    <string name="not_selected">Таңдалмаған</string>
+    <string name="really_want_to_delete_people">Осы адамды шынымен жойғыңыз келе ме?</string>
+    <string name="select_post_app">Пошта қолданбасын таңдаңыз</string>
+    <string name="post_app_not_defined">Құрылғыда пошта қолданбалары табылмады</string>
+    <string name="error_occurred_when_opening_the_phone">Телефонды ашу кезінде қате орын алды</string>
+
+    <!-- DeveloperScreen -->
+    <string name="developer">Әзірлеуші</string>
+    <string name="developer_nickname" translatable="false">yunuiy_hacker</string>
+    <string name="developer_full_name">Нұрқаев Альфир Харисұлы</string>
+    <string name="developer_surname">Нұрқаев</string>
+    <string name="developer_name">Альфир</string>
+    <string name="developer_lastname">Харисович</string>
+    <string name="support_developer">Әзірлеушіге қолдау көрсету</string>
+    <string name="developer_info_part_1">Сәлеметсіз бе, құрметті пайдаланушы. Менің атым </string>
+    <string name="developer_info_part_2">Мен Пермьдегі жас Android әзірлеушісімін. Бұл салада 2021 жылдан бастап, басында қиын болды, мен көп нәрсені қиналып түсіндім, бірақ бұл менікі екенін білдім және қиындықтар мені көбірек білуге ​​итермеледі, бұл мені осындай нәтижелерге әкелді.</string>
+    <string name="developer_info_part_3">Бұл қолданбалар дүкенінде ресми түрде шығарылған бірінші қолданбам. Әрине, мен мұнымен тоқтап қалмаймын, әлі де өсуге және үйренуге мүмкіндік бар.</string>
+    <string name="developer_info_part_4">Бұл тек бастамасы</string>
+    <string name="developer_info_part_5">Егер менің жұмысым сізге ұнаса, менімен бірге жұмыс істегіңіз келеді - жоғарыдағы барлық сілтемелер, мен сізге көмектесуге қуаныштымын</string>
+    <string name="developer_reference">Басуды тоқтатыңыз, тынышталыңыз</string>
+    <string name="support_developer_text_part1">Телефон нөміріне ақша аудару арқылы маған қолдау көрсете аласыз. Бәлкім, осылай ету арқылы сіз жаңа әңгіменің басын қолдайтын шығарсыз.</string>
+    <string name="support_developer_text_part2">Немесе мүмкін емес</string>
+    <string name="copy">Көшіру</string>
+    <string name="copied">Көшірілген</string>
+
+    <!-- NotificationPermissionInfoDialog -->
+    <string name="need_notification_permission">Хабарландыруларды жіберу үшін қолданбаға рұқсат беру керек</string>
+
+    <!-- LanguageScreen -->
+    <string name="language_change">Тілді өзгерту</string>
+
+    <!-- InterfaceConfiguringScreen -->
+    <string name="show_task_priority">Тапсырмалар үшін басымдықтарды көрсету</string>
+    <string name="show_tasks_statistics">Тапсырма статистикасын көрсету</string>
+
+    <!-- TaskStatisticsColumn -->
+    <string name="completed">Аяқталды</string>
+    <string name="not_completed">Аяқталмаған</string>
+    <string name="displaying_statistics_for_all_tasks">Барлық тапсырмалар үшін статистиканы көрсету</string>
+</resources>

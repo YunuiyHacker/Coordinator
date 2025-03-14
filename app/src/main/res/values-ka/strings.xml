@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Coordinator</string>
+
+    <!-- მომხმარებლის მისალმებები -->
+    <string name="good_morning">დილა მშვიდობის</string>
+    <string name="good_afternoon">შუადღე მშვიდობის</string>
+    <string name="good_evening">საღამო მშვიდობის</string>
+    <string name="good_night">ღამე მშვიდობის</string>
+
+    <!-- დროის ტიპები -->
+    <string name="day">დღე</string>
+    <string name="week">კვირა</string>
+    <string name="month">თვე</string>
+    <string name="year">წელი</string>
+    <string name="life">ცხოვრება</string>
+
+    <!-- OnboardingScreen -->
+    <string name="letter_continue">გაგრძელება</string>
+    <string name="skip">გამოტოვება</string>
+    <string name="start">დაწყება</string>
+    <string name="onboarding_screen1_task1_title">კოორდინატორის ინსტალაცია</string>
+    <string name="onboarding_screen1_task1_content">დააინსტალირეთ კოორდინატორი, შექმენით ამოცანები</string>
+    <string name="onboarding_screen1_task2_title">დავალებების დასრულება</string>
+    <string name="onboarding_screen1_task2_content">შექმნილი ამოცანების გაშვება</string>
+    <string name="onboarding_screen1_title">მართეთ თქვენი დღე</string>
+    <string name="onboarding_screen1_content">შექმენით ამოცანები ყოველდღე, რათა ყველაფერი დაასრულოთ და არაფერი დაივიწყოთ</string>
+    <string name="onboarding_screen2_title">დაამატე მდებარეობები ამოცანებს</string>
+    <string name="onboarding_screen2_content">ეს გაგიადვილებთ ბიზნესის კეთებას. თუ რუკაზე ადგილის ნახვა გჭირდებათ, უბრალოდ დააწკაპუნეთ ადგილის ბარათზე</string>
+    <string name="home">მთავარი</string>
+    <string name="onboarding_screen3_title">დაამატეთ ხალხი ამოცანებს</string>
+    <string name="onboarding_screen3_content">ასე რომ არ დაგავიწყდეთ ვისთან ერთად გააკეთებთ მათ</string>
+
+    <!-- FillNameScreen -->
+    <string name="what_is_your_name_title">რა გქვია?</string>
+    <string name="what_is_your_name_description">გთხოვთ, მოგვაწოდოთ თქვენი სახელი, რომელსაც ჩვენ გამოვიყენებთ თქვენი ამოცანების ჩვენებისა და პერსონალიზაციისთვის</string>
+    <string name="your_name">თქვენი სახელი</string>
+    <string name="get_start">დაწყება</string>
+
+    <!-- საწყისი ეკრანი -->
+    <string name="tasks">დავალებები</string>
+    <string name="cancel_deletion">წაშლის გაუქმება</string>
+    <string name="yes">დიახ</string>
+    <string name="deletion_mode">წაშლის რეჟიმი</string>
+    <string name="delete_all_selected">ყველა არჩეული წაშლა</string>
+    <string name="really_want_to_delete_all_selected_tasks">ნამდვილად გსურთ ყველა არჩეული ამოცანის წაშლა?</string>
+    <string name="all_categories">ყველა კატეგორია</string>
+    <string name="really_want_to_delete_category">ნამდვილად გსურთ ამ კატეგორიის წაშლა?</string>
+    <string name="empty_date">ჩვენ ყველას გვჭირდება შესვენება... ამ თარიღისთვის ამოცანები არ არის</string>
+    <string name="urgent_and_important">გადაუდებელი და მნიშვნელოვანი</string>
+    <string name="not_urgent_and_important">არ არის გადაუდებელი და მნიშვნელოვანი</string>
+    <string name="urgent_and_unimportant">გადაუდებელი და უმნიშვნელო</string>
+    <string name="not_urgent_and_unimportant">არ არის გადაუდებელი და არა მნიშვნელოვანი</string>
+    <string name="not_priority">პრიორიტეტი არ არის</string>
+    <string name="tasks_statistics">დავალებების სტატისტიკა</string>
+
+    <!-- Searchbar -->
+    <string name="try_to_find_task">სცადეთ იპოვოთ დავალება…</string>
+    <string name="search">ძებნა</string>
+
+    <!-- CreateUpdateTaskScreen -->
+    <string name="create_task">შექმენით დავალება</string>
+    <string name="edit_task">დავალებების რედაქტირება</string>
+    <string name="heading">სათაური</string>
+    <string name="content">აღწერა</string>
+    <string name="create">შექმნა</string>
+    <string name="type_of_time">დროის ტიპი</string>
+    <string name="save_changes">ცვლილებების შენახვა</string>
+    <string name="end_time">დამთავრების დრო</string>
+    <string name="end_time_can_not_be_before_start_time">დასრულების დრო არ შეიძლება იყოს ადრე ან იგივე, რაც დაწყების დრო</string>
+    <string name="category">კატეგორია</string>
+    <string name="without_category">კატეგორიის გარეშე</string>
+    <string name="add_subtask">ქვეამოცანის დამატება</string>
+    <string name="location_not_selected">მდებარეობა არჩეულია</string>
+    <string name="add_new_place">ახალი ადგილის დამატება</string>
+    <string name="place">ადგილი</string>
+    <string name="peoples_not_selected">ადამიანები არ არის არჩეული</string>
+    <string name="this_people_already_will_selected">ეს ადამიანი უკვე არჩეულია</string>
+    <string name="peoples_list_is_empty">ადამიანების სია ამჟამად ცარიელია, შეგიძლიათ მათი დამატება პარამეტრებში</string>
+    <string name="remind_later">შემახსენე მოგვიანებით</string>
+    <string name="date">თარიღი</string>
+    <string name="time">დრო</string>
+    <string name="cannot_specify_reminder_time_later_than_task_deadline">თქვენ არ შეგიძლიათ მიუთითოთ შეხსენების დრო დავალების შესრულების ვადაზე გვიან</string>
+    <string name="this_reminder_time_cannot_be_selected">ამ შეხსენების დროის არჩევა შეუძლებელია. ეს დრო უკვე გავიდა</string>
+    <string name="priority">პრიორიტეტი</string>
+
+    <!-- TimePickerDialog -->
+    <string name="select">აირჩიეთ</string>
+
+    <!-- TaskScreen -->
+    <string name="task">ამოცანა</string>
+    <string name="edit">რედაქტირება</string>
+    <string name="delete">წაშლა</string>
+    <string name="deletion">წაშლა</string>
+    <string name="really_want_to_delete_task">დარწმუნებული ხართ, რომ გსურთ ამ ამოცანის წაშლა?</string>
+    <string name="open_in_maps">ნახვა რუკაზე</string>
+    <string name="really_want_open_in_maps">ნამდვილად გსურთ იხილოთ ადგილი რუკაზე?</string>
+    <string name="not_supported_apps">ჩვენ ვერ ვიპოვეთ შესაფერისი აპი თქვენს მოწყობილობაზე</string>
+
+    <!-- SwipeToDeleteBackground -->
+    <string name="deleted">წაშლილია</string>
+
+    <!-- QuestionDialog -->
+    <string name="no">არა</string>
+
+    <!-- AddEditCategoryDialog -->
+    <string name="category_adding">კატეგორიის დამატება</string>
+    <string name="category_editing">რედაქტირების კატეგორია</string>
+    <string name="cancel">გაუქმება</string>
+    <string name="add">დამატება</string>
+    <string name="save">შენახვა</string>
+
+    <!-- SubtaskRow -->
+    <string name="subtask_title">ქვეამოცანის სათაური</string>
+
+    <!-- SettingsScreen -->
+    <string name="settings">პარამეტრები</string>
+    <string name="personal_data">პერსონალური მონაცემები</string>
+    <string name="import_export_data">მონაცემების იმპორტი/ექსპორტი</string>
+    <string name="import_data">მონაცემების იმპორტი</string>
+    <string name="export_data">მონაცემების ექსპორტი</string>
+    <string name="success_export">მონაცემთა ექსპორტი წარმატებით დასრულდა. ჩამოტვირთვებში შენახული ფაილის ექსპორტი</string>
+    <string name="really_want_to_import_data">ნამდვილად გსურთ მონაცემთა იმპორტი? იმპორტირებული მონაცემები დაემატება არსებულს</string>
+    <string name="import_exception">შეცდომა ფაილის იმპორტისას. ფაილი შეიძლება იყოს დაზიანებული ან არ არსებობს</string>
+    <string name="success_import">მონაცემთა იმპორტი წარმატებით დასრულდა</string>
+    <string name="app_data">აპლიკაციის მონაცემები</string>
+    <string name="places">ადგილები</string>
+    <string name="peoples">ხალხი</string>
+    <string name="add_new_people">ახალი ადამიანის დამატება</string>
+    <string name="additionally">დამატებით</string>
+    <string name="info_about_developer">ინფორმაცია დეველოპერის შესახებ</string>
+    <string name="letter_for">ამისთვის</string>
+    <string name="by">დან</string>
+    <string name="access_denied">ფაილზე წვდომა აკრძალულია</string>
+    <string name="undefined_error">უცნობი შეცდომა</string>
+    <string name="incorrect_file_format">არასწორი ფაილის ფორმატი</string>
+    <string name="styling">სტილინგი</string>
+    <string name="theme">თემა</string>
+    <string name="light_theme">მსუბუქი თემა</string>
+    <string name="dark_theme">მუქი თემა</string>
+    <string name="language">ენა</string>
+    <string name="interface_language">ინტერფეისის ენა</string>
+    <string name="interface_letter">ინტერფეისი</string>
+    <string name="interface_configuring">ინტერფეისის კონფიგურაცია</string>
+
+    <!-- CreateUpdatePlaceDialog -->
+    <string name="place_adding">ადგილის დამატება</string>
+    <string name="place_editing">ადგილის რედაქტირება</string>
+    <string name="title">სათაური</string>
+    <string name="longitude">გრძედი</string>
+    <string name="latitude">გრძედი</string>
+    <string name="paste_coordinates_from_google_or_yandex_maps">კოორდინატების ჩასმა Google Maps/Yandex Maps-იდან</string>
+    <string name="no_matching_data_found">შესაბამისი მონაცემები ვერ მოიძებნა</string>
+
+    <!-- PlaceScreen -->
+    <string name="really_want_to_delete_place">ნამდვილად გსურთ ამ ადგილის წაშლა?</string>
+    <string name="editing">რედაქტირება</string>
+    <string name="really_want_to_edit_place">ნამდვილად გსურთ ამ ადგილის რედაქტირება?</string>
+
+    <!-- CreateUpdatePeopleColumn -->
+    <string name="people_adding">ადამიანის დამატება</string>
+    <string name="people_editing">პიროვნების რედაქტირება</string>
+    <string name="surname">გვარი</string>
+    <string name="name">სახელი</string>
+    <string name="lastname">პატრონიმი</string>
+    <string name="sex">სქესი</string>
+    <string name="male">მამაკაცი</string>
+    <string name="female">ქალი</string>
+    <string name="date_of_birth">დაბადების თარიღი</string>
+    <string name="display_name">სახელის ჩვენება</string>
+    <string name="phone_number">ტელეფონის ნომერი</string>
+    <string name="email">ელფოსტა</string>
+    <string name="address">მისამართი</string>
+    <string name="not_selected">არ არის არჩეული</string>
+    <string name="really_want_to_delete_people">ნამდვილად გსურთ ამ ადამიანის წაშლა?</string>
+    <string name="select_post_app">აირჩიეთ ფოსტის აპი</string>
+    <string name="post_app_not_defined">მოწყობილობაში ფოსტის აპები არ მოიძებნა</string>
+    <string name="error_occurred_when_opening_the_phone">ტელეფონის გახსნისას მოხდა შეცდომა</string>
+
+    <!-- DeveloperScreen -->
+    <string name="developer">დეველოპერი</string>
+    <string name="developer_nickname" translatable="false">yunuiy_hacker</string>
+    <string name="developer_full_name">ნურკაევი ალფირ ხარისოვიჩი</string>
+    <string name="developer_surname">ნურკაევი</string>
+    <string name="developer_name">ალფირი</string>
+    <string name="developer_lastname">ჰარისოვიჩი</string>
+    <string name="support_developer">დეველოპერის მხარდაჭერა</string>
+    <string name="developer_info_part_1">გამარჯობა, ძვირფასო მომხმარებელო. ჩემი სახელია </string>
+    <string name="developer_info_part_2">მე ვარ ახალგაზრდა Android დეველოპერი პერმიდან. ამ სფეროში 2021 წლიდან, თავიდან რთული იყო, ბევრი რამ გაჭირვებით მესმოდა, მაგრამ ვიცოდი, რომ ეს ჩემი იყო და სირთულეებმა მხოლოდ უფრო და უფრო მეტის სწავლა მიბიძგა, რამაც საბოლოოდ მიმიყვანა ასეთ შედეგებამდე.</string>
+    <string name="developer_info_part_3">ეს არის ჩემი პირველი აპლიკაცია, რომელიც ოფიციალურად გამოვიდა აპების მაღაზიაში. რა თქმა უნდა, აქ გაჩერებას არ ვაპირებ, ჯერ კიდევ არის ადგილი ზრდისა და სწავლისთვის.</string>
+    <string name="developer_info_part_4">ეს მხოლოდ დასაწყისია</string>
+    <string name="developer_info_part_5">თუ მოგწონთ ჩემი ნამუშევარი, გსურთ ჩემთან თანამშრომლობა - ყველა ზემოთ მოცემული ბმული, მოხარული ვიქნები დაგეხმაროთ</string>
+    <string name="developer_reference">შეაჩერე დაჭერა, დამშვიდდი</string>
+    <string name="developer_phone_formatted" translatable="false">7(922)32–32–042</string>
+    <string name="developer_phone" translatable="false">79223232042</string>
+    <string name="support_developer_text_part1">შეგიძლიათ დამეხმაროთ თანხის გადარიცხვით ტელეფონის ნომერზე. შესაძლოა, ამით თქვენ მხარს დაუჭერთ ახალი ისტორიის დაწყებას.</string>
+    <string name="support_developer_text_part2">ან შესაძლოა არა</string>
+    <string name="copy">კოპირება</string>
+    <string name="copied">კოპირებულია</string>
+
+    <!-- NotificationPermissionInfoDialog -->
+    <string name="need_notification_permission">შეტყობინებების გასაგზავნად, აპლიკაციას უნდა მიეცეს ამის ნებართვა</string>
+
+    <!-- LanguageScreen -->
+    <string name="language_change">ენის შეცვლა</string>
+
+    <!-- InterfaceConfiguringScreen -->
+    <string name="show_task_priority">აჩვენეთ პრიორიტეტები ამოცანებისთვის</string>
+    <string name="show_tasks_statistics">დავალებების სტატისტიკის ჩვენება</string>
+
+    <!-- TaskStatisticsColumn -->
+    <string name="completed">დასრულებულია</string>
+    <string name="not_completed">დასრულებული არ არის</string>
+    <string name="displaying_statistics_for_all_tasks">სტატისტიკის ჩვენება ყველა ამოცანისთვის</string>
+</resources>

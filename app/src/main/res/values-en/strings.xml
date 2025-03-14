@@ -2,13 +2,13 @@
 <resources>
     <string name="app_name">Coordinator</string>
 
-    <!--  Приветствия пользователя  -->
+    <!-- User Greetings -->
     <string name="good_morning">Good morning</string>
     <string name="good_afternoon">Good afternoon</string>
     <string name="good_evening">Good evening</string>
     <string name="good_night">Good night</string>
 
-    <!--  Типы времени  -->
+    <!-- Time types -->
     <string name="day">Day</string>
     <string name="week">Week</string>
     <string name="month">Month</string>
@@ -32,7 +32,7 @@
     <string name="onboarding_screen3_content">So you don\'t forget who you\'re going to do them with</string>
 
     <!--  FillNameScreen  -->
-    <string name="what_is_your_name_title">What is your name?</string>
+    <string name="what_is_your_name_title">what is your name?</string>
     <string name="what_is_your_name_description">Please specify your name, which we will use to display and personalize your tasks</string>
     <string name="your_name">Your name</string>
     <string name="get_start">Start</string>
@@ -46,7 +46,13 @@
     <string name="really_want_to_delete_all_selected_tasks">Do you really want to delete all the selected tasks?</string>
     <string name="all_categories">All categories</string>
     <string name="really_want_to_delete_category">Do you really want to delete this category?</string>
-    <string name="empty_date">We all need a rest sometime.… There are no issues for this date</string>
+    <string name="empty_date">We all need a rest sometime.… There are no tasks for this date</string>
+    <string name="urgent_and_important">Urgent and important</string>
+    <string name="not_urgent_and_important">Not urgent and important</string>
+    <string name="urgent_and_unimportant">Urgent and not important</string>
+    <string name="not_urgent_and_unimportant">Not urgent and not important</string>
+    <string name="not_priority">Without priority</string>
+    <string name="tasks_statistics">Tasks statistics</string>
 
     <!--  SearchBar  -->
     <string name="try_to_find_task">Try to find the issue...</string>
@@ -76,6 +82,7 @@
     <string name="time">Time</string>
     <string name="cannot_specify_reminder_time_later_than_task_deadline">You cannot specify a reminder time later than the task deadline</string>
     <string name="this_reminder_time_cannot_be_selected">This reminder time cannot be selected. That time has already passed</string>
+    <string name="priority">Priority</string>
 
     <!--  TimePickerDialog  -->
     <string name="select">Select</string>
@@ -99,7 +106,7 @@
     <!--  AddEditCategoryDialog  -->
     <string name="category_adding">Adding a category</string>
     <string name="category_editing">Editing a category</string>
-    <string name="cancel">Cancel</string>
+    <string name="cancel">Cancellation</string>
     <string name="add">Add</string>
     <string name="save">Save</string>
 
@@ -128,11 +135,13 @@
     <string name="undefined_error">Unknown error</string>
     <string name="incorrect_file_format">Incorrect file format</string>
     <string name="styling">Stylization</string>
-    <string name="theme">Subject</string>
+    <string name="theme">Theme</string>
     <string name="light_theme">Light theme</string>
     <string name="dark_theme">Dark theme</string>
     <string name="language">Language</string>
     <string name="interface_language">Interface language</string>
+    <string name="interface_letter">Interface</string>
+    <string name="interface_configuring">Interface configuration</string>
 
     <!--  CreateUpdatePlaceDialog  -->
     <string name="place_adding">Adding a place</string>
@@ -182,14 +191,25 @@
     <string name="developer_info_part_4">This is just the beginning</string>
     <string name="developer_info_part_5">If you like my work, you want to cooperate with me - all links above, I will be glad to help you</string>
     <string name="developer_reference">Stop clicking, calm down</string>
+    <string name="developer_phone_formatted" translatable="false">7(922)32–32–042</string>
+    <string name="developer_phone" translatable="false">79223232042</string>
     <string name="support_developer_text_part1">You can support me by transferring funds by phone number. Perhaps by doing so, you will support the beginning of a new story.</string>
     <string name="support_developer_text_part2">Or maybe not</string>
     <string name="copy">Copy</string>
     <string name="copied">Copied</string>
 
     <!--  NotificationPermissionInfoDialog  -->
-    <string name="need_notification_permission">To send notifications, the application must be given permission to do so</string>
+    <string name="need_notification_permission">To send notifications, the application must be given permission</string>
 
     <!--  LanguageScreen  -->
     <string name="language_change">Language change</string>
+
+    <!--  InterfaceConfiguringScreen  -->
+    <string name="show_task_priority">Show priorities for tasks</string>
+    <string name="show_tasks_statistics">Show statistics for tasks</string>
+
+    <!--  TaskStatisticsColumn  -->
+    <string name="completed">Completed</string>
+    <string name="not_completed">Not completed</string>
+    <string name="displaying_statistics_for_all_tasks">Statistics are shown for all tasks</string>
 </resources>

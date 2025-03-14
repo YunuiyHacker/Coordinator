@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Coordinator</string>
+
+    <!-- Salutations d'utilisateur -->
+    <string name="good_morning">Bonjour</string>
+    <string name="good_afternoon">Bonne journée</string>
+    <string name="good_evening">Bonsoir</string>
+    <string name="good_night">Bonne nuit</string>
+
+    <!-- Types de temps -->
+    <string name="day">Jour</string>
+    <string name="week">Semaine</string>
+    <string name="month">Mois</string>
+    <string name="year">Année</string>
+    <string name="life">Vie</string>
+
+    <!-- OnboardingScreen -->
+    <string name="letter_continue">Continuer</string>
+    <string name="skip">Ignorer</string>
+    <string name="start">Démarrer</string>
+    <string name="onboarding_screen1_task1_title">Définir Coordinator</string>
+    <string name="onboarding_screen1_task1_content">Installer Coordinator, créer des tâches</string>
+    <string name="onboarding_screen1_task2_title">Exécuter les tâches</string>
+    <string name="onboarding_screen1_task2_content">Exécuter les tâches créées</string>
+    <string name="onboarding_screen1_title">Gérez votre journée</string>
+    <string name="onboarding_screen1_content">Crée des tâches tous les jours pour que tout se passe bien et n\'oublie rien</string>
+    <string name="onboarding_screen2_title">Ajouter aux tâches d\'espace</string>
+    <string name="onboarding_screen2_content">C\'est comme ça que tu peux t\'occuper de tes affaires. Si vous voulez voir l\'endroit sur la carte, cliquez simplement sur la carte de l\'endroit</string>
+    <string name="home">Maison</string>
+    <string name="onboarding_screen3_title">Ajouter des personnes aux tâches</string>
+    <string name="onboarding_screen3_content">Pour ne pas oublier avec qui vous allez les exécuter</string>
+
+    <!-- FillNameScreen -->
+    <string name="what_is_your_name_title">Quel est votre nom?</string>
+    <string name="what_is_your_name_description">Veuillez indiquer votre nom que nous utiliserons pour afficher et personnaliser vos tâches</string>
+    <string name="your_name">Votre nom</string>
+    <string name="get_start">Démarrer</string>
+
+    <!-- HomeScreen -->
+    <string name="tasks">Tâches</string>
+    <string name="cancel_deletion">Annuler la suppression</string>
+    <string name="yes">Oui</string>
+    <string name="deletion_mode">Mode de suppression</string>
+    <string name="delete_all_selected">Supprimer toutes les sélections</string>
+    <string name="really_want_to_delete_all_selected_tasks">Voulez-vous vraiment supprimer toutes les tâches sélectionnées?</string>
+    <string name="all_categories">Toutes les catégories</string>
+    <string name="really_want_to_delete_category">Voulez-vous vraiment supprimer cette catégorie?</string>
+    <string name="empty_date">Nous avons tous besoin de repos une fois... il n\'y a pas de tâches à cette date</string>
+    <string name="urgent_and_important">Urgent et important</string>
+    <string name="not_urgent_and_important">Pas urgent et important</string>
+    <string name="urgent_and_unimportant">Urgent et peu importe</string>
+    <string name="not_urgent_and_unimportant">Pas urgent et pas important</string>
+    <string name="not_priority">Sans priorité</string>
+    <string name="tasks_statistics">Statistiques sur les tâches</string>
+
+    <!-- SearchBar -->
+    <string name="try_to_find_task">Essayez de trouver la tâche...</string>
+    <string name="search">Rechercher</string>
+
+    <!-- CreateUpdateTaskScreen -->
+    <string name="create_task">Créer une tâche</string>
+    <string name="edit_task">Modifier la tâche</string>
+    <string name="heading">En-tête</string>
+    <string name="content">Description</string>
+    <string name="create">Créer</string>
+    <string name="type_of_time">Type d\'heure</string>
+    <string name="save_changes">Enregistrer les modifications</string>
+    <string name="end_time">Heure de fin</string>
+    <string name="end_time_can_not_be_before_start_time">L\'heure de fin ne peut pas être antérieure ou identique à l\'heure de début</string>
+    <string name="category">Catégorie</string>
+    <string name="without_category">Sans catégorie</string>
+    <string name="add_subtask">Ajouter une sous-tâche</string>
+    <string name="location_not_selected">Aucun emplacement sélectionné</string>
+    <string name="add_new_place">Ajouter un nouvel emplacement</string>
+    <string name="place">Place</string>
+    <string name="peoples_not_selected">Aucun membre sélectionné</string>
+    <string name="this_people_already_will_selected">Cette personne est déjà sélectionnée</string>
+    <string name="peoples_list_is_empty">La liste des personnes est vide, vous pouvez les ajouter dans les paramètres</string>
+    <string name="remind_later">Rappeler plus tard</string>
+    <string name="date">Date</string>
+    <string name="time">Heure</string>
+    <string name="cannot_specify_reminder_time_later_than_task_deadline">Vous ne pouvez pas spécifier une heure de rappel après la date d\'échéance de la tâche</string>
+    <string name="this_reminder_time_cannot_be_selected">Vous ne pouvez pas sélectionner cette heure de rappel. Ce temps est déjà passé</string>
+    <string name="priority">Priorité</string>
+
+    <!-- TimePickerDialog -->
+    <string name="select">Sélectionner</string>
+
+    <!-- TaskScreen -->
+    <string name="task">Tâche</string>
+    <string name="edit">Modifier</string>
+    <string name="delete">Supprimer</string>
+    <string name="deletion">Suppression</string>
+    <string name="really_want_to_delete_task">Voulez-vous vraiment supprimer cette tâche?</string>
+    <string name="open_in_maps">Voir la carte</string>
+    <string name="really_want_open_in_maps">Voulez-vous vraiment voir l\'endroit sur la carte?</string>
+    <string name="not_supported_apps">Aucune application n\'a été trouvée sur votre appareil</string>
+
+    <!-- SwipeToDeleteBackground -->
+    <string name="deleted">Supprimé</string>
+
+    <!-- QuestionDialog -->
+    <string name="no">Non</string>
+
+    <!-- AddEditCategoryDialog -->
+    <string name="category_adding">Ajouter une catégorie</string>
+    <string name="category_editing">Modifier une catégorie</string>
+    <string name="cancel">Annuler</string>
+    <string name="add">Ajouter</string>
+    <string name="save">Enregistrer</string>
+
+    <!-- SubtaskRow -->
+    <string name="subtask_title">Nom du sous-problème</string>
+
+    <!-- SettingsScreen -->
+    <string name="settings">Paramètres</string>
+    <string name="personal_data">Données personnelles</string>
+    <string name="import_export_data">Importer/exporter des données</string>
+    <string name="import_data">Importer des données</string>
+    <string name="export_data">Exporter les données</string>
+    <string name="success_export">Les données ont été exportées avec succès. Le fichier d\'exportation est enregistré dans les téléchargements</string>
+    <string name="really_want_to_import_data">Voulez-vous vraiment importer des données? Les données importées seront ajoutées aux données existantes</string>
+    <string name="import_exception">Erreur lors de l\'importation du fichier. Il est possible que le fichier soit endommagé ou qu\'il n\'existe pas</string>
+    <string name="success_import">Importation réussie</string>
+    <string name="app_data">Données de l\'application</string>
+    <string name="places">Lieux</string>
+    <string name="peoples">Personnes</string>
+    <string name="add_new_people">Ajouter une nouvelle personne</string>
+    <string name="additionally">Avancé</string>
+    <string name="info_about_developer">Informations sur le développeur</string>
+    <string name="letter_for">pour</string>
+    <string name="by">de</string>
+    <string name="access_denied">Accès refusé</string>
+    <string name="undefined_error">Erreur inconnue</string>
+    <string name="incorrect_file_format">Format de fichier incorrect</string>
+    <string name="styling">Style</string>
+    <string name="theme">Thème</string>
+    <string name="light_theme">Thème léger</string>
+    <string name="dark_theme">Thème sombre</string>
+    <string name="language">Langue</string>
+    <string name="interface_language">Langue de l\'interface</string>
+    <string name="interface_letter">Interface</string>
+    <string name="interface_configuring">Configuration de l\'interface</string>
+
+    <!-- CreateUpdatePlaceDialog -->
+    <string name="place_adding">Ajouter un lieu</string>
+    <string name="place_editing">Modifier un lieu</string>
+    <string name="title">Titre</string>
+    <string name="longitude">Longitude</string>
+    <string name="latitude">Latitude</string>
+    <string name="paste_coordinates_from_google_or_yandex_maps">Insérer les coordonnées de Google Maps/Yandex Maps</string>
+    <string name="no_matching_data_found">Aucune donnée correspondante trouvée</string>
+
+    <!-- PlaceScreen -->
+    <string name="really_want_to_delete_place">Voulez-vous vraiment supprimer cet endroit?</string>
+    <string name="editing">Edition</string>
+    <string name="really_want_to_edit_place">Voulez-vous vraiment modifier cet endroit?</string>
+
+    <!-- CreateUpdatePeopleColumn -->
+    <string name="people_adding">Ajouter une personne</string>
+    <string name="people_editing">Modifier une personne</string>
+    <string name="surname">Nom de famille</string>
+    <string name="name">Nom</string>
+    <string name="lastname">Patronyme</string>
+    <string name="sex">Sexe</string>
+    <string name="male">Homme</string>
+    <string name="female">Femme</string>
+    <string name="date_of_birth">Date de naissance</string>
+    <string name="display_name">Nom complet</string>
+    <string name="phone_number">Numéro de téléphone</string>
+    <string name="email">Email</string>
+    <string name="address">Adresse</string>
+    <string name="not_selected">Non sélectionné</string>
+    <string name="really_want_to_delete_people">Voulez-vous vraiment supprimer cette personne?</string>
+    <string name="select_post_app">Sélectionnez votre application de messagerie</string>
+    <string name="post_app_not_defined">Aucune application de messagerie n\'a été détectée sur l\'appareil</string>
+    <string name="error_occurred_when_opening_the_phone">Une erreur s\'est produite lors de l\'ouverture du numéro de téléphone</string>
+
+    <!-- DeveloperScreen -->
+    <string name="developer">Développeur</string>
+    <string name="developer_nickname" translatable="false">yunuiy_hacker</string>
+    <string name="developer_full_name">Nurkaev Alfir Harisovich</string>
+    <string name="developer_surname">Nurkaev</string>
+    <string name="developer_name">Alphir</string>
+    <string name="developer_lastname">Harisovich</string>
+    <string name="support_developer">Soutenir le développeur</string>
+    <string name="developer_info_part_1">Bonjour cher utilisateur. Mon nom est</string>
+    <string name="developer_info_part_2">, je suis un jeune développeur Android de Perm. Dans ce domaine depuis 2021, au début, c\'était difficile, j\'ai beaucoup compris avec difficulté, mais je savais que c\'était le mien, et les difficultés ne m\'ont fait qu\'apprendre de plus en plus, ce qui m\'a finalement conduit à de tels résultats.</string>
+    <string name="developer_info_part_3">Ceci est ma première application officiellement publiée dans l\'App Store. Sur ce, bien sûr, je ne vais pas m\'arrêter, il y a encore où grandir et quoi étudier.</string>
+    <string name="developer_info_part_4">Ce n\'est que le début</string>
+    <string name="developer_info_part_5">Si vous aimez ma créativité, vous voulez collaborer avec moi - tous les liens ci-dessus, je serai heureux de vous aider</string>
+    <string name="developer_reference">Arrêtez de cliquer, calmez-vous</string>
+    <string name="support_developer_text_part1">Vous pouvez me soutenir en transférant des fonds par numéro de téléphone. Peut-être que ce faisant, vous soutiendrez le début d\'une nouvelle histoire.</string>
+    <string name="support_developer_text_part2">Ou peut-être pas</string>
+    <string name="copy">Copier</string>
+    <string name="copied">Copié</string>
+
+    <!-- NotificationPermissionInfoDialog -->
+    <string name="need_notification_permission">Pour envoyer des notifications à une application, vous devez lui accorder l\'autorisation</string>
+
+    <!-- LanguageScreen -->
+    <string name="language_change">Changer la langue</string>
+
+    <!-- InterfaceConfiguringScreen -->
+    <string name="show_task_priority">Afficher les priorités pour les tâches</string>
+    <string name="show_tasks_statistics">Afficher les statistiques des tâches</string>
+
+    <!-- TaskStatisticsColumn -->
+    <string name="completed">Terminé</string>
+    <string name="not_completed">Échec</string>
+    <string name="displaying_statistics_for_all_tasks">Affiche les statistiques pour toutes les tâches</string>
+</resources>

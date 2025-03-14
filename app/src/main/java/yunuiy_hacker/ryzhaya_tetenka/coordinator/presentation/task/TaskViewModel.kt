@@ -13,6 +13,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.mappers.toData
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.mappers.toDomain
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.model.Notification
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.model.People
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.model.Subtask
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.notifications.NotificationsUseCase
@@ -115,13 +116,15 @@ class TaskViewModel @Inject constructor(
                 tasksUseCase.deleteTaskOperator.invoke(state.task.toData())
 
                 val notification =
-                    notificationsUseCase.getNotificationByTaskId(state.task.id).toDomain()
-                workManager.cancelAllWorkByTag(notification.tag)
-                notificationsUseCase.deleteNotificationOperator.invoke(
-                    notificationsUseCase.getNotificationByTaskId.invoke(
-                        state.task.id
+                    notificationsUseCase.getNotificationByTaskId(state.task.id)
+                var notificationDomain: Notification = Notification()
+                if (notification != null) {
+                    notificationDomain = notification.toDomain()
+                    workManager.cancelAllWorkByTag(notificationDomain.tag)
+                    notificationsUseCase.deleteNotificationOperator.invoke(
+                        notification
                     )
-                )
+                }
 
                 state.showQuestionDialog = false
                 state.success = true

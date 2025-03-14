@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Coordinator</string>
+
+    <!-- उपयोगकर्ता अभिवादन -->
+    <string name="good_morning">सुप्रभात</string>
+    <string name="good_afternoon">शुभ दोपहर</string>
+    <string name="good_evening">शुभ संध्या</string>
+    <string name="good_night">शुभ रात्रि</string>
+
+    <!-- समय प्रकार -->
+    <string name="day">दिन</string>
+    <string name="week">सप्ताह</string>
+    <string name="month">महीना</string>
+    <string name="year">वर्ष</string>
+    <string name="life">जीवन</string>
+
+    <!-- ऑनबोर्डिंगस्क्रीन -->
+    <string name="letter_continue">जारी रखें</string>
+    <string name="skip">छोड़ें</string>
+    <string name="start">प्रारंभ</string>
+    <string name="onboarding_screen1_task1_title">इंस्टॉल समन्वयक</string>
+    <string name="onboarding_screen1_task1_content">समन्वयक स्थापित करें, कार्य बनाएँ</string>
+    <string name="onboarding_screen1_task2_title">कार्य पूर्ण करें</string>
+    <string name="onboarding_screen1_task2_content">बनाए गए कार्य चलाएँ</string>
+    <string name="onboarding_screen1_title">अपना दिन प्रबंधित करें</string>
+    <string name="onboarding_screen1_content">हर दिन कार्य बनाएं ताकि सब कुछ पूरा हो जाए और कुछ भी न भूलें</string>
+    <string name="onboarding_screen2_title">कार्यों में स्थान जोड़ें</string>
+    <string name="onboarding_screen2_content">इससे आपके लिए अपना व्यवसाय करना और भी अधिक सुविधाजनक हो जाएगा। यदि आपको मानचित्र पर कोई स्थान देखना है, तो बस स्थान कार्ड पर क्लिक करें</string>
+    <string name="home">होम</string>
+    <string name="onboarding_screen3_title">लोगों को कार्यों में जोड़ें</string>
+    <string name="onboarding_screen3_content">ताकि आप यह न भूलें कि आप किसके साथ यह काम कर रहे हैं</string>
+
+    <!-- फिलनामस्क्रीन -->
+    <string name="what_is_your_name_title">आपका नाम क्या है?</string>
+    <string name="what_is_your_name_description">कृपया अपना नाम प्रदान करें, जिसका उपयोग हम आपके कार्यों को प्रदर्शित करने और उन्हें वैयक्तिकृत करने के लिए करेंगे</string>
+    <string name="your_name">आपका नाम</string>
+    <string name="get_start">प्रारंभ</string>
+
+    <!-- होमस्क्रीन -->
+    <string name="tasks">कार्य</string>
+    <string name="cancel_deletion">हटाना रद्द करें</string>
+    <string name="yes">हाँ</string>
+    <string name="deletion_mode">हटाएँ मोड</string>
+    <string name="delete_all_selected">सभी चयनित हटाएं</string>
+    <string name="really_want_to_delete_all_selected_tasks">क्या आप वास्तव में सभी चयनित कार्यों को हटाना चाहते हैं?</string>
+    <string name="all_categories">सभी श्रेणियाँ</string>
+    <string name="really_want_to_delete_category">क्या आप वास्तव में इस श्रेणी को हटाना चाहते हैं?</string>
+    <string name="empty_date">हम सभी को कभी न कभी ब्रेक की जरूरत होती है... इस तिथि के लिए कोई कार्य नहीं है</string>
+    <string name="urgent_and_important">अत्यावश्यक और महत्वपूर्ण</string>
+    <string name="not_urgent_and_important">अत्यावश्यक नहीं और महत्वपूर्ण</string>
+    <string name="urgent_and_unimportant">अत्यावश्यक और महत्वहीन</string>
+    <string name="not_urgent_and_unimportant">अत्यावश्यक नहीं और महत्वपूर्ण नहीं</string>
+    <string name="not_priority">कोई प्राथमिकता नहीं</string>
+    <string name="tasks_statistics">कार्य आँकड़े</string>
+
+    <!-- सर्चबार -->
+    <string name="try_to_find_task">कोई कार्य ढूंढने का प्रयास करें…</string>
+    <string name="search">खोजें</string>
+
+    <!-- क्रिएटअपडेटटास्कस्क्रीन -->
+    <string name="create_task">एक कार्य बनाएँ</string>
+    <string name="edit_task">कार्य संपादित करें</string>
+    <string name="heading">शीर्षक</string>
+    <string name="content">विवरण</string>
+    <string name="create">बनाएँ</string>
+    <string name="type_of_time">समय प्रकार</string>
+    <string name="save_changes">परिवर्तन सहेजें</string>
+    <string name="end_time">समाप्ति समय</string>
+    <string name="end_time_can_not_be_before_start_time">अंत समय, प्रारंभ समय से पहले या उसके समान नहीं हो सकता</string>
+    <string name="category">श्रेणी</string>
+    <string name="without_category">बिना श्रेणी के</string>
+    <string name="add_subtask">उपकार्य जोड़ें</string>
+    <string name="location_not_selected">स्थान चयनित नहीं है</string>
+    <string name="add_new_place">नया स्थान जोड़ें</string>
+    <string name="place">स्थान</string>
+    <string name="peoples_not_selected">लोग चयनित नहीं हैं</string>
+    <string name="this_people_already_will_selected">इस व्यक्ति का चयन पहले ही हो चुका है</string>
+    <string name="peoples_list_is_empty">लोगों की सूची अभी खाली है, आप उन्हें सेटिंग्स में जोड़ सकते हैं</string>
+    <string name="remind_later">मुझे बाद में याद दिलाएं</string>
+    <string name="date">दिनांक</string>
+    <string name="time">समय</string>
+    <string name="cannot_specify_reminder_time_later_than_task_deadline">आप कार्य की नियत तिथि के बाद का अनुस्मारक समय निर्दिष्ट नहीं कर सकते</string>
+    <string name="this_reminder_time_cannot_be_selected">यह अनुस्मारक समय चुना नहीं जा सकता. वह समय पहले ही बीत चुका है</string>
+    <string name="priority">प्राथमिकता</string>
+
+    <!-- टाइमपिकरडायलॉग -->
+    <string name="select">चुनें</string>
+
+    <!-- टास्कस्क्रीन -->
+    <string name="task">कार्य</string>
+    <string name="edit">संपादित करें</string>
+    <string name="delete">हटाएँ</string>
+    <string name="deletion">हटाएँ</string>
+    <string name="really_want_to_delete_task">क्या आप वाकई इस कार्य को हटाना चाहते हैं?</string>
+    <string name="open_in_maps">मानचित्र पर देखें</string>
+    <string name="really_want_open_in_maps">क्या आप सचमुच उस स्थान को मानचित्र पर देखना चाहते हैं?</string>
+    <string name="not_supported_apps">हमें आपके डिवाइस पर कोई उपयुक्त ऐप नहीं मिला</string>
+
+    <!-- स्वाइपटूडिलीटबैकग्राउंड -->
+    <string name="deleted">हटाया गया</string>
+
+    <!-- प्रश्नसंवाद -->
+    <string name="no">नहीं</string>
+
+    <!-- AddEditCategoryDialog -->
+    <string name="category_adding">श्रेणी जोड़ना</string>
+    <string name="category_editing">श्रेणी संपादित करना</string>
+    <string name="cancel">रद्द करें</string>
+    <string name="add">जोड़ें</string>
+    <string name="save">सहेजें</string>
+
+    <!-- उपकार्य पंक्ति -->
+    <string name="subtask_title">उपकार्य शीर्षक</string>
+
+    <!-- सेटिंग्सस्क्रीन -->
+    <string name="settings">सेटिंग्स</string>
+    <string name="personal_data">व्यक्तिगत डेटा</string>
+    <string name="import_export_data">डेटा आयात/निर्यात करें</string>
+    <string name="import_data">डेटा आयात करें</string>
+    <string name="export_data">डेटा निर्यात करें</string>
+    <string name="success_export">डेटा निर्यात सफलतापूर्वक पूर्ण हुआ. डाउनलोड में सहेजी गई फ़ाइल निर्यात करें</string>
+    <string name="really_want_to_import_data">क्या आप सचमुच डेटा आयात करना चाहते हैं? आयातित डेटा को मौजूदा डेटा में जोड़ दिया जाएगा</string>
+    <string name="import_exception">फ़ाइल आयात करते समय त्रुटि. फ़ाइल दूषित हो सकती है या मौजूद नहीं है</string>
+    <string name="success_import">डेटा आयात सफलतापूर्वक पूरा हुआ</string>
+    <string name="app_data">एप्लिकेशन डेटा</string>
+    <string name="places">स्थान</string>
+    <string name="peoples">लोग</string>
+    <string name="add_new_people">नया व्यक्ति जोड़ें</string>
+    <string name="additionally">अतिरिक्त रूप से</string>
+    <string name="info_about_developer">डेवलपर के बारे में जानकारी</string>
+    <string name="letter_for">के लिए</string>
+    <string name="by">से</string>
+    <string name="access_denied">फ़ाइल तक पहुँच अस्वीकृत</string>
+    <string name="undefined_error">अज्ञात त्रुटि</string>
+    <string name="incorrect_file_format">गलत फ़ाइल प्रारूप</string>
+    <string name="styling">स्टाइलिंग</string>
+    <string name="theme">थीम</string>
+    <string name="light_theme">लाइट थीम</string>
+    <string name="dark_theme">डार्क थीम</string>
+    <string name="language">भाषा</string>
+    <string name="interface_language">इंटरफ़ेस भाषा</string>
+    <string name="interface_letter">इंटरफ़ेस</string>
+    <string name="interface_configuring">इंटरफ़ेस कॉन्फ़िगर करना</string>
+
+    <!-- CreateUpdatePlaceDialog -->
+    <string name="place_adding">स्थान जोड़ना</string>
+    <string name="place_editing">स्थान संपादन</string>
+    <string name="title">शीर्षक</string>
+    <string name="longitude">देशांतर</string>
+    <string name="latitude">अक्षांश</string>
+    <string name="paste_coordinates_from_google_or_yandex_maps">Google मैप्स/Yandex मैप्स से निर्देशांक चिपकाएँ</string>
+    <string name="no_matching_data_found">कोई मेल खाता डेटा नहीं मिला</string>
+
+    <!-- प्लेसस्क्रीन -->
+    <string name="really_want_to_delete_place">क्या आप सचमुच इस स्थान को हटाना चाहते हैं?</string>
+    <string name="editing">संपादन</string>
+    <string name="really_want_to_edit_place">क्या आप वास्तव में इस स्थान को संपादित करना चाहते हैं?</string>
+
+    <!-- CreateUpdatePeopleColumn -->
+    <string name="people_adding">किसी व्यक्ति को जोड़ना</string>
+    <string name="people_editing">किसी व्यक्ति का संपादन करना</string>
+    <string name="surname">उपनाम</string>
+    <string name="name">नाम</string>
+    <string name="lastname">संरक्षक</string>
+    <string name="sex">लिंग</string>
+    <string name="male">पुरुष</string>
+    <string name="female">महिला</string>
+    <string name="date_of_birth">जन्म तिथि</string>
+    <string name="display_name">प्रदर्शन नाम</string>
+    <string name="phone_number">फ़ोन नंबर</string>
+    <string name="email">ईमेल</string>
+    <string name="address">पता</string>
+    <string name="not_selected">चयनित नहीं</string>
+    <string name="really_want_to_delete_people">क्या आप सचमुच इस व्यक्ति को हटाना चाहते हैं?</string>
+    <string name="select_post_app">एक मेल ऐप चुनें</string>
+    <string name="post_app_not_defined">डिवाइस पर कोई मेल ऐप नहीं मिला</string>
+    <string name="error_occurred_when_opening_the_phone">फ़ोन खोलते समय एक त्रुटि हुई</string>
+
+    <!--डेवलपरस्क्रीन -->
+    <string name="developer">डेवलपर</string>
+    <string name="developer_nickname" translatable="false">yunuiy_hacker</string>
+    <string name="developer_full_name">नुरकेव अल्फिर खारिसोविच</string>
+    <string name="developer_surname">नुरकेव</string>
+    <string name="developer_name">अल्फिर</string>
+    <string name="developer_lastname">हरिसोविच</string>
+    <string name="support_developer">डेवलपर का समर्थन करें</string>
+    <string name="developer_info_part_1">नमस्कार, प्रिय उपयोगकर्ता। मेरा नाम है </string>
+    <string name="developer_info_part_2">मैं पर्म का एक युवा एंड्रॉइड डेवलपर हूं। 2021 से इस क्षेत्र में, शुरुआत में यह मुश्किल था, मैंने कठिनाई से बहुत कुछ समझा, लेकिन मुझे पता था कि यह मेरा है, और कठिनाइयों ने मुझे और अधिक सीखने के लिए प्रेरित किया, जिसने अंततः मुझे ऐसे परिणामों तक पहुँचाया।</string>
+    <string name="developer_info_part_3">यह मेरा पहला ऐप है जो आधिकारिक तौर पर ऐप स्टोर पर जारी किया गया है। बेशक, मैं यहीं नहीं रुकने वाला, अभी भी आगे बढ़ने और सीखने की गुंजाइश है।</string>
+    <string name="developer_info_part_4">यह तो बस शुरुआत है</string>
+    <string name="developer_info_part_5">यदि आपको मेरा काम पसंद है, आप मेरे साथ सहयोग करना चाहते हैं - ऊपर दिए गए सभी लिंक, मुझे आपकी मदद करने में खुशी होगी</string>
+    <string name="developer_reference">दबाना बंद करो, शांत हो जाओ</string>
+    <string name="developer_phone_formatted" translatable="false">7(922)32–32–042</string>
+    <string name="developer_phone" translatable="false">79223232042</string>
+    <string name="support_developer_text_part1">आप फ़ोन नंबर पर धनराशि स्थानांतरित करके मेरा समर्थन कर सकते हैं। शायद ऐसा करके आप एक नई कहानी की शुरुआत में सहयोग करेंगे।</string>
+    <string name="support_developer_text_part2">या शायद नहीं</string>
+    <string name="copy">कॉपी करें</string>
+    <string name="copied">कॉपी किया गया</string>
+
+    <!-- अधिसूचना अनुमति सूचना संवाद -->
+    <string name="need_notification_permission">सूचनाएं भेजने के लिए, एप्लिकेशन को ऐसा करने की अनुमति दी जानी चाहिए</string>
+
+    <!-- भाषा स्क्रीन -->
+    <string name="language_change">भाषा बदलें</string>
+
+    <!-- इंटरफ़ेसकॉन्फ़िगरिंगस्क्रीन -->
+    <string name="show_task_priority">कार्यों के लिए प्राथमिकताएँ दिखाएँ</string>
+    <string name="show_tasks_statistics">कार्य आँकड़े दिखाएँ</string>
+
+    <!-- टास्कस्टैटिस्टिक्सकॉलम -->
+    <string name="completed">पूर्ण हुआ</string>
+    <string name="not_completed">पूरा नहीं हुआ</string>
+    <string name="displaying_statistics_for_all_tasks">सभी कार्यों के लिए आँकड़े प्रदर्शित करना</string>
+</resources>

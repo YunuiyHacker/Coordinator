@@ -301,6 +301,41 @@ fun SettingsScreen(
                         }
                     }
                     Spacer(modifier = Modifier.height(16.dp))
+                    //interface configuring
+                    Text(
+                        modifier = Modifier.padding(horizontal = 24.dp),
+                        text = stringResource(R.string.interface_letter).toUpperCase(Locale.ROOT),
+                        fontFamily = caros,
+                        fontWeight = FontWeight.Medium,
+                        fontSize = 14.sp,
+                        color = MaterialTheme.colorScheme.primary
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clip(RoundedCornerShape(14.dp))
+                            .clickable {
+                                navHostController.navigate(Route.InterfaceConfiguringScreen.route)
+                            }, verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Row(modifier = Modifier.padding(horizontal = 24.dp, vertical = 12.dp)) {
+                            Text(
+                                modifier = Modifier.weight(1f),
+                                text = stringResource(R.string.interface_configuring),
+                                fontFamily = caros,
+                                fontWeight = FontWeight.Normal,
+                                fontSize = 16.sp,
+                                color = MaterialTheme.colorScheme.onSurface
+                            )
+                            Icon(
+                                imageVector = Icons.Rounded.KeyboardArrowRight,
+                                contentDescription = null,
+                                tint = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                        }
+                    }
+                    Spacer(modifier = Modifier.height(16.dp))
                     //theme
                     Text(
                         modifier = Modifier.padding(horizontal = 24.dp),
@@ -545,6 +580,7 @@ fun SettingsScreen(
                         color = Color(0xFF757575),
                         textAlign = TextAlign.Center
                     )
+                    Spacer(modifier = Modifier.height(48.dp))
                 }
                 if (state.contentState.isLoading.value) {
                     LoadingDialog(onDismissRequest = {})

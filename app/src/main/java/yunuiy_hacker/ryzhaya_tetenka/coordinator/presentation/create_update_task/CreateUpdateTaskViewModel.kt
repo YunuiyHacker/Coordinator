@@ -2,6 +2,8 @@ package yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.create_update_tas
 
 import android.app.Application
 import android.widget.Toast
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -12,10 +14,12 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.R
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.data.common.model.PlaceInTask
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.data.common.model.Priority
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.data.local.shared_prefs.SharedPrefsHelper
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.mappers.toData
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.mappers.toDomain
@@ -44,8 +48,6 @@ import java.util.GregorianCalendar
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 import kotlin.random.Random
-import kotlin.random.nextLong
-import kotlin.random.nextULong
 
 @HiltViewModel
 class CreateUpdateTaskViewModel @Inject constructor(
@@ -179,6 +181,18 @@ class CreateUpdateTaskViewModel @Inject constructor(
             is CreateUpdateTaskEvent.HideNotificationPermissionInfoDialogEvent -> state.showNotificationPermissionInfoDialog =
                 false
 
+            is CreateUpdateTaskEvent.ShowPrioritySelectorMenuEvent -> state.showPrioritySelectorMenu =
+                true
+
+            is CreateUpdateTaskEvent.SelectPriorityMenuEvent -> {
+                state.selectedPriority.update { event.priority }
+
+                state.showPrioritySelectorMenu = false
+            }
+
+            is CreateUpdateTaskEvent.HidePrioritySelectorMenuEvent -> state.showPrioritySelectorMenu =
+                false
+
             is CreateUpdateTaskEvent.OnBackPressEvent -> saveTaskData()
 
             is CreateUpdateTaskEvent.OnClickButtonEvent -> createOrUpdateTask()
@@ -205,6 +219,15 @@ class CreateUpdateTaskViewModel @Inject constructor(
     @OptIn(DelicateCoroutinesApi::class)
     private fun loadData() {
         state.contentState.isLoading.value = true
+
+        state.priorities = mutableListOf(
+            Priority.URGENT_AND_IMPORTANT,
+            Priority.NOT_URGENT_AND_IMPORTANT,
+            Priority.URGENT_AND_UNIMPORTANT,
+            Priority.NOT_URGENT_AND_UNIMPORTANT,
+            Priority.NOT_PRIORITY
+        )
+        state.selectedPriority.value = Priority.NOT_PRIORITY
 
         if (state.taskId == 0) {
             state.timeType = Constants.timeTypes.find { state.timeTypeId == it.id }!!
@@ -240,6 +263,7 @@ class CreateUpdateTaskViewModel @Inject constructor(
                     state.notifyDate = state.task.notifyDate
                     state.notifyHour = state.task.notifyHour
                     state.notifyMinute = state.task.notifyMinute
+                    state.selectedPriority.update { state.task.priority }
 
                     val c: Calendar = GregorianCalendar()
                     c.timeInMillis = state.date.time
@@ -359,7 +383,8 @@ class CreateUpdateTaskViewModel @Inject constructor(
             notify = state.remindLaterIsChecked,
             notifyDate = state.notifyDate,
             notifyHour = state.notifyHour,
-            notifyMinute = state.notifyMinute
+            notifyMinute = state.notifyMinute,
+            priority = state.selectedPriority.value
         )
         val dataTask = task.toData()
 
@@ -617,19 +642,26 @@ class CreateUpdateTaskViewModel @Inject constructor(
 
         GlobalScope.launch(Dispatchers.IO) {
             runBlocking {
-                val notification = notificationsUseCase.getNotificationByTaskId(task.id).toDomain()
-                workManager.cancelAllWorkByTag(notification.tag)
+                val notification = notificationsUseCase.getNotificationByTaskId(task.id)
+                var notificationDomain: Notification = Notification()
+                if (notification != null) {
+                    notificationDomain = notification.toDomain()
+                    workManager.cancelAllWorkByTag(notificationDomain.tag)
 
-                val data = Data.Builder().putString("title", task.title).putString("content", task.content)
-                val notificationWork =
-                    OneTimeWorkRequest.Builder(NotificationWorker::class.java).setInitialDelay(
-                        timeDiffInMillis, TimeUnit.MILLISECONDS
-                    ).setInputData(data.build()).addTag(rValue).build()
-                workManager.enqueue(notificationWork)
+                    val data =
+                        Data.Builder().putString("title", task.title)
+                            .putString("content", task.content)
+                    val notificationWork =
+                        OneTimeWorkRequest.Builder(NotificationWorker::class.java)
+                            .setInitialDelay(
+                                timeDiffInMillis, TimeUnit.MILLISECONDS
+                            ).setInputData(data.build()).addTag(rValue).build()
+                    workManager.enqueue(notificationWork)
 
-                notificationsUseCase.updateNotificationOperator(
-                    notification.copy(tag = rValue).toData()
-                )
+                    notificationsUseCase.updateNotificationOperator(
+                        notification.copy(tag = rValue)
+                    )
+                }
             }
         }
     }
