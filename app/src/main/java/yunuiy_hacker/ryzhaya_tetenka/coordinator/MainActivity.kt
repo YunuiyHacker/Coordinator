@@ -1,13 +1,17 @@
 package yunuiy_hacker.ryzhaya_tetenka.coordinator
 
 import android.annotation.SuppressLint
+import android.app.Activity
+import android.app.Application
 import android.content.Context
+import android.content.res.Configuration
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -24,6 +28,7 @@ import yunuiy_hacker.ryzhaya_tetenka.coordinator.data.local.shared_prefs.SharedP
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.nav_graph.NavGraph
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.nav_graph.Route
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.ui.theme.CoordinatorTheme
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.utils.LocaleHelper
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.utils.getLanguages
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.utils.setLocale
 import java.util.Locale
@@ -67,6 +72,7 @@ class MainActivity : ComponentActivity() {
                     }!!)
                 }
                 setLocale(application as Context, language.ISOCode)
+                (baseContext as? Activity)?.recreate()
 
                 CoordinatorTheme(
                     colorScheme = MaterialTheme.colorScheme.copy(primary = primary),
@@ -87,5 +93,11 @@ class MainActivity : ComponentActivity() {
         }
         installSplashScreen()
         content()
+    }
+
+    override fun attachBaseContext(newBase: Context) {
+        super.attachBaseContext(
+            LocaleHelper.setLocale(newBase, CoordinatorApplication.locale)
+        )
     }
 }

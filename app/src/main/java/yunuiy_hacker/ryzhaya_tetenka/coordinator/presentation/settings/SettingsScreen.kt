@@ -503,7 +503,7 @@ fun SettingsScreen(
                                                 .height(30.dp),
                                             contentColor = Color(0xFFFFFFFF),
                                             shape = RoundedCornerShape(6.dp),
-                                            shadowElevation = 6.dp,
+                                            shadowElevation = 4.dp,
                                         ) {
                                             Box(
                                                 modifier = Modifier.fillMaxSize(),

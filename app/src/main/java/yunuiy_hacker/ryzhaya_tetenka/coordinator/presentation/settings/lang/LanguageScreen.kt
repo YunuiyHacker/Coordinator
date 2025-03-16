@@ -1,5 +1,6 @@
 package yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.settings.lang
 
+import android.app.Activity
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -32,27 +33,32 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.BeyondBoundsLayout
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.text.layoutDirection
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.R
-import yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.nav_graph.Route
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.common.composable.MessageWithButtonDialog
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.ui.theme.caros
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.utils.getLanguages
+import java.lang.Thread.sleep
+import java.util.Locale
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -66,6 +72,8 @@ fun LanguageScreen(
     LaunchedEffect(Unit) {
         viewModel.onEvent(LanguageEvent.LoadDataEvent)
     }
+
+    var verticalScrollState = rememberScrollState()
 
     var text by remember { mutableStateOf(R.string.language_change) }
 
@@ -106,7 +114,7 @@ fun LanguageScreen(
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(it)
-                        .verticalScroll(rememberScrollState())
+                        .verticalScroll(verticalScrollState)
                 ) {
                     languages.forEachIndexed { index, lang ->
                         Row(
@@ -181,6 +189,16 @@ fun LanguageScreen(
                     }
                 }
             }
+        }
+
+        if (state.showMessageWithButtonDialog) {
+            MessageWithButtonDialog(message = state.message, onDismissRequest = {
+
+            }, onConfirmRequest = {
+                viewModel.onEvent(LanguageEvent.HideMessageWithButtonDialog)
+                sleep(10)
+                (context as? Activity)?.recreate()
+            })
         }
     }
 }

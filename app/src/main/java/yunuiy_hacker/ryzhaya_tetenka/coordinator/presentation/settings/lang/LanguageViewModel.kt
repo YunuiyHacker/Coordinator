@@ -2,7 +2,7 @@ package yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.settings.lang
 
 import android.app.Application
 import android.content.Context
-import android.widget.Toast
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.R
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -25,6 +25,14 @@ class LanguageViewModel @Inject constructor(
             is LanguageEvent.LoadDataEvent -> loadData()
 
             is LanguageEvent.ChangeLanguageEvent -> changeLanguage(event.language)
+
+            is LanguageEvent.ShowMessageWithButtonDialog -> {
+                state.message = event.message
+                state.showMessageWithButtonDialog = true
+            }
+
+            is LanguageEvent.HideMessageWithButtonDialog -> state.showMessageWithButtonDialog =
+                false
         }
     }
 
@@ -42,5 +50,8 @@ class LanguageViewModel @Inject constructor(
         state.language = language
 
         setLocale(application as Context, language.ISOCode)
+
+        state.message = application.getString(R.string.app_will_be_restarted_automatically)
+        state.showMessageWithButtonDialog = true
     }
 }

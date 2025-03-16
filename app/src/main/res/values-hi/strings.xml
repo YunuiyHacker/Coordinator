@@ -186,7 +186,7 @@
     <string name="developer_lastname">हरिसोविच</string>
     <string name="support_developer">डेवलपर का समर्थन करें</string>
     <string name="developer_info_part_1">नमस्कार, प्रिय उपयोगकर्ता। मेरा नाम है </string>
-    <string name="developer_info_part_2">मैं पर्म का एक युवा एंड्रॉइड डेवलपर हूं। 2021 से इस क्षेत्र में, शुरुआत में यह मुश्किल था, मैंने कठिनाई से बहुत कुछ समझा, लेकिन मुझे पता था कि यह मेरा है, और कठिनाइयों ने मुझे और अधिक सीखने के लिए प्रेरित किया, जिसने अंततः मुझे ऐसे परिणामों तक पहुँचाया।</string>
+    <string name="developer_info_part_2">, मैं पर्म का एक युवा एंड्रॉइड डेवलपर हूं। 2021 से इस क्षेत्र में, शुरुआत में यह मुश्किल था, मैंने कठिनाई से बहुत कुछ समझा, लेकिन मुझे पता था कि यह मेरा है, और कठिनाइयों ने मुझे और अधिक सीखने के लिए प्रेरित किया, जिसने अंततः मुझे ऐसे परिणामों तक पहुँचाया।</string>
     <string name="developer_info_part_3">यह मेरा पहला ऐप है जो आधिकारिक तौर पर ऐप स्टोर पर जारी किया गया है। बेशक, मैं यहीं नहीं रुकने वाला, अभी भी आगे बढ़ने और सीखने की गुंजाइश है।</string>
     <string name="developer_info_part_4">यह तो बस शुरुआत है</string>
     <string name="developer_info_part_5">यदि आपको मेरा काम पसंद है, आप मेरे साथ सहयोग करना चाहते हैं - ऊपर दिए गए सभी लिंक, मुझे आपकी मदद करने में खुशी होगी</string>
@@ -205,6 +205,7 @@
     <string name="language_change">भाषा बदलें</string>
 
     <!-- इंटरफ़ेसकॉन्फ़िगरिंगस्क्रीन -->
+    <string name="app_will_be_restarted_automatically">"एप्लिकेशन स्वचालित रूप से पुनरारंभ हो जाएगा । "</string>
     <string name="show_task_priority">कार्यों के लिए प्राथमिकताएँ दिखाएँ</string>
     <string name="show_tasks_statistics">कार्य आँकड़े दिखाएँ</string>
 
@@ -212,4 +213,5 @@
     <string name="completed">पूर्ण हुआ</string>
     <string name="not_completed">पूरा नहीं हुआ</string>
     <string name="displaying_statistics_for_all_tasks">सभी कार्यों के लिए आँकड़े प्रदर्शित करना</string>
+    <string name="okay">खैर</string>
 </resources>

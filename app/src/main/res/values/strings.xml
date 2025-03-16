@@ -202,6 +202,7 @@
 
     <!--  LanguageScreen  -->
     <string name="language_change">Смена языка</string>
+    <string name="app_will_be_restarted_automatically">Приложение будет перезапущено в автоматическом режиме</string>
 
     <!--  InterfaceConfiguringScreen  -->
     <string name="show_task_priority">Показывать приоритеты для задач</string>
@@ -210,7 +211,10 @@
     <!--  TaskStatisticsColumn  -->
     <string name="completed">Выполнено</string>
     <string name="not_completed">Не выполнено</string>
-    <string name="displaying_statistics_for_all_tasks">Показывается статистика для всех задачи</string>
+    <string name="displaying_statistics_for_all_tasks">Показывается статистика для всех задач</string>
+
+    <!--  MessageWithButtonDialog  -->
+    <string name="okay">Хорошо</string>
 
     <!--  languages  -->
     <!--  gb  -->

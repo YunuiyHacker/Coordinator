@@ -175,12 +175,13 @@ class HomeViewModel @Inject constructor(
         state.contentState.isLoading.value = true
         GlobalScope.launch(Dispatchers.IO) {
             runBlocking {
+                state.showTaskPriority = sharedPrefsHelper.showTaskPriority
+                state.showTasksStatistics = sharedPrefsHelper.showTasksStatistics
+
                 state.defaultAllCategoriesValue =
                     Category(id = 0, title = application.getString(R.string.all_categories))
                 loadTasks()
                 loadCategories()
-                state.showTaskPriority = sharedPrefsHelper.showTaskPriority
-                state.showTasksStatistics = sharedPrefsHelper.showTasksStatistics
 
                 defineCompletedTasks()
 

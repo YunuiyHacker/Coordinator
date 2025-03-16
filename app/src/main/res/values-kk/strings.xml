@@ -188,7 +188,7 @@
     <string name="developer_lastname">Харисович</string>
     <string name="support_developer">Әзірлеушіге қолдау көрсету</string>
     <string name="developer_info_part_1">Сәлеметсіз бе, құрметті пайдаланушы. Менің атым </string>
-    <string name="developer_info_part_2">Мен Пермьдегі жас Android әзірлеушісімін. Бұл салада 2021 жылдан бастап, басында қиын болды, мен көп нәрсені қиналып түсіндім, бірақ бұл менікі екенін білдім және қиындықтар мені көбірек білуге ​​итермеледі, бұл мені осындай нәтижелерге әкелді.</string>
+    <string name="developer_info_part_2">, Мен Пермьдегі жас Android әзірлеушісімін. Бұл салада 2021 жылдан бастап, басында қиын болды, мен көп нәрсені қиналып түсіндім, бірақ бұл менікі екенін білдім және қиындықтар мені көбірек білуге ​​итермеледі, бұл мені осындай нәтижелерге әкелді.</string>
     <string name="developer_info_part_3">Бұл қолданбалар дүкенінде ресми түрде шығарылған бірінші қолданбам. Әрине, мен мұнымен тоқтап қалмаймын, әлі де өсуге және үйренуге мүмкіндік бар.</string>
     <string name="developer_info_part_4">Бұл тек бастамасы</string>
     <string name="developer_info_part_5">Егер менің жұмысым сізге ұнаса, менімен бірге жұмыс істегіңіз келеді - жоғарыдағы барлық сілтемелер, мен сізге көмектесуге қуаныштымын</string>
@@ -205,6 +205,7 @@
     <string name="language_change">Тілді өзгерту</string>
 
     <!-- InterfaceConfiguringScreen -->
+    <string name="app_will_be_restarted_automatically">Қолданба автоматты режимде қайта іске қосылады</string>
     <string name="show_task_priority">Тапсырмалар үшін басымдықтарды көрсету</string>
     <string name="show_tasks_statistics">Тапсырма статистикасын көрсету</string>
 
@@ -212,4 +213,5 @@
     <string name="completed">Аяқталды</string>
     <string name="not_completed">Аяқталмаған</string>
     <string name="displaying_statistics_for_all_tasks">Барлық тапсырмалар үшін статистиканы көрсету</string>
+    <string name="okay">Жарайды</string>
 </resources>

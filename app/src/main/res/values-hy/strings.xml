@@ -186,7 +186,7 @@
     <string name="developer_lastname">Հարիսովիչ</string>
     <string name="support_developer">Աջակցեք մշակողին</string>
     <string name="developer_info_part_1">Բարև հարգելի օգտատեր։ Իմ անունն է</string>
-    <string name="developer_info_part_2">Ես Android-ի երիտասարդ ծրագրավորող եմ Պերմից: Այս ոլորտում 2021 թվականից ի վեր, սկզբում դժվար էր, ես դժվարությամբ շատ բան էի հասկանում, բայց գիտեի, որ դա իմն է, և դժվարությունները միայն ստիպեցին ինձ սովորել ավելի ու ավելի շատ բաներ, որոնք ի վերջո ինձ բերեցին նման արդյունքների:</string>
+    <string name="developer_info_part_2">, Ես Android-ի երիտասարդ ծրագրավորող եմ Պերմից: Այս ոլորտում 2021 թվականից ի վեր, սկզբում դժվար էր, ես դժվարությամբ շատ բան էի հասկանում, բայց գիտեի, որ դա իմն է, և դժվարությունները միայն ստիպեցին ինձ սովորել ավելի ու ավելի շատ բաներ, որոնք ի վերջո ինձ բերեցին նման արդյունքների:</string>
     <string name="developer_info_part_3">Սա իմ առաջին հավելվածն է, որը պաշտոնապես թողարկվել է հավելվածների խանութում: Իհարկե, ես չեմ պատրաստվում դրանով կանգ առնել, դեռ աճելու և սովորելու տեղ կա:</string>
     <string name="developer_info_part_4">Սա դեռ սկիզբն է</string>
     <string name="developer_info_part_5">Եթե ձեզ դուր է գալիս իմ աշխատանքը, ցանկանում եք համագործակցել ինձ հետ. վերը նշված բոլոր հղումները, ես ուրախ կլինեմ օգնել ձեզ</string>
@@ -205,6 +205,7 @@
     <string name="language_change">Փոխել լեզուն</string>
 
     <!-- InterfaceConfiguringScreen -->
+    <string name="app_will_be_restarted_automatically">Դիմումը կվերագործարկվի ավտոմատ ռեժիմում</string>
     <string name="show_task_priority">Ցույց տալ առաջադրանքների առաջնահերթությունները</string>
     <string name="show_tasks_statistics">Ցուցադրել առաջադրանքի վիճակագրությունը</string>
 
@@ -212,5 +213,6 @@
     <string name="completed">Ավարտված է</string>
     <string name="not_completed">Ավարտված չէ</string>
     <string name="displaying_statistics_for_all_tasks">Ցուցադրվում է վիճակագրություն բոլոր առաջադրանքների համար</string>
+    <string name="okay">Լավ</string>
 
 </resources>

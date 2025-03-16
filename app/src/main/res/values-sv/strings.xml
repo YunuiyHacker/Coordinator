@@ -203,6 +203,7 @@
     <string name="language_change">Ändra språk</string>
 
     <!-- InterfaceConfiguringScreen -->
+    <string name="app_will_be_restarted_automatically">Programmet startas om automatiskt.</string>
     <string name="show_task_priority">Visa prioriteringar för uppgifter</string>
     <string name="show_tasks_statistics">Visa uppgiftsstatistik</string>
 
@@ -210,4 +211,5 @@
     <string name="completed">Slutförd</string>
     <string name="not_completed">Inte slutförd</string>
     <string name="displaying_statistics_for_all_tasks">Visar statistik för alla uppgifter</string>
+    <string name="okay">Samt</string>
 </resources>

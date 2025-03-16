@@ -186,7 +186,7 @@
     <string name="developer_lastname">ჰარისოვიჩი</string>
     <string name="support_developer">დეველოპერის მხარდაჭერა</string>
     <string name="developer_info_part_1">გამარჯობა, ძვირფასო მომხმარებელო. ჩემი სახელია </string>
-    <string name="developer_info_part_2">მე ვარ ახალგაზრდა Android დეველოპერი პერმიდან. ამ სფეროში 2021 წლიდან, თავიდან რთული იყო, ბევრი რამ გაჭირვებით მესმოდა, მაგრამ ვიცოდი, რომ ეს ჩემი იყო და სირთულეებმა მხოლოდ უფრო და უფრო მეტის სწავლა მიბიძგა, რამაც საბოლოოდ მიმიყვანა ასეთ შედეგებამდე.</string>
+    <string name="developer_info_part_2">, მე ვარ ახალგაზრდა Android დეველოპერი პერმიდან. ამ სფეროში 2021 წლიდან, თავიდან რთული იყო, ბევრი რამ გაჭირვებით მესმოდა, მაგრამ ვიცოდი, რომ ეს ჩემი იყო და სირთულეებმა მხოლოდ უფრო და უფრო მეტის სწავლა მიბიძგა, რამაც საბოლოოდ მიმიყვანა ასეთ შედეგებამდე.</string>
     <string name="developer_info_part_3">ეს არის ჩემი პირველი აპლიკაცია, რომელიც ოფიციალურად გამოვიდა აპების მაღაზიაში. რა თქმა უნდა, აქ გაჩერებას არ ვაპირებ, ჯერ კიდევ არის ადგილი ზრდისა და სწავლისთვის.</string>
     <string name="developer_info_part_4">ეს მხოლოდ დასაწყისია</string>
     <string name="developer_info_part_5">თუ მოგწონთ ჩემი ნამუშევარი, გსურთ ჩემთან თანამშრომლობა - ყველა ზემოთ მოცემული ბმული, მოხარული ვიქნები დაგეხმაროთ</string>
@@ -205,6 +205,7 @@
     <string name="language_change">ენის შეცვლა</string>
 
     <!-- InterfaceConfiguringScreen -->
+    <string name="app_will_be_restarted_automatically">პროგრამა ავტომატურად განახლდება.</string>
     <string name="show_task_priority">აჩვენეთ პრიორიტეტები ამოცანებისთვის</string>
     <string name="show_tasks_statistics">დავალებების სტატისტიკის ჩვენება</string>
 
@@ -212,4 +213,5 @@
     <string name="completed">დასრულებულია</string>
     <string name="not_completed">დასრულებული არ არის</string>
     <string name="displaying_statistics_for_all_tasks">სტატისტიკის ჩვენება ყველა ამოცანისთვის</string>
+    <string name="okay">კარგად</string>
 </resources>

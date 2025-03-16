@@ -10,4 +10,7 @@ class LanguageState {
     var language by mutableStateOf(Language())
 
     val contentState by mutableStateOf(ContentState())
+
+    var message by mutableStateOf("")
+    var showMessageWithButtonDialog by mutableStateOf(false)
 }

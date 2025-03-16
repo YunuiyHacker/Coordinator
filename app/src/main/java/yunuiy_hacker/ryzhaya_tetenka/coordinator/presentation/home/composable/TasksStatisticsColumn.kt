@@ -2,7 +2,6 @@ package yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.home.composable
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
-import androidx.compose.foundation.LocalIndication
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -17,10 +16,10 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -41,7 +40,6 @@ fun TasksStatisticsColumn(
     allNotCompletedTasks: Int
 ) {
     val interactionSource = remember { MutableInteractionSource() }
-    val localIndication = LocalIndication.current
 
     var showStatisticsForAllTasks by remember { mutableStateOf(false) }
 
@@ -60,7 +58,7 @@ fun TasksStatisticsColumn(
                     modifier = Modifier
                         .weight(1f)
                         .clip(RoundedCornerShape(12.dp))
-                        .clickable {
+                        .clickable(interactionSource = interactionSource, indication = null) {
                             showStatisticsForAllTasks = !showStatisticsForAllTasks
                         },
                     horizontalAlignment = Alignment.CenterHorizontally
@@ -92,7 +90,7 @@ fun TasksStatisticsColumn(
                     modifier = Modifier
                         .weight(1f)
                         .clip(RoundedCornerShape(12.dp))
-                        .clickable {
+                        .clickable(interactionSource = interactionSource, indication = null) {
                             showStatisticsForAllTasks = !showStatisticsForAllTasks
                         },
                     horizontalAlignment = Alignment.CenterHorizontally

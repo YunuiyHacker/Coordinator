@@ -18,7 +18,9 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -33,6 +35,7 @@ import yunuiy_hacker.ryzhaya_tetenka.coordinator.utils.DateFormats
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.utils.timeFormatter
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.utils.toTimeTypeEvent
 import java.util.Date
+import java.util.Locale
 
 @Composable
 fun TimeRow(
@@ -50,6 +53,8 @@ fun TimeRow(
     onEndTimeClick: () -> Unit
 ) {
     val interactionSource = remember { MutableInteractionSource() }
+
+    val currentLocale by remember { mutableStateOf(Locale.getDefault()) }
 
     Row(modifier = modifier.animateContentSize()) {
         Row(
@@ -74,27 +79,30 @@ fun TimeRow(
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
                     text = when (timeType.toTimeTypeEvent()) {
-                        TimeTypeEnum.DAY -> DateFormats.DayTimeTypeOutputFormat.format(
-                            date
-                        )
+                        TimeTypeEnum.DAY -> DateFormats.toDayTimeTypeOutputFormat(currentLocale)
+                            .format(
+                                date
+                            ).lowercase()
 
                         TimeTypeEnum.WEEK -> "${
-                            DateFormats.WeekTimeTypeOutputFormatFirstPart.format(
+                            DateFormats.toWeekTimeTypeOutputFormatFirstPart(currentLocale).format(
                                 (weekDate as Pair<*, *>).first
-                            )
+                            ).lowercase()
                         } - ${
-                            DateFormats.WeekTimeTypeOutputFormatSecondPart.format(
+                            DateFormats.toWeekTimeTypeOutputFormatSecondPart(currentLocale).format(
                                 (weekDate).second
-                            )
+                            ).lowercase()
                         }"
 
-                        TimeTypeEnum.MONTH -> DateFormats.MonthTimeTypeOutputFormat.format(
-                            date
-                        )
+                        TimeTypeEnum.MONTH -> DateFormats.toMonthTimeTypeOutputFormat(currentLocale)
+                            .format(
+                                date
+                            ).lowercase()
 
-                        TimeTypeEnum.YEAR -> DateFormats.YearTimeTypeOutputFormat.format(
-                            date
-                        )
+                        TimeTypeEnum.YEAR -> DateFormats.toYearTimeTypeOutputFormat(currentLocale)
+                            .format(
+                                date
+                            ).lowercase()
 
                         TimeTypeEnum.LIFE -> stringResource(R.string.life).lowercase()
                     },

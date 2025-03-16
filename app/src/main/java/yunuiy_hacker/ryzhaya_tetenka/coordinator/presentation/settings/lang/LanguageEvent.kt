@@ -6,4 +6,7 @@ sealed class LanguageEvent {
     data object LoadDataEvent : LanguageEvent()
 
     data class ChangeLanguageEvent(val language: Language) : LanguageEvent()
+
+    data class ShowMessageWithButtonDialog(val message: String) : LanguageEvent()
+    data object HideMessageWithButtonDialog : LanguageEvent()
 }

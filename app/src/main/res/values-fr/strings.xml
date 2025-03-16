@@ -182,7 +182,7 @@
     <string name="developer_nickname" translatable="false">yunuiy_hacker</string>
     <string name="developer_full_name">Nurkaev Alfir Harisovich</string>
     <string name="developer_surname">Nurkaev</string>
-    <string name="developer_name">Alphir</string>
+    <string name="developer_name">Alfir</string>
     <string name="developer_lastname">Harisovich</string>
     <string name="support_developer">Soutenir le développeur</string>
     <string name="developer_info_part_1">Bonjour cher utilisateur. Mon nom est</string>
@@ -203,6 +203,7 @@
     <string name="language_change">Changer la langue</string>
 
     <!-- InterfaceConfiguringScreen -->
+    <string name="app_will_be_restarted_automatically">L\'application redémarre automatiquement</string>
     <string name="show_task_priority">Afficher les priorités pour les tâches</string>
     <string name="show_tasks_statistics">Afficher les statistiques des tâches</string>
 
@@ -210,4 +211,5 @@
     <string name="completed">Terminé</string>
     <string name="not_completed">Échec</string>
     <string name="displaying_statistics_for_all_tasks">Affiche les statistiques pour toutes les tâches</string>
+    <string name="okay">Ça va</string>
 </resources>

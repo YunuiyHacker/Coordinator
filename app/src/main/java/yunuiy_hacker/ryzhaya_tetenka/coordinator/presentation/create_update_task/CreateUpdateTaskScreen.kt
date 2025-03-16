@@ -1,7 +1,6 @@
 package yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.create_update_task
 
 import android.Manifest
-import android.widget.Toast
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
@@ -102,7 +101,6 @@ import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.R
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.model.Place
@@ -124,6 +122,7 @@ import yunuiy_hacker.ryzhaya_tetenka.coordinator.utils.ImageUtils
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.utils.displayName
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.utils.timeFormatter
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.utils.toTimeTypeEvent
+import java.util.Locale
 
 @OptIn(
     ExperimentalMaterial3Api::class, ExperimentalPermissionsApi::class
@@ -136,6 +135,8 @@ fun CreateUpdateTaskScreen(
     val interactionSource = remember { MutableInteractionSource() }
     val bottomButtonInteractionSource = remember { MutableInteractionSource() }
     val localIndication = LocalIndication.current
+    val currentLocale by remember { mutableStateOf(Locale.getDefault()) }
+
     val datePickerState = rememberDatePickerState()
     val isEditMode = viewModel.state.taskId != 0
 
@@ -963,9 +964,11 @@ fun CreateUpdateTaskScreen(
                                             ), verticalAlignment = Alignment.CenterVertically
                                         ) {
                                             Text(
-                                                text = DateFormats.DayTimeTypeOutputFormat.format(
+                                                text = DateFormats.toDayTimeTypeOutputFormat(
+                                                    currentLocale
+                                                ).format(
                                                     state.notifyDate
-                                                ),
+                                                ).lowercase(),
                                                 color = MaterialTheme.colorScheme.onSurface,
                                                 fontFamily = caros,
                                                 fontWeight = FontWeight.Normal,

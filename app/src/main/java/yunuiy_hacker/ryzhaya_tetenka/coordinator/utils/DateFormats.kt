@@ -1,17 +1,21 @@
 package yunuiy_hacker.ryzhaya_tetenka.coordinator.utils
 
-import android.annotation.SuppressLint
-import java.text.SimpleDateFormat
+import android.icu.text.SimpleDateFormat
+import java.util.Locale
 
 object DateFormats {
-    @SuppressLint("SimpleDateFormat")
-    val DayTimeTypeOutputFormat: SimpleDateFormat = SimpleDateFormat("dd MMMM yyyy")
-    @SuppressLint("SimpleDateFormat")
-    val WeekTimeTypeOutputFormatFirstPart: SimpleDateFormat = SimpleDateFormat("dd MMMM")
-    @SuppressLint("SimpleDateFormat")
-    val WeekTimeTypeOutputFormatSecondPart: SimpleDateFormat = SimpleDateFormat("dd MMMM yyyy")
-    @SuppressLint("SimpleDateFormat")
-    val MonthTimeTypeOutputFormat: SimpleDateFormat = SimpleDateFormat("LLLL yyyy")
-    @SuppressLint("SimpleDateFormat")
-    val YearTimeTypeOutputFormat: SimpleDateFormat = SimpleDateFormat("yyyy")
+    fun toDayTimeTypeOutputFormat(locale: Locale): SimpleDateFormat =
+        SimpleDateFormat("dd MMMM yyyy", locale)
+
+    fun toWeekTimeTypeOutputFormatFirstPart(locale: Locale): SimpleDateFormat =
+        SimpleDateFormat("dd MMMM", locale)
+
+    fun toWeekTimeTypeOutputFormatSecondPart(locale: Locale): SimpleDateFormat =
+        SimpleDateFormat("dd MMMM yyyy", locale)
+
+    fun toMonthTimeTypeOutputFormat(locale: Locale): SimpleDateFormat =
+        SimpleDateFormat("LLLL yyyy", locale)
+
+    fun toYearTimeTypeOutputFormat(locale: Locale): SimpleDateFormat =
+        SimpleDateFormat("yyyy", locale)
 }

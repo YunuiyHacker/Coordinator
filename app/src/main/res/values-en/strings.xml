@@ -205,6 +205,7 @@
     <string name="language_change">Language change</string>
 
     <!--  InterfaceConfiguringScreen  -->
+    <string name="app_will_be_restarted_automatically">The application will be restarted automatically.</string>
     <string name="show_task_priority">Show priorities for tasks</string>
     <string name="show_tasks_statistics">Show statistics for tasks</string>
 
@@ -212,4 +213,5 @@
     <string name="completed">Completed</string>
     <string name="not_completed">Not completed</string>
     <string name="displaying_statistics_for_all_tasks">Statistics are shown for all tasks</string>
+    <string name="okay">Okay</string>
 </resources>

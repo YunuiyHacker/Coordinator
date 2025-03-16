@@ -203,6 +203,7 @@
     <string name="language_change">更改語言</string>
 
     <!-- 介面設定畫面 -->
+    <string name="app_will_be_restarted_automatically">应用程序将自动重新启动。</string>
     <string name="show_task_priority">顯示任務的優先權</string>
     <string name="show_tasks_statistics">顯示任務統計資料</string>
 
@@ -210,4 +211,5 @@
     <string name="completed">已完成</string>
     <string name="not_completed">未完成</string>
     <string name="displaying_statistics_for_all_tasks">顯示所有任務的統計資料</string>
+    <string name="okay">好吧</string>
 </resources>

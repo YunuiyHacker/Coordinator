@@ -32,9 +32,9 @@
     <string name="onboarding_screen3_content">Para que não se esqueça com quem o vai fazer</string>
 
     <!-- EcrãDePreenchimentoDeNome -->
-    <string name="what_is_your_name_title">Qual ​​é o seu nome?</string>
+    <string name="what_is_your_name_title">Qual é o seu nome?</string>
     <string name="what_is_your_name_description">Por favor, forneça o seu nome, que utilizaremos para exibir e personalizar as suas tarefas</string>
-    <string name="your_name">O_seu nome</string>
+    <string name="your_name">Seu nome</string>
     <string name="get_start">Iniciar</string>
 
     <!-- Ecrã inicial -->
@@ -185,7 +185,7 @@
     <string name="developer_lastname">Harisovich</string>
     <string name="support_developer">Apoiar o programador</string>
     <string name="developer_info_part_1">Olá, caro utilizador. O meu nome é </string>
-    <string name="developer_info_part_2">Sou um jovem developer Android de Perm. Nesta área desde 2021, no início foi difícil, percebia muita coisa com dificuldade, mas sabia que aquilo era meu, e as dificuldades só me impulsionaram a aprender cada vez mais, o que acabou por me levar a estes resultados.</string>
+    <string name="developer_info_part_2">, Sou um jovem developer Android de Perm. Nesta área desde 2021, no início foi difícil, percebia muita coisa com dificuldade, mas sabia que aquilo era meu, e as dificuldades só me impulsionaram a aprender cada vez mais, o que acabou por me levar a estes resultados.</string>
     <string name="developer_info_part_3">Esta é a minha primeira aplicação lançada oficialmente na app store. Claro que não vou ficar por aqui, ainda há espaço para crescer e aprender.</string>
     <string name="developer_info_part_4">Isto é apenas o início</string>
     <string name="developer_info_part_5">Se gosta do meu trabalho, quer colaborar comigo - todos os links acima, terei todo o gosto em ajudá-lo</string>
@@ -202,6 +202,7 @@
 
     <!-- Ecrã de idioma -->
     <string name="language_change">Alterar idioma</string>
+    <string name="app_will_be_restarted_automatically">O aplicativo será reiniciado automaticamente</string>
 
     <!-- InterfaceConfigurandoEcrã -->
     <string name="show_task_priority">Mostrar prioridades para as tarefas</string>
@@ -211,4 +212,7 @@
     <string name="completed">Concluído</string>
     <string name="not_completed">Não concluído</string>
     <string name="displaying_statistics_for_all_tasks">Apresentando estatísticas para todas as tarefas</string>
+
+    <!--  MessageWithButtonDialog  -->
+    <string name="okay">Bom</string>
 </resources>

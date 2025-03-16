@@ -14,8 +14,10 @@
         android:localeConfig="@xml/locales_config"
         android:requestLegacyExternalStorage="true"
         android:requestRawExternalStorageAccess="true"
+        android:configChanges="locale|layoutDirection|screenSize|smallestScreenSize|orientation"
+        android:windowSoftInputMode="adjustResize"
         android:roundIcon="@mipmap/ic_launcher_round"
-        android:supportsRtl="true"
+        android:supportsRtl="false"
         android:theme="@style/CoordinatorSplashTheme"
         tools:targetApi="34">
         <activity

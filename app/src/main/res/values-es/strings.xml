@@ -203,6 +203,7 @@
     <string name="language_change">Cambio de idioma</string>
 
     <!-- InterfaceConfiguringScreen -->
+    <string name="app_will_be_restarted_automatically">La aplicación se reiniciará automáticamente</string>
     <string name="show_task_priority">Mostrar prioridades para las tareas</string>
     <string name="show_tasks_statistics">Mostrar estadísticas de tareas</string>
 
@@ -210,6 +211,7 @@
     <string name="completed">Completado</string>
     <string name="not_completed">Falló</string>
     <string name="displaying_statistics_for_all_tasks">Muestra estadísticas para todas las tareas</string>
+    <string name="okay">Bueno</string>
 
 
 </resources>

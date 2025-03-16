@@ -126,6 +126,8 @@ fun HomeScreen(navHostController: NavHostController, viewModel: HomeViewModel = 
     val datePickerState = rememberDatePickerState()
     val selectedCategoryOffset = remember { mutableStateOf(Offset(0f, 0f)) }
 
+    val currentLocale by remember { mutableStateOf(Locale.getDefault()) }
+
     LaunchedEffect(Unit) {
         viewModel.onEvent(HomeEvent.LoadDataEvent)
     }
@@ -329,27 +331,27 @@ fun HomeScreen(navHostController: NavHostController, viewModel: HomeViewModel = 
                                                     else -> mutableListOf()
                                                 }.map { date ->
                                                     when (state.timeType.toTimeTypeEvent()) {
-                                                        TimeTypeEnum.DAY -> DateFormats.DayTimeTypeOutputFormat.format(
+                                                        TimeTypeEnum.DAY -> DateFormats.toDayTimeTypeOutputFormat(currentLocale).format(
                                                             date
-                                                        )
+                                                        ).lowercase()
 
                                                         TimeTypeEnum.WEEK -> "${
-                                                            DateFormats.WeekTimeTypeOutputFormatFirstPart.format(
+                                                            DateFormats.toWeekTimeTypeOutputFormatFirstPart(currentLocale).format(
                                                                 (date as Pair<*, *>).first
-                                                            )
+                                                            ).lowercase()
                                                         } - ${
-                                                            DateFormats.WeekTimeTypeOutputFormatSecondPart.format(
+                                                            DateFormats.toWeekTimeTypeOutputFormatSecondPart(currentLocale).format(
                                                                 (date).second
-                                                            )
+                                                            ).lowercase()
                                                         }"
 
-                                                        TimeTypeEnum.MONTH -> DateFormats.MonthTimeTypeOutputFormat.format(
+                                                        TimeTypeEnum.MONTH -> DateFormats.toMonthTimeTypeOutputFormat(currentLocale).format(
                                                             date
-                                                        )
+                                                        ).lowercase()
 
-                                                        TimeTypeEnum.YEAR -> DateFormats.YearTimeTypeOutputFormat.format(
+                                                        TimeTypeEnum.YEAR -> DateFormats.toYearTimeTypeOutputFormat(currentLocale).format(
                                                             date
-                                                        )
+                                                        ).lowercase()
 
                                                         else -> ""
                                                     }
@@ -395,27 +397,27 @@ fun HomeScreen(navHostController: NavHostController, viewModel: HomeViewModel = 
                                     } else {
                                         Text(
                                             text = when (state.timeType.toTimeTypeEvent()) {
-                                                TimeTypeEnum.DAY -> DateFormats.DayTimeTypeOutputFormat.format(
+                                                TimeTypeEnum.DAY -> DateFormats.toDayTimeTypeOutputFormat(currentLocale).format(
                                                     state.selectedDate
-                                                )
+                                                ).lowercase()
 
                                                 TimeTypeEnum.WEEK -> "${
-                                                    DateFormats.WeekTimeTypeOutputFormatFirstPart.format(
+                                                    DateFormats.toWeekTimeTypeOutputFormatFirstPart(currentLocale).format(
                                                         state.selectedWeekStart
-                                                    )
+                                                    ).lowercase()
                                                 } - ${
-                                                    DateFormats.WeekTimeTypeOutputFormatSecondPart.format(
+                                                    DateFormats.toWeekTimeTypeOutputFormatSecondPart(currentLocale).format(
                                                         state.selectedWeekEnd
-                                                    )
+                                                    ).lowercase()
                                                 }"
 
-                                                TimeTypeEnum.MONTH -> DateFormats.MonthTimeTypeOutputFormat.format(
+                                                TimeTypeEnum.MONTH -> DateFormats.toMonthTimeTypeOutputFormat(currentLocale).format(
                                                     state.selectedMonth
-                                                )
+                                                ).lowercase()
 
-                                                TimeTypeEnum.YEAR -> DateFormats.YearTimeTypeOutputFormat.format(
+                                                TimeTypeEnum.YEAR -> DateFormats.toYearTimeTypeOutputFormat(currentLocale).format(
                                                     state.selectedYear
-                                                )
+                                                ).lowercase()
 
                                                 else -> ""
                                             },
@@ -674,736 +676,736 @@ fun HomeScreen(navHostController: NavHostController, viewModel: HomeViewModel = 
                                 notCompletedTasks = state.notCompletedTasks
                             )
                         }
+                    }
                 }
-            }
-            Spacer(modifier = Modifier.height(16.dp))
-            Text(
-                modifier = Modifier.padding(horizontal = 24.dp),
-                text = stringResource(R.string.tasks),
-                fontFamily = caros,
-                fontWeight = FontWeight.Medium,
-                fontSize = 20.sp,
-                color = MaterialTheme.colorScheme.onSurface
-            )
-            Spacer(modifier = Modifier.height(if (state.showTaskPriority) 4.dp else 16.dp))
-            if (!state.contentState.isLoading.value) AnimatedVisibility(
-                modifier = Modifier.fillMaxSize(), visible = !state.contentState.isLoading.value
-            ) {
-                Column(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .animateContentSize(),
-                    verticalArrangement = Arrangement.Center
+                Spacer(modifier = Modifier.height(16.dp))
+                Text(
+                    modifier = Modifier.padding(horizontal = 24.dp),
+                    text = stringResource(R.string.tasks),
+                    fontFamily = caros,
+                    fontWeight = FontWeight.Medium,
+                    fontSize = 20.sp,
+                    color = MaterialTheme.colorScheme.onSurface
+                )
+                Spacer(modifier = Modifier.height(if (state.showTaskPriority) 4.dp else 16.dp))
+                if (!state.contentState.isLoading.value) AnimatedVisibility(
+                    modifier = Modifier.fillMaxSize(), visible = !state.contentState.isLoading.value
                 ) {
-                    if (state.tasks.isNotEmpty()) {
-                        if (!state.showTaskPriority) {
-                            state.tasks.forEach { task ->
-                                key(task.id) {
-                                    TaskItem(
-                                        modifier = Modifier
-                                            .fillMaxWidth()
-                                            .padding(horizontal = 24.dp),
-                                        task = task,
-                                        onCheckedChange = {
-                                            viewModel.onEvent(
-                                                HomeEvent.TaskItemCheckboxToggleEvent(
-                                                    task
+                    Column(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .animateContentSize(),
+                        verticalArrangement = Arrangement.Center
+                    ) {
+                        if (state.tasks.isNotEmpty()) {
+                            if (!state.showTaskPriority) {
+                                state.tasks.forEach { task ->
+                                    key(task.id) {
+                                        TaskItem(
+                                            modifier = Modifier
+                                                .fillMaxWidth()
+                                                .padding(horizontal = 24.dp),
+                                            task = task,
+                                            onCheckedChange = {
+                                                viewModel.onEvent(
+                                                    HomeEvent.TaskItemCheckboxToggleEvent(
+                                                        task
+                                                    )
                                                 )
-                                            )
-                                        },
-                                        onClick = {
-                                            navHostController.navigate("${Route.TaskScreen.route}/${task.id}")
-                                        },
-                                        onLongClick = {
-                                            viewModel.onEvent(HomeEvent.OnDeletionModeEvent)
-                                            if (state.deletionTasks.contains(task)) viewModel.onEvent(
-                                                HomeEvent.RemoveSelectedTaskEvent(task)
-                                            )
-                                            else viewModel.onEvent(
-                                                HomeEvent.AddSelectedTaskEvent(
-                                                    task
+                                            },
+                                            onClick = {
+                                                navHostController.navigate("${Route.TaskScreen.route}/${task.id}")
+                                            },
+                                            onLongClick = {
+                                                viewModel.onEvent(HomeEvent.OnDeletionModeEvent)
+                                                if (state.deletionTasks.contains(task)) viewModel.onEvent(
+                                                    HomeEvent.RemoveSelectedTaskEvent(task)
                                                 )
-                                            )
-                                        },
-                                        isDeletionMode = state.isDeletionMode,
-                                        onDeleteCheckedChange = {
-                                            if (state.deletionTasks.contains(task)) viewModel.onEvent(
-                                                HomeEvent.RemoveSelectedTaskEvent(task)
-                                            )
-                                            else viewModel.onEvent(
-                                                HomeEvent.AddSelectedTaskEvent(
-                                                    task
+                                                else viewModel.onEvent(
+                                                    HomeEvent.AddSelectedTaskEvent(
+                                                        task
+                                                    )
                                                 )
-                                            )
-                                        },
-                                        isDeleteChecked = state.deletionTasks.contains(task),
-                                        onCheckedSubtask = {
-                                            viewModel.onEvent(
-                                                HomeEvent.SubtaskItemCheckboxToggleEvent(
-                                                    it
+                                            },
+                                            isDeletionMode = state.isDeletionMode,
+                                            onDeleteCheckedChange = {
+                                                if (state.deletionTasks.contains(task)) viewModel.onEvent(
+                                                    HomeEvent.RemoveSelectedTaskEvent(task)
                                                 )
-                                            )
+                                                else viewModel.onEvent(
+                                                    HomeEvent.AddSelectedTaskEvent(
+                                                        task
+                                                    )
+                                                )
+                                            },
+                                            isDeleteChecked = state.deletionTasks.contains(task),
+                                            onCheckedSubtask = {
+                                                viewModel.onEvent(
+                                                    HomeEvent.SubtaskItemCheckboxToggleEvent(
+                                                        it
+                                                    )
+                                                )
+                                            }
+                                        )
+                                        if (task.id != state.tasks.last().id) {
+                                            Spacer(modifier = Modifier.height(16.dp))
                                         }
-                                    )
-                                    if (task.id != state.tasks.last().id) {
-                                        Spacer(modifier = Modifier.height(16.dp))
                                     }
                                 }
-                            }
-                        } else {
-                            //urgent_and_important
-                            if (state.urgentAndImportantTasks.isNotEmpty()) {
-                                Column(modifier = Modifier.animateContentSize()) {
-                                    Row(
-                                        modifier = Modifier
-                                            .fillMaxWidth()
-                                            .padding(
-                                                horizontal = 24.dp,
-                                                vertical = 8.dp
-                                            ),
-                                        verticalAlignment = Alignment.CenterVertically
-                                    ) {
-                                        Text(
-                                            modifier = Modifier.clickable(
+                            } else {
+                                //urgent_and_important
+                                if (state.urgentAndImportantTasks.isNotEmpty()) {
+                                    Column(modifier = Modifier.animateContentSize()) {
+                                        Row(
+                                            modifier = Modifier
+                                                .fillMaxWidth()
+                                                .padding(
+                                                    horizontal = 24.dp,
+                                                    vertical = 8.dp
+                                                ),
+                                            verticalAlignment = Alignment.CenterVertically
+                                        ) {
+                                            Text(
+                                                modifier = Modifier.clickable(
+                                                    interactionSource = interactionSource,
+                                                    indication = null
+                                                ) {
+                                                    urgentAndImportantVisibility =
+                                                        !urgentAndImportantVisibility
+                                                },
+                                                text = stringResource(R.string.urgent_and_important),
+                                                fontFamily = caros,
+                                                fontWeight = FontWeight.Medium,
+                                                fontSize = 16.sp,
+                                                color = MaterialTheme.colorScheme.primary,
+                                                textAlign = TextAlign.Center
+                                            )
+                                            Spacer(modifier = Modifier.width(8.dp))
+                                            Box(modifier = Modifier.clickable(
                                                 interactionSource = interactionSource,
                                                 indication = null
                                             ) {
                                                 urgentAndImportantVisibility =
                                                     !urgentAndImportantVisibility
-                                            },
-                                            text = stringResource(R.string.urgent_and_important),
-                                            fontFamily = caros,
-                                            fontWeight = FontWeight.Medium,
-                                            fontSize = 16.sp,
-                                            color = MaterialTheme.colorScheme.primary,
-                                            textAlign = TextAlign.Center
-                                        )
-                                        Spacer(modifier = Modifier.width(8.dp))
-                                        Box(modifier = Modifier.clickable(
-                                            interactionSource = interactionSource,
-                                            indication = null
-                                        ) {
-                                            urgentAndImportantVisibility =
-                                                !urgentAndImportantVisibility
-                                        }) {
-                                            Icon(
-                                                imageVector = if (urgentAndImportantVisibility) Icons.Rounded.ArrowDropUp else Icons.Rounded.ArrowDropDown,
-                                                contentDescription = null,
-                                                tint = MaterialTheme.colorScheme.onSurface.copy(
-                                                    alpha = 0.5f
+                                            }) {
+                                                Icon(
+                                                    imageVector = if (urgentAndImportantVisibility) Icons.Rounded.ArrowDropUp else Icons.Rounded.ArrowDropDown,
+                                                    contentDescription = null,
+                                                    tint = MaterialTheme.colorScheme.onSurface.copy(
+                                                        alpha = 0.5f
+                                                    )
                                                 )
-                                            )
+                                            }
                                         }
-                                    }
-                                    if (urgentAndImportantVisibility) {
-                                        state.urgentAndImportantTasks.forEach { task ->
-                                            key(task.id) {
-                                                TaskItem(
-                                                    modifier = Modifier
-                                                        .fillMaxWidth()
-                                                        .padding(horizontal = 24.dp),
-                                                    task = task,
-                                                    onCheckedChange = {
-                                                        viewModel.onEvent(
-                                                            HomeEvent.TaskItemCheckboxToggleEvent(
-                                                                task
+                                        if (urgentAndImportantVisibility) {
+                                            state.urgentAndImportantTasks.forEach { task ->
+                                                key(task.id) {
+                                                    TaskItem(
+                                                        modifier = Modifier
+                                                            .fillMaxWidth()
+                                                            .padding(horizontal = 24.dp),
+                                                        task = task,
+                                                        onCheckedChange = {
+                                                            viewModel.onEvent(
+                                                                HomeEvent.TaskItemCheckboxToggleEvent(
+                                                                    task
+                                                                )
                                                             )
-                                                        )
-                                                    },
-                                                    onClick = {
-                                                        navHostController.navigate("${Route.TaskScreen.route}/${task.id}")
-                                                    },
-                                                    onLongClick = {
-                                                        viewModel.onEvent(HomeEvent.OnDeletionModeEvent)
-                                                        if (state.deletionTasks.contains(task)) viewModel.onEvent(
-                                                            HomeEvent.RemoveSelectedTaskEvent(
-                                                                task
+                                                        },
+                                                        onClick = {
+                                                            navHostController.navigate("${Route.TaskScreen.route}/${task.id}")
+                                                        },
+                                                        onLongClick = {
+                                                            viewModel.onEvent(HomeEvent.OnDeletionModeEvent)
+                                                            if (state.deletionTasks.contains(task)) viewModel.onEvent(
+                                                                HomeEvent.RemoveSelectedTaskEvent(
+                                                                    task
+                                                                )
                                                             )
-                                                        )
-                                                        else viewModel.onEvent(
-                                                            HomeEvent.AddSelectedTaskEvent(
-                                                                task
+                                                            else viewModel.onEvent(
+                                                                HomeEvent.AddSelectedTaskEvent(
+                                                                    task
+                                                                )
                                                             )
-                                                        )
-                                                    },
-                                                    isDeletionMode = state.isDeletionMode,
-                                                    onDeleteCheckedChange = {
-                                                        if (state.deletionTasks.contains(task)) viewModel.onEvent(
-                                                            HomeEvent.RemoveSelectedTaskEvent(
-                                                                task
+                                                        },
+                                                        isDeletionMode = state.isDeletionMode,
+                                                        onDeleteCheckedChange = {
+                                                            if (state.deletionTasks.contains(task)) viewModel.onEvent(
+                                                                HomeEvent.RemoveSelectedTaskEvent(
+                                                                    task
+                                                                )
                                                             )
-                                                        )
-                                                        else viewModel.onEvent(
-                                                            HomeEvent.AddSelectedTaskEvent(
-                                                                task
+                                                            else viewModel.onEvent(
+                                                                HomeEvent.AddSelectedTaskEvent(
+                                                                    task
+                                                                )
                                                             )
-                                                        )
-                                                    },
-                                                    isDeleteChecked = state.deletionTasks.contains(
-                                                        task
-                                                    ),
-                                                    onCheckedSubtask = {
-                                                        viewModel.onEvent(
-                                                            HomeEvent.SubtaskItemCheckboxToggleEvent(
-                                                                it
+                                                        },
+                                                        isDeleteChecked = state.deletionTasks.contains(
+                                                            task
+                                                        ),
+                                                        onCheckedSubtask = {
+                                                            viewModel.onEvent(
+                                                                HomeEvent.SubtaskItemCheckboxToggleEvent(
+                                                                    it
+                                                                )
                                                             )
-                                                        )
+                                                        }
+                                                    )
+                                                    if (task.id != state.urgentAndImportantTasks.last().id) {
+                                                        Spacer(modifier = Modifier.height(16.dp))
                                                     }
-                                                )
-                                                if (task.id != state.urgentAndImportantTasks.last().id) {
-                                                    Spacer(modifier = Modifier.height(16.dp))
                                                 }
                                             }
                                         }
                                     }
                                 }
-                            }
-                            //not_urgent_and_important
-                            if (state.notUrgentAndImportantTasks.isNotEmpty()) {
-                                Column(modifier = Modifier.animateContentSize()) {
-                                    Row(
-                                        modifier = Modifier
-                                            .fillMaxWidth()
-                                            .padding(
-                                                horizontal = 24.dp,
-                                                vertical = 8.dp
-                                            ),
-                                        verticalAlignment = Alignment.CenterVertically
-                                    ) {
-                                        Text(
-                                            modifier = Modifier.clickable(
+                                //not_urgent_and_important
+                                if (state.notUrgentAndImportantTasks.isNotEmpty()) {
+                                    Column(modifier = Modifier.animateContentSize()) {
+                                        Row(
+                                            modifier = Modifier
+                                                .fillMaxWidth()
+                                                .padding(
+                                                    horizontal = 24.dp,
+                                                    vertical = 8.dp
+                                                ),
+                                            verticalAlignment = Alignment.CenterVertically
+                                        ) {
+                                            Text(
+                                                modifier = Modifier.clickable(
+                                                    interactionSource = interactionSource,
+                                                    indication = null
+                                                ) {
+                                                    notUrgentAndImportantVisibility =
+                                                        !notUrgentAndImportantVisibility
+                                                },
+                                                text = stringResource(R.string.not_urgent_and_important),
+                                                fontFamily = caros,
+                                                fontWeight = FontWeight.Medium,
+                                                fontSize = 16.sp,
+                                                color = MaterialTheme.colorScheme.primary,
+                                                textAlign = TextAlign.Center
+                                            )
+                                            Spacer(modifier = Modifier.width(8.dp))
+                                            Box(modifier = Modifier.clickable(
                                                 interactionSource = interactionSource,
                                                 indication = null
                                             ) {
                                                 notUrgentAndImportantVisibility =
                                                     !notUrgentAndImportantVisibility
-                                            },
-                                            text = stringResource(R.string.not_urgent_and_important),
-                                            fontFamily = caros,
-                                            fontWeight = FontWeight.Medium,
-                                            fontSize = 16.sp,
-                                            color = MaterialTheme.colorScheme.primary,
-                                            textAlign = TextAlign.Center
-                                        )
-                                        Spacer(modifier = Modifier.width(8.dp))
-                                        Box(modifier = Modifier.clickable(
-                                            interactionSource = interactionSource,
-                                            indication = null
-                                        ) {
-                                            notUrgentAndImportantVisibility =
-                                                !notUrgentAndImportantVisibility
-                                        }) {
-                                            Icon(
-                                                imageVector = if (notUrgentAndImportantVisibility) Icons.Rounded.ArrowDropUp else Icons.Rounded.ArrowDropDown,
-                                                contentDescription = null,
-                                                tint = MaterialTheme.colorScheme.onSurface.copy(
-                                                    alpha = 0.5f
+                                            }) {
+                                                Icon(
+                                                    imageVector = if (notUrgentAndImportantVisibility) Icons.Rounded.ArrowDropUp else Icons.Rounded.ArrowDropDown,
+                                                    contentDescription = null,
+                                                    tint = MaterialTheme.colorScheme.onSurface.copy(
+                                                        alpha = 0.5f
+                                                    )
                                                 )
-                                            )
+                                            }
                                         }
-                                    }
-                                    if (notUrgentAndImportantVisibility) {
-                                        state.notUrgentAndImportantTasks.forEach { task ->
-                                            key(task.id) {
-                                                TaskItem(
-                                                    modifier = Modifier
-                                                        .fillMaxWidth()
-                                                        .padding(horizontal = 24.dp),
-                                                    task = task,
-                                                    onCheckedChange = {
-                                                        viewModel.onEvent(
-                                                            HomeEvent.TaskItemCheckboxToggleEvent(
-                                                                task
+                                        if (notUrgentAndImportantVisibility) {
+                                            state.notUrgentAndImportantTasks.forEach { task ->
+                                                key(task.id) {
+                                                    TaskItem(
+                                                        modifier = Modifier
+                                                            .fillMaxWidth()
+                                                            .padding(horizontal = 24.dp),
+                                                        task = task,
+                                                        onCheckedChange = {
+                                                            viewModel.onEvent(
+                                                                HomeEvent.TaskItemCheckboxToggleEvent(
+                                                                    task
+                                                                )
                                                             )
-                                                        )
-                                                    },
-                                                    onClick = {
-                                                        navHostController.navigate("${Route.TaskScreen.route}/${task.id}")
-                                                    },
-                                                    onLongClick = {
-                                                        viewModel.onEvent(HomeEvent.OnDeletionModeEvent)
-                                                        if (state.deletionTasks.contains(task)) viewModel.onEvent(
-                                                            HomeEvent.RemoveSelectedTaskEvent(
-                                                                task
+                                                        },
+                                                        onClick = {
+                                                            navHostController.navigate("${Route.TaskScreen.route}/${task.id}")
+                                                        },
+                                                        onLongClick = {
+                                                            viewModel.onEvent(HomeEvent.OnDeletionModeEvent)
+                                                            if (state.deletionTasks.contains(task)) viewModel.onEvent(
+                                                                HomeEvent.RemoveSelectedTaskEvent(
+                                                                    task
+                                                                )
                                                             )
-                                                        )
-                                                        else viewModel.onEvent(
-                                                            HomeEvent.AddSelectedTaskEvent(
-                                                                task
+                                                            else viewModel.onEvent(
+                                                                HomeEvent.AddSelectedTaskEvent(
+                                                                    task
+                                                                )
                                                             )
-                                                        )
-                                                    },
-                                                    isDeletionMode = state.isDeletionMode,
-                                                    onDeleteCheckedChange = {
-                                                        if (state.deletionTasks.contains(task)) viewModel.onEvent(
-                                                            HomeEvent.RemoveSelectedTaskEvent(
-                                                                task
+                                                        },
+                                                        isDeletionMode = state.isDeletionMode,
+                                                        onDeleteCheckedChange = {
+                                                            if (state.deletionTasks.contains(task)) viewModel.onEvent(
+                                                                HomeEvent.RemoveSelectedTaskEvent(
+                                                                    task
+                                                                )
                                                             )
-                                                        )
-                                                        else viewModel.onEvent(
-                                                            HomeEvent.AddSelectedTaskEvent(
-                                                                task
+                                                            else viewModel.onEvent(
+                                                                HomeEvent.AddSelectedTaskEvent(
+                                                                    task
+                                                                )
                                                             )
-                                                        )
-                                                    },
-                                                    isDeleteChecked = state.deletionTasks.contains(
-                                                        task
-                                                    ),
-                                                    onCheckedSubtask = {
-                                                        viewModel.onEvent(
-                                                            HomeEvent.SubtaskItemCheckboxToggleEvent(
-                                                                it
+                                                        },
+                                                        isDeleteChecked = state.deletionTasks.contains(
+                                                            task
+                                                        ),
+                                                        onCheckedSubtask = {
+                                                            viewModel.onEvent(
+                                                                HomeEvent.SubtaskItemCheckboxToggleEvent(
+                                                                    it
+                                                                )
                                                             )
-                                                        )
+                                                        }
+                                                    )
+                                                    if (task.id != state.notUrgentAndImportantTasks.last().id) {
+                                                        Spacer(modifier = Modifier.height(16.dp))
                                                     }
-                                                )
-                                                if (task.id != state.notUrgentAndImportantTasks.last().id) {
-                                                    Spacer(modifier = Modifier.height(16.dp))
                                                 }
                                             }
                                         }
                                     }
                                 }
-                            }
-                            //urgent_and_unimportant
-                            if (state.urgentAndUnimportantTasks.isNotEmpty()) {
-                                Column(modifier = Modifier.animateContentSize()) {
-                                    Row(
-                                        modifier = Modifier
-                                            .fillMaxWidth()
-                                            .padding(
-                                                horizontal = 24.dp,
-                                                vertical = 8.dp
-                                            ),
-                                        verticalAlignment = Alignment.CenterVertically
-                                    ) {
-                                        Text(
-                                            modifier = Modifier.clickable(
+                                //urgent_and_unimportant
+                                if (state.urgentAndUnimportantTasks.isNotEmpty()) {
+                                    Column(modifier = Modifier.animateContentSize()) {
+                                        Row(
+                                            modifier = Modifier
+                                                .fillMaxWidth()
+                                                .padding(
+                                                    horizontal = 24.dp,
+                                                    vertical = 8.dp
+                                                ),
+                                            verticalAlignment = Alignment.CenterVertically
+                                        ) {
+                                            Text(
+                                                modifier = Modifier.clickable(
+                                                    interactionSource = interactionSource,
+                                                    indication = null
+                                                ) {
+                                                    urgentAndUnimportantVisibility =
+                                                        !urgentAndUnimportantVisibility
+                                                },
+                                                text = stringResource(R.string.urgent_and_unimportant),
+                                                fontFamily = caros,
+                                                fontWeight = FontWeight.Medium,
+                                                fontSize = 16.sp,
+                                                color = MaterialTheme.colorScheme.primary,
+                                                textAlign = TextAlign.Center
+                                            )
+                                            Spacer(modifier = Modifier.width(8.dp))
+                                            Box(modifier = Modifier.clickable(
                                                 interactionSource = interactionSource,
                                                 indication = null
                                             ) {
                                                 urgentAndUnimportantVisibility =
                                                     !urgentAndUnimportantVisibility
-                                            },
-                                            text = stringResource(R.string.urgent_and_unimportant),
-                                            fontFamily = caros,
-                                            fontWeight = FontWeight.Medium,
-                                            fontSize = 16.sp,
-                                            color = MaterialTheme.colorScheme.primary,
-                                            textAlign = TextAlign.Center
-                                        )
-                                        Spacer(modifier = Modifier.width(8.dp))
-                                        Box(modifier = Modifier.clickable(
-                                            interactionSource = interactionSource,
-                                            indication = null
-                                        ) {
-                                            urgentAndUnimportantVisibility =
-                                                !urgentAndUnimportantVisibility
-                                        }) {
-                                            Icon(
-                                                imageVector = if (urgentAndUnimportantVisibility) Icons.Rounded.ArrowDropUp else Icons.Rounded.ArrowDropDown,
-                                                contentDescription = null,
-                                                tint = MaterialTheme.colorScheme.onSurface.copy(
-                                                    alpha = 0.5f
+                                            }) {
+                                                Icon(
+                                                    imageVector = if (urgentAndUnimportantVisibility) Icons.Rounded.ArrowDropUp else Icons.Rounded.ArrowDropDown,
+                                                    contentDescription = null,
+                                                    tint = MaterialTheme.colorScheme.onSurface.copy(
+                                                        alpha = 0.5f
+                                                    )
                                                 )
-                                            )
+                                            }
                                         }
-                                    }
-                                    if (urgentAndUnimportantVisibility) {
-                                        state.urgentAndUnimportantTasks.forEach { task ->
-                                            key(task.id) {
-                                                TaskItem(
-                                                    modifier = Modifier
-                                                        .fillMaxWidth()
-                                                        .padding(horizontal = 24.dp),
-                                                    task = task,
-                                                    onCheckedChange = {
-                                                        viewModel.onEvent(
-                                                            HomeEvent.TaskItemCheckboxToggleEvent(
-                                                                task
+                                        if (urgentAndUnimportantVisibility) {
+                                            state.urgentAndUnimportantTasks.forEach { task ->
+                                                key(task.id) {
+                                                    TaskItem(
+                                                        modifier = Modifier
+                                                            .fillMaxWidth()
+                                                            .padding(horizontal = 24.dp),
+                                                        task = task,
+                                                        onCheckedChange = {
+                                                            viewModel.onEvent(
+                                                                HomeEvent.TaskItemCheckboxToggleEvent(
+                                                                    task
+                                                                )
                                                             )
-                                                        )
-                                                    },
-                                                    onClick = {
-                                                        navHostController.navigate("${Route.TaskScreen.route}/${task.id}")
-                                                    },
-                                                    onLongClick = {
-                                                        viewModel.onEvent(HomeEvent.OnDeletionModeEvent)
-                                                        if (state.deletionTasks.contains(task)) viewModel.onEvent(
-                                                            HomeEvent.RemoveSelectedTaskEvent(
-                                                                task
+                                                        },
+                                                        onClick = {
+                                                            navHostController.navigate("${Route.TaskScreen.route}/${task.id}")
+                                                        },
+                                                        onLongClick = {
+                                                            viewModel.onEvent(HomeEvent.OnDeletionModeEvent)
+                                                            if (state.deletionTasks.contains(task)) viewModel.onEvent(
+                                                                HomeEvent.RemoveSelectedTaskEvent(
+                                                                    task
+                                                                )
                                                             )
-                                                        )
-                                                        else viewModel.onEvent(
-                                                            HomeEvent.AddSelectedTaskEvent(
-                                                                task
+                                                            else viewModel.onEvent(
+                                                                HomeEvent.AddSelectedTaskEvent(
+                                                                    task
+                                                                )
                                                             )
-                                                        )
-                                                    },
-                                                    isDeletionMode = state.isDeletionMode,
-                                                    onDeleteCheckedChange = {
-                                                        if (state.deletionTasks.contains(task)) viewModel.onEvent(
-                                                            HomeEvent.RemoveSelectedTaskEvent(
-                                                                task
+                                                        },
+                                                        isDeletionMode = state.isDeletionMode,
+                                                        onDeleteCheckedChange = {
+                                                            if (state.deletionTasks.contains(task)) viewModel.onEvent(
+                                                                HomeEvent.RemoveSelectedTaskEvent(
+                                                                    task
+                                                                )
                                                             )
-                                                        )
-                                                        else viewModel.onEvent(
-                                                            HomeEvent.AddSelectedTaskEvent(
-                                                                task
+                                                            else viewModel.onEvent(
+                                                                HomeEvent.AddSelectedTaskEvent(
+                                                                    task
+                                                                )
                                                             )
-                                                        )
-                                                    },
-                                                    isDeleteChecked = state.deletionTasks.contains(
-                                                        task
-                                                    ),
-                                                    onCheckedSubtask = {
-                                                        viewModel.onEvent(
-                                                            HomeEvent.SubtaskItemCheckboxToggleEvent(
-                                                                it
+                                                        },
+                                                        isDeleteChecked = state.deletionTasks.contains(
+                                                            task
+                                                        ),
+                                                        onCheckedSubtask = {
+                                                            viewModel.onEvent(
+                                                                HomeEvent.SubtaskItemCheckboxToggleEvent(
+                                                                    it
+                                                                )
                                                             )
-                                                        )
+                                                        }
+                                                    )
+                                                    if (task.id != state.urgentAndUnimportantTasks.last().id) {
+                                                        Spacer(modifier = Modifier.height(16.dp))
                                                     }
-                                                )
-                                                if (task.id != state.urgentAndUnimportantTasks.last().id) {
-                                                    Spacer(modifier = Modifier.height(16.dp))
                                                 }
                                             }
                                         }
                                     }
                                 }
-                            }
-                            //not_urgent_and_unimportant
-                            if (state.notUrgentAndUnimportantTasks.isNotEmpty()) {
-                                Column(modifier = Modifier.animateContentSize()) {
-                                    Row(
-                                        modifier = Modifier
-                                            .fillMaxWidth()
-                                            .padding(
-                                                horizontal = 24.dp,
-                                                vertical = 8.dp
-                                            ),
-                                        verticalAlignment = Alignment.CenterVertically
-                                    ) {
-                                        Text(
-                                            modifier = Modifier.clickable(
+                                //not_urgent_and_unimportant
+                                if (state.notUrgentAndUnimportantTasks.isNotEmpty()) {
+                                    Column(modifier = Modifier.animateContentSize()) {
+                                        Row(
+                                            modifier = Modifier
+                                                .fillMaxWidth()
+                                                .padding(
+                                                    horizontal = 24.dp,
+                                                    vertical = 8.dp
+                                                ),
+                                            verticalAlignment = Alignment.CenterVertically
+                                        ) {
+                                            Text(
+                                                modifier = Modifier.clickable(
+                                                    interactionSource = interactionSource,
+                                                    indication = null
+                                                ) {
+                                                    notUrgentAndUnimportantVisibility =
+                                                        !notUrgentAndUnimportantVisibility
+                                                },
+                                                text = stringResource(R.string.not_urgent_and_unimportant),
+                                                fontFamily = caros,
+                                                fontWeight = FontWeight.Medium,
+                                                fontSize = 16.sp,
+                                                color = MaterialTheme.colorScheme.primary,
+                                                textAlign = TextAlign.Center
+                                            )
+                                            Spacer(modifier = Modifier.width(8.dp))
+                                            Box(modifier = Modifier.clickable(
                                                 interactionSource = interactionSource,
                                                 indication = null
                                             ) {
                                                 notUrgentAndUnimportantVisibility =
                                                     !notUrgentAndUnimportantVisibility
-                                            },
-                                            text = stringResource(R.string.not_urgent_and_unimportant),
-                                            fontFamily = caros,
-                                            fontWeight = FontWeight.Medium,
-                                            fontSize = 16.sp,
-                                            color = MaterialTheme.colorScheme.primary,
-                                            textAlign = TextAlign.Center
-                                        )
-                                        Spacer(modifier = Modifier.width(8.dp))
-                                        Box(modifier = Modifier.clickable(
-                                            interactionSource = interactionSource,
-                                            indication = null
-                                        ) {
-                                            notUrgentAndUnimportantVisibility =
-                                                !notUrgentAndUnimportantVisibility
-                                        }) {
-                                            Icon(
-                                                imageVector = if (notUrgentAndUnimportantVisibility) Icons.Rounded.ArrowDropUp else Icons.Rounded.ArrowDropDown,
-                                                contentDescription = null,
-                                                tint = MaterialTheme.colorScheme.onSurface.copy(
-                                                    alpha = 0.5f
+                                            }) {
+                                                Icon(
+                                                    imageVector = if (notUrgentAndUnimportantVisibility) Icons.Rounded.ArrowDropUp else Icons.Rounded.ArrowDropDown,
+                                                    contentDescription = null,
+                                                    tint = MaterialTheme.colorScheme.onSurface.copy(
+                                                        alpha = 0.5f
+                                                    )
                                                 )
-                                            )
+                                            }
                                         }
-                                    }
-                                    if (notUrgentAndUnimportantVisibility) {
-                                        state.notUrgentAndUnimportantTasks.forEach { task ->
-                                            key(task.id) {
-                                                TaskItem(
-                                                    modifier = Modifier
-                                                        .fillMaxWidth()
-                                                        .padding(horizontal = 24.dp),
-                                                    task = task,
-                                                    onCheckedChange = {
-                                                        viewModel.onEvent(
-                                                            HomeEvent.TaskItemCheckboxToggleEvent(
-                                                                task
+                                        if (notUrgentAndUnimportantVisibility) {
+                                            state.notUrgentAndUnimportantTasks.forEach { task ->
+                                                key(task.id) {
+                                                    TaskItem(
+                                                        modifier = Modifier
+                                                            .fillMaxWidth()
+                                                            .padding(horizontal = 24.dp),
+                                                        task = task,
+                                                        onCheckedChange = {
+                                                            viewModel.onEvent(
+                                                                HomeEvent.TaskItemCheckboxToggleEvent(
+                                                                    task
+                                                                )
                                                             )
-                                                        )
-                                                    },
-                                                    onClick = {
-                                                        navHostController.navigate("${Route.TaskScreen.route}/${task.id}")
-                                                    },
-                                                    onLongClick = {
-                                                        viewModel.onEvent(HomeEvent.OnDeletionModeEvent)
-                                                        if (state.deletionTasks.contains(task)) viewModel.onEvent(
-                                                            HomeEvent.RemoveSelectedTaskEvent(
-                                                                task
+                                                        },
+                                                        onClick = {
+                                                            navHostController.navigate("${Route.TaskScreen.route}/${task.id}")
+                                                        },
+                                                        onLongClick = {
+                                                            viewModel.onEvent(HomeEvent.OnDeletionModeEvent)
+                                                            if (state.deletionTasks.contains(task)) viewModel.onEvent(
+                                                                HomeEvent.RemoveSelectedTaskEvent(
+                                                                    task
+                                                                )
                                                             )
-                                                        )
-                                                        else viewModel.onEvent(
-                                                            HomeEvent.AddSelectedTaskEvent(
-                                                                task
+                                                            else viewModel.onEvent(
+                                                                HomeEvent.AddSelectedTaskEvent(
+                                                                    task
+                                                                )
                                                             )
-                                                        )
-                                                    },
-                                                    isDeletionMode = state.isDeletionMode,
-                                                    onDeleteCheckedChange = {
-                                                        if (state.deletionTasks.contains(task)) viewModel.onEvent(
-                                                            HomeEvent.RemoveSelectedTaskEvent(
-                                                                task
+                                                        },
+                                                        isDeletionMode = state.isDeletionMode,
+                                                        onDeleteCheckedChange = {
+                                                            if (state.deletionTasks.contains(task)) viewModel.onEvent(
+                                                                HomeEvent.RemoveSelectedTaskEvent(
+                                                                    task
+                                                                )
                                                             )
-                                                        )
-                                                        else viewModel.onEvent(
-                                                            HomeEvent.AddSelectedTaskEvent(
-                                                                task
+                                                            else viewModel.onEvent(
+                                                                HomeEvent.AddSelectedTaskEvent(
+                                                                    task
+                                                                )
                                                             )
-                                                        )
-                                                    },
-                                                    isDeleteChecked = state.deletionTasks.contains(
-                                                        task
-                                                    ),
-                                                    onCheckedSubtask = {
-                                                        viewModel.onEvent(
-                                                            HomeEvent.SubtaskItemCheckboxToggleEvent(
-                                                                it
+                                                        },
+                                                        isDeleteChecked = state.deletionTasks.contains(
+                                                            task
+                                                        ),
+                                                        onCheckedSubtask = {
+                                                            viewModel.onEvent(
+                                                                HomeEvent.SubtaskItemCheckboxToggleEvent(
+                                                                    it
+                                                                )
                                                             )
-                                                        )
+                                                        }
+                                                    )
+                                                    if (task.id != state.notUrgentAndUnimportantTasks.last().id) {
+                                                        Spacer(modifier = Modifier.height(16.dp))
                                                     }
-                                                )
-                                                if (task.id != state.notUrgentAndUnimportantTasks.last().id) {
-                                                    Spacer(modifier = Modifier.height(16.dp))
                                                 }
                                             }
                                         }
                                     }
                                 }
-                            }
-                            //not_priority
-                            if (state.notPriorityTasks.isNotEmpty()) {
-                                Column(modifier = Modifier.animateContentSize()) {
-                                    Row(
-                                        modifier = Modifier
-                                            .fillMaxWidth()
-                                            .padding(
-                                                horizontal = 24.dp,
-                                                vertical = 8.dp
-                                            ),
-                                        verticalAlignment = Alignment.CenterVertically
-                                    ) {
-                                        Text(
-                                            modifier = Modifier.clickable(
+                                //not_priority
+                                if (state.notPriorityTasks.isNotEmpty()) {
+                                    Column(modifier = Modifier.animateContentSize()) {
+                                        Row(
+                                            modifier = Modifier
+                                                .fillMaxWidth()
+                                                .padding(
+                                                    horizontal = 24.dp,
+                                                    vertical = 8.dp
+                                                ),
+                                            verticalAlignment = Alignment.CenterVertically
+                                        ) {
+                                            Text(
+                                                modifier = Modifier.clickable(
+                                                    interactionSource = interactionSource,
+                                                    indication = null
+                                                ) {
+                                                    notPriority =
+                                                        !notPriority
+                                                },
+                                                text = stringResource(R.string.not_priority),
+                                                fontFamily = caros,
+                                                fontWeight = FontWeight.Medium,
+                                                fontSize = 16.sp,
+                                                color = MaterialTheme.colorScheme.primary,
+                                                textAlign = TextAlign.Center
+                                            )
+                                            Spacer(modifier = Modifier.width(8.dp))
+                                            Box(modifier = Modifier.clickable(
                                                 interactionSource = interactionSource,
                                                 indication = null
                                             ) {
                                                 notPriority =
                                                     !notPriority
-                                            },
-                                            text = stringResource(R.string.not_priority),
-                                            fontFamily = caros,
-                                            fontWeight = FontWeight.Medium,
-                                            fontSize = 16.sp,
-                                            color = MaterialTheme.colorScheme.primary,
-                                            textAlign = TextAlign.Center
-                                        )
-                                        Spacer(modifier = Modifier.width(8.dp))
-                                        Box(modifier = Modifier.clickable(
-                                            interactionSource = interactionSource,
-                                            indication = null
-                                        ) {
-                                            notPriority =
-                                                !notPriority
-                                        }) {
-                                            Icon(
-                                                imageVector = if (notPriority) Icons.Rounded.ArrowDropUp else Icons.Rounded.ArrowDropDown,
-                                                contentDescription = null,
-                                                tint = MaterialTheme.colorScheme.onSurface.copy(
-                                                    alpha = 0.5f
+                                            }) {
+                                                Icon(
+                                                    imageVector = if (notPriority) Icons.Rounded.ArrowDropUp else Icons.Rounded.ArrowDropDown,
+                                                    contentDescription = null,
+                                                    tint = MaterialTheme.colorScheme.onSurface.copy(
+                                                        alpha = 0.5f
+                                                    )
                                                 )
-                                            )
+                                            }
                                         }
-                                    }
-                                    if (notPriority) {
-                                        state.notPriorityTasks.forEach { task ->
-                                            key(task.id) {
-                                                TaskItem(
-                                                    modifier = Modifier
-                                                        .fillMaxWidth()
-                                                        .padding(horizontal = 24.dp),
-                                                    task = task,
-                                                    onCheckedChange = {
-                                                        viewModel.onEvent(
-                                                            HomeEvent.TaskItemCheckboxToggleEvent(
-                                                                task
+                                        if (notPriority) {
+                                            state.notPriorityTasks.forEach { task ->
+                                                key(task.id) {
+                                                    TaskItem(
+                                                        modifier = Modifier
+                                                            .fillMaxWidth()
+                                                            .padding(horizontal = 24.dp),
+                                                        task = task,
+                                                        onCheckedChange = {
+                                                            viewModel.onEvent(
+                                                                HomeEvent.TaskItemCheckboxToggleEvent(
+                                                                    task
+                                                                )
                                                             )
-                                                        )
-                                                    },
-                                                    onClick = {
-                                                        navHostController.navigate("${Route.TaskScreen.route}/${task.id}")
-                                                    },
-                                                    onLongClick = {
-                                                        viewModel.onEvent(HomeEvent.OnDeletionModeEvent)
-                                                        if (state.deletionTasks.contains(task)) viewModel.onEvent(
-                                                            HomeEvent.RemoveSelectedTaskEvent(
-                                                                task
+                                                        },
+                                                        onClick = {
+                                                            navHostController.navigate("${Route.TaskScreen.route}/${task.id}")
+                                                        },
+                                                        onLongClick = {
+                                                            viewModel.onEvent(HomeEvent.OnDeletionModeEvent)
+                                                            if (state.deletionTasks.contains(task)) viewModel.onEvent(
+                                                                HomeEvent.RemoveSelectedTaskEvent(
+                                                                    task
+                                                                )
                                                             )
-                                                        )
-                                                        else viewModel.onEvent(
-                                                            HomeEvent.AddSelectedTaskEvent(
-                                                                task
+                                                            else viewModel.onEvent(
+                                                                HomeEvent.AddSelectedTaskEvent(
+                                                                    task
+                                                                )
                                                             )
-                                                        )
-                                                    },
-                                                    isDeletionMode = state.isDeletionMode,
-                                                    onDeleteCheckedChange = {
-                                                        if (state.deletionTasks.contains(task)) viewModel.onEvent(
-                                                            HomeEvent.RemoveSelectedTaskEvent(
-                                                                task
+                                                        },
+                                                        isDeletionMode = state.isDeletionMode,
+                                                        onDeleteCheckedChange = {
+                                                            if (state.deletionTasks.contains(task)) viewModel.onEvent(
+                                                                HomeEvent.RemoveSelectedTaskEvent(
+                                                                    task
+                                                                )
                                                             )
-                                                        )
-                                                        else viewModel.onEvent(
-                                                            HomeEvent.AddSelectedTaskEvent(
-                                                                task
+                                                            else viewModel.onEvent(
+                                                                HomeEvent.AddSelectedTaskEvent(
+                                                                    task
+                                                                )
                                                             )
-                                                        )
-                                                    },
-                                                    isDeleteChecked = state.deletionTasks.contains(
-                                                        task
-                                                    ),
-                                                    onCheckedSubtask = {
-                                                        viewModel.onEvent(
-                                                            HomeEvent.SubtaskItemCheckboxToggleEvent(
-                                                                it
+                                                        },
+                                                        isDeleteChecked = state.deletionTasks.contains(
+                                                            task
+                                                        ),
+                                                        onCheckedSubtask = {
+                                                            viewModel.onEvent(
+                                                                HomeEvent.SubtaskItemCheckboxToggleEvent(
+                                                                    it
+                                                                )
                                                             )
-                                                        )
+                                                        }
+                                                    )
+                                                    if (task.id != state.notPriorityTasks.last().id) {
+                                                        Spacer(modifier = Modifier.height(16.dp))
                                                     }
-                                                )
-                                                if (task.id != state.notPriorityTasks.last().id) {
-                                                    Spacer(modifier = Modifier.height(16.dp))
                                                 }
                                             }
                                         }
                                     }
                                 }
                             }
+                        } else {
+                            Column(
+                                modifier = Modifier
+                                    .fillMaxWidth(0.5f)
+                                    .align(Alignment.CenterHorizontally),
+                                horizontalAlignment = Alignment.CenterHorizontally
+                            ) {
+                                Spacer(modifier = Modifier.height(48.dp))
+                                Text(
+                                    text = stringResource(R.string.empty_date),
+                                    fontFamily = caros,
+                                    fontWeight = FontWeight.Normal,
+                                    fontSize = 14.sp,
+                                    color = MaterialTheme.colorScheme.onSurface,
+                                    textAlign = TextAlign.Center
+                                )
+                            }
                         }
-                    } else {
-                        Column(
-                            modifier = Modifier
-                                .fillMaxWidth(0.5f)
-                                .align(Alignment.CenterHorizontally),
-                            horizontalAlignment = Alignment.CenterHorizontally
-                        ) {
-                            Spacer(modifier = Modifier.height(48.dp))
-                            Text(
-                                text = stringResource(R.string.empty_date),
-                                fontFamily = caros,
-                                fontWeight = FontWeight.Normal,
-                                fontSize = 14.sp,
-                                color = MaterialTheme.colorScheme.onSurface,
-                                textAlign = TextAlign.Center
-                            )
-                        }
+                        Spacer(modifier = Modifier.height(84.dp))
                     }
-                    Spacer(modifier = Modifier.height(84.dp))
-                }
-            } else {
-                AnimatedVisibility(
-                    modifier = Modifier.align(Alignment.CenterHorizontally),
-                    visible = state.contentState.isLoading.value
-                ) {
-                    LoadingIndicator(modifier = Modifier.align(Alignment.CenterHorizontally))
+                } else {
+                    AnimatedVisibility(
+                        modifier = Modifier.align(Alignment.CenterHorizontally),
+                        visible = state.contentState.isLoading.value
+                    ) {
+                        LoadingIndicator(modifier = Modifier.align(Alignment.CenterHorizontally))
+                    }
                 }
             }
         }
-    }
 
-    if (state.showDatePickerDialog) {
-        DatePickerDialog(
-            modifier = Modifier.heightIn(max = 700.dp),
-            onDismissRequest = {
-                viewModel.onEvent(HomeEvent.HideDatePickerDialogEvent)
-            },
-            confirmButton = {},
-            colors = DatePickerDefaults.colors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
-            shape = RoundedCornerShape(20.dp)
-        ) {
-            Column {
-                DatePicker(state = datePickerState)
-                Button(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 24.dp), onClick = {
-                        viewModel.onEvent(
-                            HomeEvent.SelectDatePickerDialogEvent(
-                                datePickerState.selectedDateMillis ?: 0
+        if (state.showDatePickerDialog) {
+            DatePickerDialog(
+                modifier = Modifier.heightIn(max = 700.dp),
+                onDismissRequest = {
+                    viewModel.onEvent(HomeEvent.HideDatePickerDialogEvent)
+                },
+                confirmButton = {},
+                colors = DatePickerDefaults.colors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
+                shape = RoundedCornerShape(20.dp)
+            ) {
+                Column {
+                    DatePicker(state = datePickerState)
+                    Button(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 24.dp), onClick = {
+                            viewModel.onEvent(
+                                HomeEvent.SelectDatePickerDialogEvent(
+                                    datePickerState.selectedDateMillis ?: 0
+                                )
+                            )
+                        }, shape = RoundedCornerShape(12.dp),
+                        colors = ButtonDefaults.buttonColors(contentColor = Color.White)
+                    ) {
+                        Text(
+                            text = stringResource(R.string.select),
+                            color = Color.White,
+                            fontFamily = caros,
+                            fontWeight = FontWeight.Medium
+                        )
+                    }
+                }
+            }
+        }
+
+        if (state.showQuestionDialog) {
+            QuestionDialog(title = state.questionTitle,
+                text = state.questionText,
+                onDismissRequest = {
+                    viewModel.onEvent(HomeEvent.HideQuestionDialogEvent)
+                },
+                onConfirmRequest = {
+                    if (state.isDeletionMode) viewModel.onEvent(HomeEvent.DeleteAllSelectedTasksEvent)
+                    else viewModel.onEvent(HomeEvent.DeleteCategoryEvent)
+                })
+        }
+
+        if (state.showAddEditCategoryDialog) {
+            AddEditCategoryDialog(
+                onDismissRequest = {
+                    viewModel.onEvent(HomeEvent.HideAddCategoryDialogEvent)
+                },
+                onAddClick = {
+                    if (state.isEditMode) viewModel.onEvent(
+                        HomeEvent.SaveEditedCategoryEvent(
+                            state.editionDeletionCategory.copy(
+                                title = it
                             )
                         )
-                    }, shape = RoundedCornerShape(12.dp),
-                    colors = ButtonDefaults.buttonColors(contentColor = Color.White)
-                ) {
-                    Text(
-                        text = stringResource(R.string.select),
-                        color = Color.White,
-                        fontFamily = caros,
-                        fontWeight = FontWeight.Medium
                     )
+                    else viewModel.onEvent(HomeEvent.CreateCategoryEvent(it))
+                },
+                category = if (state.isEditMode) state.editionDeletionCategory else null,
+                isEditMode = state.isEditMode
+            )
+        }
+
+        BackHandler {
+            if (state.isDeletionMode) {
+                viewModel.onEvent(HomeEvent.OffDeletionModeEvent)
+            }
+        }
+
+        val lifecycleOwner = LocalLifecycleOwner.current
+        DisposableEffect(lifecycleOwner) {
+            val observer = LifecycleEventObserver { _, event ->
+                if (event == Lifecycle.Event.ON_RESUME || event == Lifecycle.Event.ON_START) {
+                    state.userName = viewModel.sharedPrefsHelper.name ?: ""
                 }
             }
-        }
-    }
 
-    if (state.showQuestionDialog) {
-        QuestionDialog(title = state.questionTitle,
-            text = state.questionText,
-            onDismissRequest = {
-                viewModel.onEvent(HomeEvent.HideQuestionDialogEvent)
-            },
-            onConfirmRequest = {
-                if (state.isDeletionMode) viewModel.onEvent(HomeEvent.DeleteAllSelectedTasksEvent)
-                else viewModel.onEvent(HomeEvent.DeleteCategoryEvent)
-            })
-    }
+            lifecycleOwner.lifecycle.addObserver(observer)
 
-    if (state.showAddEditCategoryDialog) {
-        AddEditCategoryDialog(
-            onDismissRequest = {
-                viewModel.onEvent(HomeEvent.HideAddCategoryDialogEvent)
-            },
-            onAddClick = {
-                if (state.isEditMode) viewModel.onEvent(
-                    HomeEvent.SaveEditedCategoryEvent(
-                        state.editionDeletionCategory.copy(
-                            title = it
-                        )
-                    )
-                )
-                else viewModel.onEvent(HomeEvent.CreateCategoryEvent(it))
-            },
-            category = if (state.isEditMode) state.editionDeletionCategory else null,
-            isEditMode = state.isEditMode
-        )
-    }
-
-    BackHandler {
-        if (state.isDeletionMode) {
-            viewModel.onEvent(HomeEvent.OffDeletionModeEvent)
-        }
-    }
-
-    val lifecycleOwner = LocalLifecycleOwner.current
-    DisposableEffect(lifecycleOwner) {
-        val observer = LifecycleEventObserver { _, event ->
-            if (event == Lifecycle.Event.ON_RESUME || event == Lifecycle.Event.ON_START) {
-                state.userName = viewModel.sharedPrefsHelper.name ?: ""
+            onDispose {
+                lifecycleOwner.lifecycle.removeObserver(observer)
             }
         }
-
-        lifecycleOwner.lifecycle.addObserver(observer)
-
-        onDispose {
-            lifecycleOwner.lifecycle.removeObserver(observer)
-        }
     }
-}
 }

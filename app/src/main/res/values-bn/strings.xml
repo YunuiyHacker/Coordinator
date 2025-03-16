@@ -185,7 +185,7 @@
     <string name="developer_lastname">হ্যারিসোভিচ</string>
     <string name="support_developer">ডেভেলপারকে সমর্থন করুন</string>
     <string name="developer_info_part_1">হ্যালো, প্রিয় ব্যবহারকারী। আমার নাম </string>
-    <string name="developer_info_part_2">আমি Perm-এর একজন তরুণ Android ডেভেলপার। ২০২১ সাল থেকে এই ক্ষেত্রে, শুরুতে এটি কঠিন ছিল, আমি অনেক কিছু কষ্ট করে বুঝতে পেরেছিলাম, কিন্তু আমি জানতাম যে এটি আমার, এবং অসুবিধাগুলি আমাকে আরও বেশি করে শেখার জন্য উৎসাহিত করেছিল, যা অবশেষে আমাকে এমন ফলাফলের দিকে পরিচালিত করেছিল।</string>
+    <string name="developer_info_part_2">, আমি Perm-এর একজন তরুণ Android ডেভেলপার। ২০২১ সাল থেকে এই ক্ষেত্রে, শুরুতে এটি কঠিন ছিল, আমি অনেক কিছু কষ্ট করে বুঝতে পেরেছিলাম, কিন্তু আমি জানতাম যে এটি আমার, এবং অসুবিধাগুলি আমাকে আরও বেশি করে শেখার জন্য উৎসাহিত করেছিল, যা অবশেষে আমাকে এমন ফলাফলের দিকে পরিচালিত করেছিল।</string>
     <string name="developer_info_part_3">এটি আমার প্রথম অ্যাপ যা আনুষ্ঠানিকভাবে অ্যাপ স্টোরে প্রকাশিত হয়েছে। অবশ্যই, আমি এখানেই থেমে যাব না, এখনও বেড়ে ওঠার এবং শেখার জায়গা আছে।</string>
     <string name="developer_info_part_4">এটা তো কেবল শুরু</string>
     <string name="developer_info_part_5">আপনার যদি আমার কাজ পছন্দ হয়, তাহলে আপনি আমার সাথে সহযোগিতা করতে চান - উপরের সমস্ত লিঙ্ক, আমি আপনাকে সাহায্য করতে পেরে খুশি হব</string>
@@ -202,6 +202,7 @@
     <string name="language_change">ভাষা পরিবর্তন করুন</string>
 
     <!-- ইন্টারফেসকনফিগারিংস্ক্রিন -->
+    <string name="app_will_be_restarted_automatically">অ্যাপ্লিকেশন স্বয়ংক্রিয়ভাবে পুনরায় আরম্ভ করা হবে.</string>
     <string name="show_task_priority">কাজের জন্য অগ্রাধিকার দেখান</string>
     <string name="show_tasks_statistics">কাজের পরিসংখ্যান দেখান</string>
 
@@ -209,4 +210,5 @@
     <string name="completed">সম্পূর্ণ</string>
     <string name="not_completed">সম্পূর্ণ হয়নি</string>
     <string name="displaying_statistics_for_all_tasks">সকল কাজের পরিসংখ্যান প্রদর্শন করা হচ্ছে</string>
+    <string name="okay">আচ্ছা</string>
 </resources>

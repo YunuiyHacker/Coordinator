@@ -185,7 +185,7 @@
     <string name="developer_lastname">ハリソビッチ</string>
     <string name="support_developer">開発者をサポートする</string>
     <string name="developer_info_part_1">こんにちは、ユーザー様。私の名前は</string>です
-    <string name="developer_info_part_2">私はペルミ出身の若い Android 開発者です。 2021年からこの分野に携わっていますが、最初は難しく、苦労しながら多くのことを理解しましたが、これは自分のことだとわかっていました。そして、困難は私にもっともっと学ぶ意欲を与え、最終的にこのような結果につながりました。</string>
+    <string name="developer_info_part_2">, 私はペルミ出身の若い Android 開発者です。 2021年からこの分野に携わっていますが、最初は難しく、苦労しながら多くのことを理解しましたが、これは自分のことだとわかっていました。そして、困難は私にもっともっと学ぶ意欲を与え、最終的にこのような結果につながりました。</string>
     <string name="developer_info_part_3">これは、App Store で正式にリリースされた最初のアプリです。もちろん、そこで止まるつもりはありません。まだ成長し、学ぶ余地があります。</string>
     <string name="developer_info_part_4">これはほんの始まりに過ぎません</string>
     <string name="developer_info_part_5">私の作品が気に入って、私とコラボレーションしたい場合は、上記のすべてのリンクから、喜んでお手伝いします</string>
@@ -202,6 +202,7 @@
     <string name="language_change">言語を変更する</string>
 
     <!-- インターフェース設定画面 -->
+    <string name="app_will_be_restarted_automatically">アプリケーションは自動的に再起動されます。</string>
     <string name="show_task_priority">タスクの優先度を表示する</string>
     <string name="show_tasks_statistics">タスクの統計情報を表示</string>
 
@@ -209,4 +210,5 @@
     <string name="completed">完了しました</string>
     <string name="not_completed">完了していません</string>
     <string name="displaying_statistics_for_all_tasks">すべてのタスクの統計を表示しています</string>
+    <string name="okay">まあ</string>
 </resources>

@@ -231,8 +231,7 @@ fun getLanguages(context: Context): List<Language> {
 
 fun setLocale(context: Context, locale: String) {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-        context.getSystemService(LocaleManager::class.java).applicationLocales =
-            LocaleList.forLanguageTags(locale)
+        LocaleHelper.setLocale(context, locale)
     } else {
         AppCompatDelegate.setApplicationLocales(
             LocaleListCompat.forLanguageTags(locale)

@@ -202,6 +202,7 @@
     <string name="language_change">تغيير اللغة</string>
 
     <!-- InterfaceConfiguringScreen -->
+    <string name="app_will_be_restarted_automatically">سيتم إعادة تشغيل التطبيق تلقائيا.</string>
     <string name="show_task_priority">إظهار الأولويات للمهام</string>
     <string name="show_tasks_statistics">إظهار إحصائيات المهام</string>
 
@@ -209,4 +210,5 @@
     <string name="completed">مكتمل</string>
     <string name="not_completed">غير مكتمل</string>
     <string name="displaying_statistics_for_all_tasks">يتم عرض الإحصائيات لجميع المهام</string>
+    <string name="okay">حسنا</string>
 </resources>

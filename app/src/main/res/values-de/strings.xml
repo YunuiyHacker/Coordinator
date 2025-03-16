@@ -185,7 +185,7 @@
     <string name="developer_lastname">Harisovich</string>
     <string name="support_developer">Unterstütze den Entwickler</string>
     <string name="developer_info_part_1">Hallo, lieber Benutzer. Mein Name ist </string>
-    <string name="developer_info_part_2">Ich bin ein junger Android-Entwickler aus Perm. Ich bin seit 2021 in diesem Bereich tätig. Am Anfang war es schwierig, ich habe vieles nur mit Mühe verstanden, aber ich wusste, dass dies meins war, und die Schwierigkeiten haben mich nur dazu angespornt, immer mehr zu lernen, was mich schließlich zu solchen Ergebnissen geführt hat.</string>
+    <string name="developer_info_part_2">, Ich bin ein junger Android-Entwickler aus Perm. Ich bin seit 2021 in diesem Bereich tätig. Am Anfang war es schwierig, ich habe vieles nur mit Mühe verstanden, aber ich wusste, dass dies meins war, und die Schwierigkeiten haben mich nur dazu angespornt, immer mehr zu lernen, was mich schließlich zu solchen Ergebnissen geführt hat.</string>
     <string name="developer_info_part_3">Dies ist meine erste offiziell im App Store veröffentlichte App. Natürlich werde ich hier nicht aufhören, es gibt noch Raum zum Wachsen und Lernen.</string>
     <string name="developer_info_part_4">Das ist erst der Anfang</string>
     <string name="developer_info_part_5">Wenn Ihnen meine Arbeit gefällt und Sie mit mir zusammenarbeiten möchten, folgen Sie den oben stehenden Links. Ich helfe Ihnen gerne weiter.</string>
@@ -202,6 +202,7 @@
     <string name="language_change">Sprache ändern</string>
 
     <!-- Schnittstellenkonfigurationsbildschirm -->
+    <string name="app_will_be_restarted_automatically">Die Anwendung wird automatisch neu gestartet</string>
     <string name="show_task_priority">Prioritäten für Aufgaben anzeigen</string>
     <string name="show_tasks_statistics">Aufgabenstatistiken anzeigen</string>
 
@@ -209,4 +210,5 @@
     <string name="completed">Abgeschlossen</string>
     <string name="not_completed">Nicht abgeschlossen</string>
     <string name="displaying_statistics_for_all_tasks">Statistiken für alle Aufgaben anzeigen</string>
+    <string name="okay">Gut</string>
 </resources>

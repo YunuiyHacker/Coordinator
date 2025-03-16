@@ -162,9 +162,11 @@
     <string name="copied">Күчерелгән</string>
     <string name="need_notification_permission">Хәбәрләр җибәрү өчен, кушымтага рөхсәт бирелергә тиеш</string>
     <string name="language_change">Телне үзгәртү</string>
+    <string name="app_will_be_restarted_automatically">Кулланма автоматик режимда яңадан эшләтеп җибәреләчәк</string>
     <string name="show_task_priority">Биремнәр өчен өстенлекләрне күрсәтү</string>
     <string name="show_tasks_statistics">Бирем статистикасын күрсәтү</string>
     <string name="completed">Тәмамланган</string>
     <string name="not_completed">Тәмамланмаган</string>
     <string name="displaying_statistics_for_all_tasks">Барлык биремнәр өчен статистика күрсәтү</string>
+    <string name="okay">Яхшы</string>
 </resources>
