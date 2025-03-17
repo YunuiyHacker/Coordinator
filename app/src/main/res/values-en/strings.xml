@@ -55,7 +55,7 @@
     <string name="tasks_statistics">Tasks statistics</string>
 
     <!--  SearchBar  -->
-    <string name="try_to_find_task">Try to find the issue...</string>
+    <string name="try_to_find_task">Try to find the task...</string>
     <string name="search">Search</string>
 
     <!--  CreateUpdateTaskScreen  -->
@@ -106,7 +106,7 @@
     <!--  AddEditCategoryDialog  -->
     <string name="category_adding">Adding a category</string>
     <string name="category_editing">Editing a category</string>
-    <string name="cancel">Cancellation</string>
+    <string name="cancel">Cancel</string>
     <string name="add">Add</string>
     <string name="save">Save</string>
 

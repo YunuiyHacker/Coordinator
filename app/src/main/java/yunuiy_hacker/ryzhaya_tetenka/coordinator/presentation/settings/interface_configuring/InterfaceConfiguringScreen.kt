@@ -135,7 +135,7 @@ fun InterfaceConfiguringScreen(
                         .fillMaxWidth()
                         .clip(RoundedCornerShape(14.dp))
                         .clickable {
-                            viewModel.onEvent(InterfaceConfiguringEvent.ToggleTaskPriorityShowEvent)
+                            viewModel.onEvent(InterfaceConfiguringEvent.ToggleTasksStatisticsShowEvent)
                         }, verticalAlignment = Alignment.CenterVertically
                 ) {
                     Row(modifier = Modifier.padding(horizontal = 24.dp, vertical = 12.dp)) {

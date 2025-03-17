@@ -16,10 +16,6 @@ import yunuiy_hacker.ryzhaya_tetenka.coordinator.utils.Constants.NOTIFICATION_ID
 
 class NotificationUtil(private val application: Application) {
 
-    companion object {
-
-    }
-
     fun createMessage(
         title: String,
         content: String
@@ -30,7 +26,7 @@ class NotificationUtil(private val application: Application) {
             .setSmallIcon(R.drawable.ic_logo)
             .setContentTitle(title)
             .setContentText(content)
-            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+            .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setAutoCancel(true)
 
     }

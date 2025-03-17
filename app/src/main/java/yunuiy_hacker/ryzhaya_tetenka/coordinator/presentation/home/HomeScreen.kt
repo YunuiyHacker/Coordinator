@@ -132,6 +132,10 @@ fun HomeScreen(navHostController: NavHostController, viewModel: HomeViewModel = 
         viewModel.onEvent(HomeEvent.LoadDataEvent)
     }
 
+    LaunchedEffect(currentLocale.language) {
+        viewModel.onEvent(HomeEvent.LoadDataEvent)
+    }
+
     var urgentAndImportantVisibility by remember { mutableStateOf(true) }
     var notUrgentAndImportantVisibility by remember { mutableStateOf(true) }
     var urgentAndUnimportantVisibility by remember { mutableStateOf(true) }
@@ -331,25 +335,35 @@ fun HomeScreen(navHostController: NavHostController, viewModel: HomeViewModel = 
                                                     else -> mutableListOf()
                                                 }.map { date ->
                                                     when (state.timeType.toTimeTypeEvent()) {
-                                                        TimeTypeEnum.DAY -> DateFormats.toDayTimeTypeOutputFormat(currentLocale).format(
+                                                        TimeTypeEnum.DAY -> DateFormats.toDayTimeTypeOutputFormat(
+                                                            currentLocale
+                                                        ).format(
                                                             date
                                                         ).lowercase()
 
                                                         TimeTypeEnum.WEEK -> "${
-                                                            DateFormats.toWeekTimeTypeOutputFormatFirstPart(currentLocale).format(
+                                                            DateFormats.toWeekTimeTypeOutputFormatFirstPart(
+                                                                currentLocale
+                                                            ).format(
                                                                 (date as Pair<*, *>).first
                                                             ).lowercase()
                                                         } - ${
-                                                            DateFormats.toWeekTimeTypeOutputFormatSecondPart(currentLocale).format(
+                                                            DateFormats.toWeekTimeTypeOutputFormatSecondPart(
+                                                                currentLocale
+                                                            ).format(
                                                                 (date).second
                                                             ).lowercase()
                                                         }"
 
-                                                        TimeTypeEnum.MONTH -> DateFormats.toMonthTimeTypeOutputFormat(currentLocale).format(
+                                                        TimeTypeEnum.MONTH -> DateFormats.toMonthTimeTypeOutputFormat(
+                                                            currentLocale
+                                                        ).format(
                                                             date
                                                         ).lowercase()
 
-                                                        TimeTypeEnum.YEAR -> DateFormats.toYearTimeTypeOutputFormat(currentLocale).format(
+                                                        TimeTypeEnum.YEAR -> DateFormats.toYearTimeTypeOutputFormat(
+                                                            currentLocale
+                                                        ).format(
                                                             date
                                                         ).lowercase()
 
@@ -397,25 +411,35 @@ fun HomeScreen(navHostController: NavHostController, viewModel: HomeViewModel = 
                                     } else {
                                         Text(
                                             text = when (state.timeType.toTimeTypeEvent()) {
-                                                TimeTypeEnum.DAY -> DateFormats.toDayTimeTypeOutputFormat(currentLocale).format(
+                                                TimeTypeEnum.DAY -> DateFormats.toDayTimeTypeOutputFormat(
+                                                    currentLocale
+                                                ).format(
                                                     state.selectedDate
                                                 ).lowercase()
 
                                                 TimeTypeEnum.WEEK -> "${
-                                                    DateFormats.toWeekTimeTypeOutputFormatFirstPart(currentLocale).format(
+                                                    DateFormats.toWeekTimeTypeOutputFormatFirstPart(
+                                                        currentLocale
+                                                    ).format(
                                                         state.selectedWeekStart
                                                     ).lowercase()
                                                 } - ${
-                                                    DateFormats.toWeekTimeTypeOutputFormatSecondPart(currentLocale).format(
+                                                    DateFormats.toWeekTimeTypeOutputFormatSecondPart(
+                                                        currentLocale
+                                                    ).format(
                                                         state.selectedWeekEnd
                                                     ).lowercase()
                                                 }"
 
-                                                TimeTypeEnum.MONTH -> DateFormats.toMonthTimeTypeOutputFormat(currentLocale).format(
+                                                TimeTypeEnum.MONTH -> DateFormats.toMonthTimeTypeOutputFormat(
+                                                    currentLocale
+                                                ).format(
                                                     state.selectedMonth
                                                 ).lowercase()
 
-                                                TimeTypeEnum.YEAR -> DateFormats.toYearTimeTypeOutputFormat(currentLocale).format(
+                                                TimeTypeEnum.YEAR -> DateFormats.toYearTimeTypeOutputFormat(
+                                                    currentLocale
+                                                ).format(
                                                     state.selectedYear
                                                 ).lowercase()
 

@@ -13,11 +13,11 @@ android {
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "yunuiy_hacker.ryzhaya_tetenka.coordinator.v2"
+        applicationId = "yunuiy_hacker.ryzhaya_tetenka.coordinator"
         minSdk = 31
         targetSdk = 34
-        versionCode = 4
-        versionName = "1.0.3"
+        versionCode = 5
+        versionName = "2.0.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
