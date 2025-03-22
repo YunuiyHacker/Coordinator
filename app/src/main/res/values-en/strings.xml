@@ -32,7 +32,7 @@
     <string name="onboarding_screen3_content">So you don\'t forget who you\'re going to do them with</string>
 
     <!--  FillNameScreen  -->
-    <string name="what_is_your_name_title">what is your name?</string>
+    <string name="what_is_your_name_title">What is your name?</string>
     <string name="what_is_your_name_description">Please specify your name, which we will use to display and personalize your tasks</string>
     <string name="your_name">Your name</string>
     <string name="get_start">Start</string>

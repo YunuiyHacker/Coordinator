@@ -1,6 +1,7 @@
 package yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.home
 
 import android.app.Application
+import android.content.Context
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -25,6 +26,7 @@ import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.subtasks
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.tasks.TasksUseCase
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.home.model.TimeTypeEnum
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.home.use_case.DefineTimeOfDayUseCase
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.utils.getLocaleStringResource
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.utils.setCalendarTime
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.utils.setDateTime
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.utils.startAndEndThisWeek
@@ -63,8 +65,13 @@ class HomeViewModel @Inject constructor(
         state.selectedMonth = setDateTime(Date())
         state.selectedYear = setDateTime(Date())
 
-        state.defaultAllCategoriesValue =
-            Category(id = 0, title = application.getString(R.string.all_categories))
+        state.defaultAllCategoriesValue = Category(
+            id = 0, title = getLocaleStringResource(
+                application.resources.configuration.locale,
+                R.string.all_categories,
+                application as Context
+            )
+        )
 
         initData()
     }
@@ -178,8 +185,13 @@ class HomeViewModel @Inject constructor(
                 state.showTaskPriority = sharedPrefsHelper.showTaskPriority
                 state.showTasksStatistics = sharedPrefsHelper.showTasksStatistics
 
-                state.defaultAllCategoriesValue =
-                    Category(id = 0, title = application.getString(R.string.all_categories))
+                state.defaultAllCategoriesValue = Category(
+                    id = 0, title = getLocaleStringResource(
+                        application.resources.configuration.locale,
+                        R.string.all_categories,
+                        application as Context
+                    )
+                )
                 loadTasks()
                 loadCategories()
 

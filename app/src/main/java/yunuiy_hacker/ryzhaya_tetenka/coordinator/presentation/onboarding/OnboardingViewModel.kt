@@ -1,6 +1,7 @@
 package yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.onboarding
 
 import android.app.Application
+import android.content.Context
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -12,6 +13,7 @@ import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.model.People
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.model.Place
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.model.Task
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.utils.getLanguages
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.utils.getLocaleStringResource
 import java.util.Locale
 import javax.inject.Inject
 
@@ -49,8 +51,16 @@ class OnboardingViewModel @Inject constructor(
                 id = 1,
                 hour = 19,
                 minute = 11,
-                title = application.getString(R.string.onboarding_screen1_task1_title),
-                content = application.getString(R.string.onboarding_screen1_task1_content)
+                title = getLocaleStringResource(
+                    application.resources.configuration.locale,
+                    R.string.onboarding_screen1_task1_title,
+                    application as Context
+                ),
+                content = getLocaleStringResource(
+                    application.resources.configuration.locale,
+                    R.string.onboarding_screen1_task1_content,
+                    application as Context
+                )
             )
         )
         state.tasks.add(
@@ -58,14 +68,26 @@ class OnboardingViewModel @Inject constructor(
                 id = 2,
                 hour = 20,
                 minute = 5,
-                title = application.getString(R.string.onboarding_screen1_task2_content),
-                content = application.getString(R.string.onboarding_screen1_task2_title)
+                title = getLocaleStringResource(
+                    application.resources.configuration.locale,
+                    R.string.onboarding_screen1_task2_content,
+                    application as Context
+                ),
+                content = getLocaleStringResource(
+                    application.resources.configuration.locale,
+                    R.string.onboarding_screen1_task2_title,
+                    application as Context
+                )
             )
         )
 
         state.place = Place(
             id = 1,
-            title = application.getString(R.string.home),
+            title = getLocaleStringResource(
+                application.resources.configuration.locale,
+                R.string.home,
+                application as Context
+            ),
             la = 58.010455,
             lt = 56.229443
         )
@@ -73,9 +95,21 @@ class OnboardingViewModel @Inject constructor(
         state.peoples.add(
             People(
                 id = 1,
-                surname = application.getString(R.string.developer_surname),
-                name = application.getString(R.string.developer_name),
-                lastname = application.getString(R.string.developer_lastname),
+                surname = getLocaleStringResource(
+                    application.resources.configuration.locale,
+                    R.string.developer_surname,
+                    application as Context
+                ),
+                name = getLocaleStringResource(
+                    application.resources.configuration.locale,
+                    R.string.developer_name,
+                    application as Context
+                ),
+                lastname = getLocaleStringResource(
+                    application.resources.configuration.locale,
+                    R.string.developer_lastname,
+                    application as Context
+                ),
                 displayName = application.getString(R.string.developer_nickname)
             )
         )

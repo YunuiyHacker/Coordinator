@@ -28,8 +28,7 @@ import yunuiy_hacker.ryzhaya_tetenka.coordinator.ui.theme.caros
 
 @Composable
 fun MessageWithButtonDialog(
-    message: String, onDismissRequest: () -> Unit,
-    onConfirmRequest: () -> Unit
+    message: String, buttonText: String, onDismissRequest: () -> Unit, onConfirmRequest: () -> Unit
 ) {
     Dialog(onDismissRequest = { onDismissRequest() }) {
         Column(
@@ -52,20 +51,15 @@ fun MessageWithButtonDialog(
             Spacer(modifier = Modifier.height(16.dp))
             Row(modifier = Modifier.fillMaxWidth()) {
                 Button(
-                    modifier = Modifier.weight(1f),
-                    onClick = {
+                    modifier = Modifier.weight(1f), onClick = {
                         onConfirmRequest()
-                    },
-                    colors = ButtonDefaults.buttonColors(
+                    }, colors = ButtonDefaults.buttonColors(
                         contentColor = Color.White,
                         containerColor = MaterialTheme.colorScheme.primary
-                    ),
-                    shape = RoundedCornerShape(10.dp)
+                    ), shape = RoundedCornerShape(10.dp)
                 ) {
                     Text(
-                        text = stringResource(
-                            R.string.okay
-                        ), fontFamily = caros
+                        text = buttonText, fontFamily = caros
                     )
                 }
             }

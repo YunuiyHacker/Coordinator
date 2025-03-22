@@ -80,7 +80,8 @@ fun LanguageScreen(
     viewModel.state.let { state ->
         if (!state.contentState.isLoading.value) {
             Scaffold(topBar = {
-                TopAppBar(colors = TopAppBarDefaults.topAppBarColors(containerColor = MaterialTheme.colorScheme.background),
+                TopAppBar(
+                    colors = TopAppBarDefaults.topAppBarColors(containerColor = MaterialTheme.colorScheme.background),
                     title = {
                         Text(
                             modifier = Modifier
@@ -96,11 +97,12 @@ fun LanguageScreen(
                     navigationIcon = {
                         Row {
                             Spacer(modifier = Modifier.width(24.dp))
-                            Box(modifier = Modifier.clickable(
-                                interactionSource = interactionSource, indication = null
-                            ) {
-                                navHostController.popBackStack()
-                            }) {
+                            Box(
+                                modifier = Modifier.clickable(
+                                    interactionSource = interactionSource, indication = null
+                                ) {
+                                    navHostController.popBackStack()
+                                }) {
                                 Icon(
                                     imageVector = Icons.Rounded.ArrowBack,
                                     tint = MaterialTheme.colorScheme.onSurface,
@@ -192,13 +194,14 @@ fun LanguageScreen(
         }
 
         if (state.showMessageWithButtonDialog) {
-            MessageWithButtonDialog(message = state.message, onDismissRequest = {
-
-            }, onConfirmRequest = {
-                viewModel.onEvent(LanguageEvent.HideMessageWithButtonDialog)
-                sleep(10)
-                (context as? Activity)?.recreate()
-            })
+            MessageWithButtonDialog(
+                message = state.message,
+                buttonText = state.buttonText,
+                onDismissRequest = {},
+                onConfirmRequest = {
+                    viewModel.onEvent(LanguageEvent.HideMessageWithButtonDialog)
+                    (context as? Activity)?.recreate()
+                })
         }
     }
 }

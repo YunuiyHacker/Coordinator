@@ -4,6 +4,7 @@ import android.app.Application
 import android.app.LocaleManager
 import android.content.Context
 import android.content.pm.PackageManager
+import android.content.res.Configuration
 import android.content.res.Resources
 import android.net.Uri
 import android.os.Build
@@ -247,4 +248,22 @@ fun getPriorityByCode(priorityCode: Int): Priority {
         4 -> Priority.NOT_URGENT_AND_UNIMPORTANT
         else -> Priority.NOT_PRIORITY
     }
+}
+
+fun getLocaleStringResource(locale: Locale, resourceId: Int, context: Context): String {
+    var result: String
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+        val config = Configuration(context.resources.configuration)
+        config.setLocale(locale)
+        result = context.createConfigurationContext(config).getText(resourceId).toString()
+    } else {
+        val resources = context.resources
+        val config = resources.configuration
+        val savedLocale = config.locale
+        resources.updateConfiguration(config, null)
+        result = resources.getString(resourceId)
+        config.locale = savedLocale
+        resources.updateConfiguration(config, null)
+    }
+    return result
 }

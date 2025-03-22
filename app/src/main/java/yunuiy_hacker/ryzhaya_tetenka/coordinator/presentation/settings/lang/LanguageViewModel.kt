@@ -7,9 +7,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.CoordinatorApplication
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.data.local.shared_prefs.SharedPrefsHelper
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.settings.model.Language
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.utils.getLanguages
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.utils.getLocaleStringResource
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.utils.setLocale
 import java.util.Locale
 import javax.inject.Inject
@@ -51,7 +53,17 @@ class LanguageViewModel @Inject constructor(
 
         setLocale(application as Context, language.ISOCode)
 
-        state.message = application.getString(R.string.app_will_be_restarted_automatically)
+        state.message =
+            getLocaleStringResource(
+                application.resources.configuration.locale,
+                R.string.app_will_be_restarted_automatically,
+                application as Context
+            )
+        state.buttonText = getLocaleStringResource(
+            application.resources.configuration.locale,
+            R.string.okay,
+            application as Context
+        )
         state.showMessageWithButtonDialog = true
     }
 }

@@ -1,6 +1,7 @@
 package yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.create_update_task
 
 import android.app.Application
+import android.content.Context
 import android.widget.Toast
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
@@ -39,6 +40,7 @@ import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.subtasks
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.common.use_case.tasks.TasksUseCase
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.notification.NotificationWorker
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.utils.Constants
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.utils.getLocaleStringResource
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.utils.setCalendarTime
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.utils.setDateTime
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.utils.startAndEndThisWeek
@@ -163,9 +165,11 @@ class CreateUpdateTaskViewModel @Inject constructor(
                 state.showPeoplesSelectorSheet = false
                 if (!state.selectedPeoples.contains(event.people)) state.selectedPeoples.add(event.people)
                 else Toast.makeText(
-                    application,
-                    application.getString(R.string.this_people_already_will_selected),
-                    Toast.LENGTH_SHORT
+                    application, getLocaleStringResource(
+                        application.resources.configuration.locale,
+                        R.string.this_people_already_will_selected,
+                        application as Context
+                    ), Toast.LENGTH_SHORT
                 ).show()
             }
 
@@ -204,7 +208,15 @@ class CreateUpdateTaskViewModel @Inject constructor(
             runBlocking {
 
                 state.contentState.isLoading.value = true
-                state.categories.add(Category(0, application.getString(R.string.without_category)))
+                state.categories.add(
+                    Category(
+                        0, getLocaleStringResource(
+                            application.resources.configuration.locale,
+                            R.string.without_category,
+                            application as Context
+                        )
+                    )
+                )
                 state.categories.addAll(
                     categoriesUseCase.getCategoriesOperator.invoke().map { category ->
                         category.toDomain()
@@ -268,8 +280,9 @@ class CreateUpdateTaskViewModel @Inject constructor(
                     val c: Calendar = GregorianCalendar()
                     c.timeInMillis = state.date.time
                     state.weekDate = startAndEndThisWeek(c)
-                    state.subtasks.addAll(subtasksUseCase.getSubtasksByTaskIdOperator(state.taskId)
-                        .map { subtask -> subtask.toDomain() })
+                    state.subtasks.addAll(
+                        subtasksUseCase.getSubtasksByTaskIdOperator(state.taskId)
+                            .map { subtask -> subtask.toDomain() })
                     val dataPlace = placesUseCase.getPlaceByIdOperator(
                         placesInTasksUseCase.getPlacesInTaskByTaskId(state.taskId)?.placeId ?: 0
                     )
@@ -403,12 +416,22 @@ class CreateUpdateTaskViewModel @Inject constructor(
         taskEndTimeInMillis.minutes = if (!task.withEndTime) task.minute else task.endMinute
         taskEndTimeInMillis.seconds = 0
         if (targetTimeInMillis.time > taskEndTimeInMillis.time && state.remindLaterIsChecked) {
-            state.contentState.exception.value =
-                Exception(application.getString(R.string.cannot_specify_reminder_time_later_than_task_deadline))
+            state.contentState.exception.value = Exception(
+                getLocaleStringResource(
+                    application.resources.configuration.locale,
+                    R.string.cannot_specify_reminder_time_later_than_task_deadline,
+                    application as Context
+                )
+            )
             state.showMessageDialog = true
         } else if (currentTimeInMillis > targetTimeInMillis.time && state.remindLaterIsChecked) {
-            state.contentState.exception.value =
-                Exception(application.getString(R.string.this_reminder_time_cannot_be_selected))
+            state.contentState.exception.value = Exception(
+                getLocaleStringResource(
+                    application.resources.configuration.locale,
+                    R.string.this_reminder_time_cannot_be_selected,
+                    application as Context
+                )
+            )
             state.showMessageDialog = true
         } else {
             if (state.endTimeChecked) {
@@ -438,7 +461,11 @@ class CreateUpdateTaskViewModel @Inject constructor(
                     clearUnsavedData()
                 } else {
                     state.contentState.exception.value = Exception(
-                        application.getString(R.string.end_time_can_not_be_before_start_time)
+                        getLocaleStringResource(
+                            application.resources.configuration.locale,
+                            R.string.end_time_can_not_be_before_start_time,
+                            application as Context
+                        )
                     )
                     state.showMessageDialog = true
                 }
@@ -458,8 +485,7 @@ class CreateUpdateTaskViewModel @Inject constructor(
                         createOrUpdatePlace(task.id)
                         createOrRemovePeoplesInTasks(task.id)
                         if (state.remindLaterIsChecked) updateNotification(
-                            task,
-                            timeDiffInMillis
+                            task, timeDiffInMillis
                         )
                     }
                     state.success = true
@@ -610,10 +636,7 @@ class CreateUpdateTaskViewModel @Inject constructor(
     }
 
     private fun createNotification(
-        taskId: Int,
-        title: String,
-        content: String,
-        timeDiffInMillis: Long
+        taskId: Int, title: String, content: String, timeDiffInMillis: Long
     ) {
         val rValue = Random(System.currentTimeMillis()).nextLong().toString()
 
@@ -648,14 +671,12 @@ class CreateUpdateTaskViewModel @Inject constructor(
                     notificationDomain = notification.toDomain()
                     workManager.cancelAllWorkByTag(notificationDomain.tag)
 
-                    val data =
-                        Data.Builder().putString("title", task.title)
-                            .putString("content", task.content)
+                    val data = Data.Builder().putString("title", task.title)
+                        .putString("content", task.content)
                     val notificationWork =
-                        OneTimeWorkRequest.Builder(NotificationWorker::class.java)
-                            .setInitialDelay(
-                                timeDiffInMillis, TimeUnit.MILLISECONDS
-                            ).setInputData(data.build()).addTag(rValue).build()
+                        OneTimeWorkRequest.Builder(NotificationWorker::class.java).setInitialDelay(
+                            timeDiffInMillis, TimeUnit.MILLISECONDS
+                        ).setInputData(data.build()).addTag(rValue).build()
                     workManager.enqueue(notificationWork)
 
                     notificationsUseCase.updateNotificationOperator(
