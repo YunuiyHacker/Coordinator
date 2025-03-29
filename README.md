@@ -32,10 +32,12 @@ Coordinator - это ваш личный помощник для контрол�
   <li><b>Clean Architecture</b></li>
   <li><b>MVVM</b></li>
   <li><b>Dagger Hilt</b></li>
-  <li><b>Data Store</b></li>
+  <li><b>Room Database</b></li>
   <li><b>Kotlin Coroutines</b></li>
   <li><b>Flow</b></li>
   <li><b>Accompanist</b></li>
   <li><b>Splash Screen Api</b></li>
+  <li><b>Coil</b></li>
+  <li><b>Work Manager</b></li>
 </ul>
 </p>
