@@ -22,3 +22,20 @@ Coordinator - это ваш личный помощник для контрол�
 Управляй своей жизнью с нами.
 
 Приложение выложено в Rustore, можно установить по ссылке: https://www.rustore.ru/catalog/app/yunuiy_hacker.ryzhaya_tetenka.coordinator
+
+<h3>Стек технологий</h3>
+<p>Язык программирования: <b>Kotlin</b></p>
+<p>UI: <b>Jetpack Compose</b></p>
+<p>IDE: <b>Android Studio</b></p>
+<p>Остальное: 
+</br><ul>
+  <li><b>Clean Architecture</b></li>
+  <li><b>MVVM</b></li>
+  <li><b>Dagger Hilt</b></li>
+  <li><b>Data Store</b></li>
+  <li><b>Kotlin Coroutines</b></li>
+  <li><b>Flow</b></li>
+  <li><b>Accompanist</b></li>
+  <li><b>Splash Screen Api</b></li>
+</ul>
+</p>
