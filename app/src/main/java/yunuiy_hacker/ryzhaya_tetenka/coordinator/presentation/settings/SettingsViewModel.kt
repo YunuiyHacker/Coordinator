@@ -1,6 +1,7 @@
 package yunuiy_hacker.ryzhaya_tetenka.coordinator.presentation.settings
 
 import android.app.Application
+import android.content.Context
 import android.os.Environment
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.runtime.getValue
@@ -13,15 +14,14 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
-import yunuiy_hacker.ryzhaya_tetenka.coordinator.CoordinatorApplication
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.R
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.data.local.shared_prefs.SharedPrefsHelper
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.settings.use_case.ExportDataUseCase
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.domain.settings.use_case.ImportDataUseCase
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.utils.ImageUtils
-import yunuiy_hacker.ryzhaya_tetenka.coordinator.utils.LocaleHelper
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.utils.getFileName
 import yunuiy_hacker.ryzhaya_tetenka.coordinator.utils.getLanguages
+import yunuiy_hacker.ryzhaya_tetenka.coordinator.utils.getLocaleStringResource
 import java.io.BufferedInputStream
 import java.io.BufferedOutputStream
 import java.io.BufferedWriter
@@ -157,7 +157,11 @@ class SettingsViewModel @Inject constructor(
                 }
                 Files.delete(Paths.get(jsonFileName))
 
-                state.contentState.data.value = application.getString(R.string.success_export)
+                state.contentState.data.value = getLocaleStringResource(
+                    application.resources.configuration.locale,
+                    R.string.success_export,
+                    application as Context
+                )
                 state.showMessageDialog = true
                 state.contentState.isLoading.value = false
             }
@@ -177,18 +181,33 @@ class SettingsViewModel @Inject constructor(
                         ).endsWith(".crd")
                     ) {
                         importDataUseCase.invoke(state.selectedFileUri)
-                        state.contentState.data.value =
-                            application.getString(R.string.success_import)
+                        state.contentState.data.value = getLocaleStringResource(
+                            application.resources.configuration.locale,
+                            R.string.success_import,
+                            application as Context
+                        )
                     } else {
                         throw FileSystemNotFoundException()
                     }
                 } catch (e: FileSystemNotFoundException) {
                     state.contentState.data.value =
-                        application.getString(R.string.incorrect_file_format)
+                        getLocaleStringResource(
+                            application.resources.configuration.locale,
+                            R.string.incorrect_file_format,
+                            application as Context
+                        )
                 } catch (e: FileNotFoundException) {
-                    state.contentState.data.value = application.getString(R.string.access_denied)
+                    state.contentState.data.value = getLocaleStringResource(
+                        application.resources.configuration.locale,
+                        R.string.access_denied,
+                        application as Context
+                    )
                 } catch (e: Exception) {
-                    state.contentState.data.value = application.getString(R.string.undefined_error)
+                    state.contentState.data.value = getLocaleStringResource(
+                        application.resources.configuration.locale,
+                        R.string.undefined_error,
+                        application as Context
+                    )
                 }
 
                 state.showMessageDialog = true
